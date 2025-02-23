@@ -13,10 +13,11 @@
     z = "zoxide";
     nv = "cd ~/src/github.com/northvolt/";
     pj = "cd ~/src/github.com/projects/";
-    dot = "cd ~/src/github.com/projects/.dotfiles/";
+    dot = "cd ~/src/github.com/projects/dotfiles/";
     tksv = "tmux kill-server";
     tf = "terraform";
     tg = "terragrunt";
+    cat = "bat";
     docker = "podman";
     docker-compose = "podman-compose";
   };

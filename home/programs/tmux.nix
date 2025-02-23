@@ -12,7 +12,7 @@
   terminal =
     "xterm-ghostty"; # better undercurl see https://x.com/mitchellh/status/1847372611577401877?mx=2
   newSession = true;
-  secureSocket = true;
+  secureSocket = false;
   sensibleOnTop = false; # bug with starship/shell stuff..
 
   plugins = with pkgs.tmuxPlugins; [
@@ -47,21 +47,7 @@
     # use system clipboard
     set -g set-clipboard on
 
-    # split windows remap
-    unbind %
-    bind _ split-window -h -c "#{pane_current_path}"
-    unbind '"'
-    bind - split-window -v -c "#{pane_current_path}"
-
-    # window management
-    bind Tab last-window
-    bind-key s choose-tree -Z -s
-
-    # count from 1 instead of 0 for easier jumping etc
-    set-window-option -g pane-base-index 1
-    set-option -g renumber-windows on
-
-    # enable mouse
+    # lord forgive me
     set -g mouse on
     unbind -T copy-mode-vi MouseDragEnd1Pane
 
