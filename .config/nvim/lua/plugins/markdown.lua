@@ -1,7 +1,7 @@
 return {
   {
     "OXY2DEV/markview.nvim",
-    enabled = true,
+    enabled = false,
     ft = "markdown",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
@@ -23,5 +23,11 @@ return {
         },
       })
     end,
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    keys = {
+      { "n", "<leader>md", "<cmd>MarkdownPreviewToggle<CR>" },
+    },
   },
 }

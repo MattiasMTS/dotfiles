@@ -1,7 +1,7 @@
 return {
   -- disable automatic insertion of pairs like parenthesis etc
   -- using nvim-autopairs instead
-  { "echasnovski/mini.pairs", enabled = true },
+  { "echasnovski/mini.pairs", enabled = true, opts = { command = false } },
   -- no need to extend a/i
   { "echasnovski/mini.ai", enabled = false },
   {
@@ -104,7 +104,7 @@ return {
   },
   {
     "michaelb/sniprun",
-    enabled = true,
+    enabled = false,
     branch = "master",
     cmd = { "SnipRun", "SnipInfo" },
     -- do 'sh install.sh 1' if you want to force compile locally
@@ -221,11 +221,5 @@ return {
         },
       },
     },
-  },
-  {
-    "windwp/nvim-autopairs",
-    enabled = false,
-    event = "InsertEnter",
-    config = true,
   },
 }

@@ -15,13 +15,27 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     enabled = true,
+    opts = {
+      options = {
+        component_separators = "",
+        section_separators = "",
+      },
+      sections = {
+        lualine_z = { "encoding" },
+      },
+    },
   },
   {
     "rcarriga/nvim-notify",
     enabled = true,
+    opts = { render = "compact" },
   },
   {
     "folke/noice.nvim",
+    dependencies = {
+      "rcarriga/nvim-notify",
+      "MunifTanjim/nui.nvim",
+    },
     enabled = true,
     opts = {
       views = {
@@ -37,7 +51,6 @@ return {
           enabled = true,
           format = "lsp_progress",
           format_done = "lsp_progress_done",
-          -- throttle = 1000 / 30,
           view = "notify",
         },
       },
@@ -49,16 +62,7 @@ return {
     opts = {
       dashboard = {
         enabled = true,
-        preset = {
-          header = "hello world",
-          --           header = [[
-          -- ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
-          -- ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
-          -- ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
-          -- ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
-          -- ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
-          -- ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
-        },
+        preset = { header = "hello world" },
         sections = {
           { section = "header" },
           { section = "keys", gap = 1, padding = 1 },

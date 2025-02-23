@@ -26,3 +26,7 @@ end, { desc = "Lazygit current file history" })
 -- remap lazy open
 vim.keymap.del({ "n" }, "<leader>l")
 vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<CR>", { desc = "Open Lazy" })
+
+-- remove bufferline tab switching
+vim.keymap.del({ "n" }, "<S-h>")
+vim.keymap.del({ "n" }, "<S-l>")

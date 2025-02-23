@@ -13,7 +13,8 @@ vim.opt.mouse = "a" -- mouse allowed in all modes
 
 -- Show whitespace (trying this out)
 vim.opt.list = true
-vim.opt.listchars = { tab = "> ", eol = "↲", nbsp = "␣", trail = "•" }
+vim.opt.showbreak = "↪"
+vim.opt.listchars = { tab = "→ ", eol = "↲", nbsp = "␣", trail = "•" }
 
 vim.scriptencoding = "utf-8"
 vim.opt.encoding = "utf-8"
@@ -43,7 +44,7 @@ vim.opt.tabstop = 4
 -- extras
 vim.opt.backspace = "start,eol,indent"
 vim.opt.path:append({ "**" }) -- finding files, search down into subfolders
-vim.opt.completeopt = "menuone,noselect"
+vim.opt.completeopt = "menu,menuone,noinsert"
 
 -- Completion.
 vim.opt.wildignore:append({ ".DS_Store" })

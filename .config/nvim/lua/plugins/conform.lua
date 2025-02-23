@@ -6,7 +6,7 @@ return {
   opts = {
     default_format_opts = {
       lsp_fallback = true,
-      timeout_ms = 500, -- half a sec, 3 second default is too long.
+      timeout_ms = 500,
     },
     formatters_by_ft = {
       python = { "isort", "black" },
@@ -14,7 +14,7 @@ return {
       tf = { "terraform_fmt" },
       ["terraform-vars"] = { "terraform_fmt" },
       hcl = { "terragrunt_hclfmt", "packer_fmt" },
-      go = { "gofumpt", "goimports" }, -- "golines"
+      go = { "gofumpt", "goimports" },
       sql = { "sqlfmt" },
     },
     formatters = {
@@ -37,14 +37,6 @@ return {
         prepend_args = { "-extra", "-w", "$FILENAME" },
         stdin = false,
       },
-      golines = {
-        prepend_args = { "--base-formatter=gofumpt", "--ignore-generated", "--tab-len=1", "--max-len=120" },
-      },
-      -- golines = {
-      --   exe = "golines",
-      --   args = { "-m", "99" },
-      --   stdin = true,
-      -- },
     },
   },
 }

@@ -38,7 +38,6 @@ require("lazy").setup({
 
     -- LSP specifics
     { import = "lazyvim.plugins.extras.lang.go" },
-    { import = "lazyvim.plugins.extras.lang.rust" },
     { import = "lazyvim.plugins.extras.lang.python" },
     { import = "lazyvim.plugins.extras.lang.typescript" },
     { import = "lazyvim.plugins.extras.lang.java" },
@@ -49,7 +48,13 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.docker" },
     { import = "lazyvim.plugins.extras.lang.helm" },
     { import = "lazyvim.plugins.extras.lang.nix" },
+    { import = "lazyvim.plugins.extras.lang.markdown" },
+
+    -- DAP specifics
     { import = "lazyvim.plugins.extras.dap.core" },
+
+    -- Test specifics
+    { import = "lazyvim.plugins.extras.test.core" },
 
     -- AI stuff
     { import = "lazyvim.plugins.extras.ai.copilot-chat" },
@@ -83,9 +88,7 @@ require("lazy").setup({
   install = {},
 
   checker = { enabled = false }, -- check for updates
-  change_detection = {
-    notify = false,
-  },
+  change_detection = { notify = false },
   performance = {
     rtp = {
       disabled_plugins = {
