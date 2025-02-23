@@ -1,12 +1,14 @@
 # Docs:
 # ghostty +show-config --default --docs | vim
 
+# color
+theme = "NvimDark"
+
 # fonts
-font-size = 14
-font-style = medium
-bold-is-bright = true
-# theme = afterglow
-font-family = "JetBrainsMono Nerd Font Mono"
+font-family = "JetBrainsMono Nerd Font"
+font-style = Medium
+font-style-bold = Bold
+font-size = 12
 
 # cursor
 cursor-style = bar
@@ -23,14 +25,15 @@ mouse-hide-while-typing = true
 # window
 initial-window = true
 resize-overlay = never
-background-opacity = 1.0
-background-blur-radius = 40
+background-opacity = 1
+background-blur-radius = 30
 window-save-state = always
 window-step-resize = false
 window-padding-balance = true
 confirm-close-surface = false
 # using tmux for now
 window-decoration = false
+confirm-close-surface = false
 
 # behavior
 quit-after-last-window-closed = true
@@ -39,5 +42,6 @@ shell-integration-features = cursor, sudo, title
 
 # macos
 macos-option-as-alt = left
+macos-non-native-fullscreen = visible-menu
 macos-titlebar-style = transparent
 macos-titlebar-proxy-icon = hidden

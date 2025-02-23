@@ -52,7 +52,7 @@ sync:
 	git push
 
 .PHONY: init
-CONFIGS := nvim wezterm ghostty sesh
+CONFIGS := nvim ghostty sesh
 init:
 	@echo "Initializing dotfile symlinks.. ${CONFIGS}"
 	@for c in $(CONFIGS); do \

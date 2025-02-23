@@ -1,6 +1,6 @@
 [[session]]
 name = "dotfiles"
-path = "~/src/github.com/projects/.dotfiles"
+path = "~/src/github.com/projects/dotfiles"
 
 [[session]]
 name = "projects"
