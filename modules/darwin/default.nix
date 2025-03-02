@@ -38,7 +38,7 @@
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;
 
-  fonts.packages = with pkgs.nerd-fonts; [ jetbrains-mono iosevka ];
+  fonts.packages = with pkgs.nerd-fonts; [ jetbrains-mono iosevka commit-mono ];
 
   services.postgresql = {
     enable = true;

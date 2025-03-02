@@ -74,10 +74,12 @@ in {
     tree
     inputs.nixpkgs-poetry-1_8_5.legacyPackages.${pkgs.system}.poetry
     inputs.nixpkgs-rancher-2_7_0.legacyPackages.${pkgs.system}.rancher
+    ruff
     # (google-cloud-sdk.withExtraComponents
     #       [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
     # google-cloud-sql-proxy
     # grpcurl
+    presenterm
   ];
 
 }
