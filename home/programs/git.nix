@@ -20,6 +20,12 @@
     rebase.autoStash = true;
     pull.rebase = true;
 
+    fetch = {
+      prune = true;
+      pruneTags = true;
+      all = true;
+    };
+
     "includeIf \"gitdir:~/northvolt/\"" = {
       email = "mattias.sjodin@northvolt.com";
     };
