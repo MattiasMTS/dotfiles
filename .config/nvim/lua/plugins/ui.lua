@@ -28,14 +28,9 @@ return {
   {
     "rcarriga/nvim-notify",
     enabled = true,
-    opts = { render = "compact" },
   },
   {
     "folke/noice.nvim",
-    dependencies = {
-      "rcarriga/nvim-notify",
-      "MunifTanjim/nui.nvim",
-    },
     enabled = true,
     opts = {
       views = {
@@ -62,7 +57,9 @@ return {
     opts = {
       dashboard = {
         enabled = true,
-        preset = { header = "hello world" },
+        preset = {
+          header = "NVIM v" .. vim.version().major .. "." .. vim.version().minor .. "." .. vim.version().patch,
+        },
         sections = {
           { section = "header" },
           { section = "keys", gap = 1, padding = 1 },

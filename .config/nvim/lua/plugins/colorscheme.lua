@@ -4,7 +4,7 @@ return {
     name = "hybrid",
     priority = 1000,
     lazy = false,
-    enabled = true,
+    enabled = false,
     opts = {
       transparent = true,
       overrides = function(hl, c)
@@ -12,18 +12,15 @@ return {
         hl.GitSignsCurrentLineBlame = { fg = c.comment }
 
         hl.ColorColumn = { bg = c.bg_soft }
-        hl.LineNr = { fg = c.comment }
-
-        -- For neo-tree
-        hl.NeoTreeNormal = { bg = c.bg }
-        hl.NeoTreeNormalNC = { bg = c.bg }
-        hl.NeoTreeEndOfBuffer = { bg = c.bg }
-
-        -- For nvim-notify
-        hl.NotifyBackground = { bg = c.line }
+        hl.LineNr = { fg = c.fg_soft }
 
         -- inlay hints
         hl.LspInlayHint = { fg = c.comment, bg = "NONE", italic = true }
+
+        -- cmp
+        hl.BlinkCmpMenu = { bg = c.bright_black }
+        hl.BlinkCmpMenuBorder = { fg = c.dull_blue, bg = c.bg_hard }
+        hl.BlinkCmpMenuSelection = { bg = c.teal }
       end,
     },
   },
@@ -41,28 +38,14 @@ return {
     enabled = false,
     opts = {
       flavour = "mocha", -- latte, frappe, macchiato, mocha
-      transparent_background = false, -- disables setting the background color.
-      show_end_of_buffer = true, -- shows the '~' characters after the end of buffers
+      transparent_background = false,
+      show_end_of_buffer = true,
       term_colors = true,
       compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
       dim_inactive = {
         enabled = false,
         shade = "dark",
         percentage = 0.15,
-      },
-      styles = {
-        comments = {},
-        functions = {},
-        keywords = {},
-        operators = {},
-        conditionals = {},
-        loops = {},
-        booleans = {},
-        numbers = {},
-        types = {},
-        strings = {},
-        variables = {},
-        properties = {},
       },
       integrations = {
         treesitter = true,
@@ -157,12 +140,6 @@ return {
             TroubleNormal = { bg = cp.base },
             TroubleNormalNC = { bg = cp.base },
 
-            -- For telescope.nvim
-            TelescopeMatching = { fg = cp.lavender },
-            TelescopeResultsDiffAdd = { fg = cp.green },
-            TelescopeResultsDiffChange = { fg = cp.yellow },
-            TelescopeResultsDiffDelete = { fg = cp.red },
-
             -- For treesitter
             ["@keyword.return"] = { fg = cp.pink, style = {} },
             ["@error.c"] = { fg = cp.none, style = {} },
@@ -171,5 +148,10 @@ return {
         end,
       },
     },
+  },
+  {
+    "rktjmp/lush.nvim",
+    cmd = "Lushify",
+    lazy = true,
   },
 }
