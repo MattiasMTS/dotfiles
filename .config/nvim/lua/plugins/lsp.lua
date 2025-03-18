@@ -19,7 +19,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       diagnostics = { virtual_text = { prefix = "icons" } },
-      inlay_hints = { enabled = true },
+      inlay_hints = { enabled = false },
       capabilities = {
         workspace = {
           didChangeWatchedFiles = {
@@ -67,7 +67,6 @@ return {
       vim.list_extend(opts.ensure_installed, {
         "actionlint",
         "bash-language-server",
-        "black",
         "codelldb",
         "debugpy",
         "delve",
@@ -84,7 +83,6 @@ return {
         "hclfmt",
         "helm-ls",
         "html-lsp",
-        "isort",
         "java-debug-adapter",
         "java-test",
         "jdtls",

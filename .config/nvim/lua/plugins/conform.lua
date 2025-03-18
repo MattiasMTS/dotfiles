@@ -9,7 +9,7 @@ return {
       timeout_ms = 500,
     },
     formatters_by_ft = {
-      python = { "isort", "black" },
+      python = { "ruff" },
       terraform = { "terraform_fmt" },
       tf = { "terraform_fmt" },
       ["terraform-vars"] = { "terraform_fmt" },
@@ -18,14 +18,9 @@ return {
       sql = { "sqlfmt" },
     },
     formatters = {
-      black = {
-        exe = "black",
-        args = { "--quiet", "-", "--fast", "--line-length", "80" },
-        stdin = true,
-      },
-      isort = {
-        exe = "isort",
-        args = { "-", "--quiet", "--profile", "black" },
+      ruff = {
+        exe = "ruff",
+        args = { "format", "-", "--silent" },
         stdin = true,
       },
       sqlfmt = {
