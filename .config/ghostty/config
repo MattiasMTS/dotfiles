@@ -6,7 +6,7 @@ background = #1c1e22
 foreground = #d3d7e8
 
 # fonts
-font-family = "Iosevka Nerd Font Mono"
+font-family = "JetBrainsMono Nerd Font Mono"
 font-style = Medium
 font-style-bold = Bold
 font-size = 14

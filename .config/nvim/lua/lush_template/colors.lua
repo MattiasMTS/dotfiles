@@ -1,10 +1,9 @@
 local lush = require("lush")
 local hsl = lush.hsl
-local transparent = false
+local transparent = true
 
--- run :Lushify
 local colors = {
-  bg = hsl(220, 13, 12),
+  bg = hsl(221, 13, 12),
   bg_lighter = hsl(220, 13, 15),
   bg_dark = hsl(220, 13, 11),
   fg = hsl(220, 14, 82),
