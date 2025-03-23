@@ -3,7 +3,7 @@ return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     opts = {
-      model = "claude-3.5-sonnet", -- Default model to use, see ':CopilotChatModels' for available models
+      model = "claude-3.7-sonnet", -- Default model to use, see ':CopilotChatModels' for available models
     },
   },
   {
