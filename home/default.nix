@@ -39,7 +39,7 @@ in {
     lazygit = import ./programs/lazygit.nix { inherit pkgs; };
     gh = import ./programs/gh.nix { inherit pkgs; };
     bat = {
-      enable = true;
+      enable = true; # for syntax highlighting in fzf
       config.theme = "ansi";
     };
     k9s = { enable = true; };
@@ -63,8 +63,10 @@ in {
     terragrunt
     python310
     nodejs_23
+    pnpm_9
+    nodePackages.aws-cdk
     kubernetes-helm
-    # minikube
+    minikube
 
     kotlin
     jdk17
