@@ -24,6 +24,7 @@ in {
     neovim = {
       enable = true;
       package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+      withPython3 = true;
     };
     # FIXME: broken build on v1.0.1
     # ghostty = import ./programs/ghostty.nix { inherit pkgs; };
@@ -38,13 +39,11 @@ in {
     awscli = { enable = true; };
     lazygit = import ./programs/lazygit.nix { inherit pkgs; };
     gh = import ./programs/gh.nix { inherit pkgs; };
-    bat = {
-      enable = true; # for syntax highlighting in fzf
-      config.theme = "ansi";
-    };
+    bat = { enable = true; }; # for syntax highlighting in fzf
     k9s = { enable = true; };
     ripgrep = { enable = true; };
     jq = { enable = true; };
+    jujutsu = { enable = true; };
     ssh = import ./programs/ssh.nix { inherit pkgs; };
   };
 

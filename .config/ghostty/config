@@ -2,8 +2,7 @@
 # ghostty +show-config --default --docs | vim
 
 # color
-background = #1c1e22
-foreground = #d3d7e8
+background = #1B1D26
 
 # fonts
 font-family = "JetBrainsMono Nerd Font Mono"

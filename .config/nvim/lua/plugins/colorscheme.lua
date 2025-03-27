@@ -4,7 +4,7 @@ return {
     name = "hybrid",
     priority = 1000,
     lazy = false,
-    enabled = false,
+    enabled = true,
     opts = {
       transparent = true,
       overrides = function(hl, c)

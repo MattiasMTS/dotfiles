@@ -5,7 +5,6 @@ return {
       "kwkarlwang/bufresize.nvim",
     },
     event = "BufEnter",
-    -- lazy = false, -- don't lazy load cuz tmux
     opts = {
       ignored_filetypes = { "NeoTree" },
       resize_mode = {

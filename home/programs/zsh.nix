@@ -1,25 +1,44 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   enable = true;
   history.size = 10000;
   history.path = "${config.xdg.dataHome}/zsh/history";
   enableCompletion = true;
   shellAliases = {
+    # general misc
     vim = "nvim";
     lg = "lazygit";
     ls = "ls --color=auto";
+    z = "zoxide";
+    cat = "bat";
+    tksv = "tmux kill-server";
+    # kubernetes
     k = "kubectl";
     kc = "kubectx";
     kn = "kubens";
-    z = "zoxide";
+    # shortcuts to projects
     nv = "cd ~/src/github.com/northvolt/";
     pj = "cd ~/src/github.com/projects/";
     dot = "cd ~/src/github.com/projects/dotfiles/";
-    tksv = "tmux kill-server";
+    # terraform
     tf = "terraform";
     tg = "terragrunt";
-    cat = "bat";
+    # docker compat stuff
     docker = "podman";
     docker-compose = "podman-compose";
+    # git
+    ga = "git add";
+    gc = "git commit";
+    gco = "git checkout";
+    gcp = "git cherry-pick";
+    gdiff = "git diff";
+    gp = "git push";
+    go = "git pull";
+    gs = "git status";
+    gt = "git tag";
+    jf = "jj git fetch";
+    jn = "jj new";
+    js = "jj st";
+    jg = "jj git";
   };
   sessionVariables = {
     EDITOR = "nvim";
@@ -74,7 +93,6 @@
     bindkey '^f' sesh-sessions
     bindkey '^w' awsso
   '';
-  envExtra = "\n";
   plugins = [
     {
       name = "zsh-autosuggestions";

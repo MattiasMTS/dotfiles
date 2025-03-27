@@ -105,7 +105,6 @@ return {
         "pyright",
         "ruff",
         -- "ruff-lsp",
-        "rust-analyzer",
         "shellcheck",
         "shfmt",
         "sqlfmt",

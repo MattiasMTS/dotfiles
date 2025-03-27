@@ -19,13 +19,13 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 -- Plugins here is set against the cwd of lua/ folder
 require("lazy").setup({
   spec = {
-    -- add LazyVim and import its plugins
+    -- -- add LazyVim and import its plugins
     {
       "LazyVim/LazyVim",
       enabled = true,
       import = "lazyvim.plugins",
       opts = {
-        colorscheme = "lush_template",
+        colorscheme = "hybrid",
         news = {
           lazyvim = true,
           neovim = true,
@@ -48,26 +48,16 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.docker" },
     { import = "lazyvim.plugins.extras.lang.helm" },
     { import = "lazyvim.plugins.extras.lang.nix" },
-    { import = "lazyvim.plugins.extras.lang.markdown" },
 
     -- DAP specifics
     { import = "lazyvim.plugins.extras.dap.core" },
-
-    -- Test specifics
-    { import = "lazyvim.plugins.extras.test.core" },
 
     -- AI stuff
     { import = "lazyvim.plugins.extras.ai.copilot-chat" },
 
     -- editor.lua
-    { import = "lazyvim.plugins.extras.editor.outline" },
+    -- { import = "lazyvim.plugins.extras.editor.outline" },
     { import = "lazyvim.plugins.extras.ui.treesitter-context" },
-
-    -- formatting
-    { import = "lazyvim.plugins.extras.formatting.prettier" },
-
-    -- dotfiles support
-    -- { import = "lazyvim.plugins.extras.util.dot" },
 
     -- load custom plugins
     { import = "plugins" },

@@ -14,15 +14,4 @@ return {
     },
     opts = {},
   },
-  {
-    "ray-x/go.nvim",
-    event = { "CmdlineEnter" },
-    enabled = false,
-    opts = {
-      lsp_inlay_hints = { enable = true },
-      lsp_cfg = false,
-      dap_debug = false,
-      luasnip = true,
-    },
-  },
 }
