@@ -30,7 +30,7 @@ nix run nix-darwin --extra-experimental-features 'nix-command flakes' -- switch 
 
 ```bash
 make init     # Create symlinks for apps not managed by nix
-make rebuild  # Build initial system configuration
+make switch  # Build initial system configuration
 ```
 
 ## Daily Usage

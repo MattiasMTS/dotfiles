@@ -7,7 +7,7 @@ help:
 	@echo "  init                  Initialize dotfile symlinks"
 	@echo ""
 	@echo "Daily commands:"
-	@echo "  rebuild               Rebuild nix-darwin configuration"
+	@echo "  switch                Rebuild/switch nix-darwin configuration"
 	@echo "  sync                  Sync dotfiles with git repository"
 	@echo ""
 	@echo "Maintenance:"
@@ -21,9 +21,9 @@ deps:
 	@command xcode-select --version >/dev/null 2>&1 || echo "Install Xcode: xcode-select --install"
 	@command nix --version >/dev/null 2>&1 || echo "Install Nix: curl -L https://nixos.org/nix/install | sh"
 
-.PHONY: rebuild
-rebuild:
-	@echo "Rebuilding nix-darwin configuration.."
+.PHONY: switch
+switch:
+	@echo "Switching nix-darwin configuration.."
 	git add .
 	darwin-rebuild switch --verbose --flake .# --show-trace
 
@@ -41,7 +41,7 @@ clean:
 check:
 	@echo "Checking flake.."
 	nix flake check
-	darwin-rebuild check --flake .# --show-trace
+	darwin-rebuild check --verbose --flake .# --show-trace
 
 .PHONY: sync
 sync:
