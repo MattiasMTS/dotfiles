@@ -63,14 +63,14 @@ in {
     python310
     nodejs_23
     pnpm_9
-    nodePackages.aws-cdk
+    # nodePackages.aws-cdk
     kubernetes-helm
     minikube
 
     kotlin
     jdk17
     gradle
-    mosquitto
+    # mosquitto
     go-migrate
     tree
     inputs.nixpkgs-poetry-1_8_5.legacyPackages.${pkgs.system}.poetry

@@ -25,7 +25,7 @@
   homebrew = {
     enable = true;
     # some weird gvpx issue installing using home-manager..
-    brews = [ "podman" "podman-compose" "aws2-wrap" ];
+    brews = [ "podman" ];
     casks = [ "ghostty" ]; # TODO: move to home-manager after resolve upstream
   };
 

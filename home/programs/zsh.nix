@@ -1,8 +1,9 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   enable = true;
   history.size = 10000;
-  history.path = "${config.xdg.dataHome}/zsh/history";
   enableCompletion = true;
+  syntaxHighlighting.enable = true;
+  autosuggestion.enable = true;
   shellAliases = {
     # general misc
     vim = "nvim";
@@ -32,7 +33,6 @@
     gcp = "git cherry-pick";
     gdiff = "git diff";
     gp = "git push";
-    go = "git pull";
     gs = "git status";
     gt = "git tag";
     jf = "jj git fetch";
@@ -94,21 +94,6 @@
     bindkey '^w' awsso
   '';
   plugins = [
-    {
-      name = "zsh-autosuggestions";
-      src = pkgs.zsh-autosuggestions;
-      file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
-    }
-    {
-      name = "zsh-completions";
-      src = pkgs.zsh-completions;
-      file = "share/zsh-completions/zsh-completions.zsh";
-    }
-    {
-      name = "zsh-syntax-highlighting";
-      src = pkgs.zsh-syntax-highlighting;
-      file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
-    }
     {
       name = "fzf-tab";
       src = pkgs.zsh-fzf-tab;
