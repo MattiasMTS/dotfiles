@@ -7,5 +7,5 @@ name = "projects"
 path = "~/src/github.com/projects/"
 
 [[session]]
-name = "northvolt"
-path = "~/src/github.com/northvolt/"
+name = "es"
+path = "~/src/github.com/epidemicsound/"

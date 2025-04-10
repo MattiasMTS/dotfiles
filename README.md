@@ -9,14 +9,14 @@ Another nix + dotfile repository.
 1. Install Nix:
 
 ```bash
-curl -L https://nixos.org/nix/install | sh
+sh <(curl -L https://nixos.org/nix/install)
 ```
 
 2. Clone this repository:
 
 ```bash
 mkdir -p ~/src/github.com/projects
-nix-shell -p git --run 'git clone https://github.com/MattiasMTS/.dotfiles ~/src/github.com/projects/.dotfiles'
+nix-shell -p git --run 'git clone https://github.com/MattiasMTS/dotfiles ~/src/github.com/projects/dotfiles'
 cd ~/src/github.com/projects/.dotfiles
 ```
 

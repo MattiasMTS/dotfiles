@@ -26,8 +26,8 @@
       all = true;
     };
 
-    "includeIf \"gitdir:~/northvolt/\"" = {
-      email = "mattias.sjodin@northvolt.com";
+    "includeIf \"gitdir:~/epidemicsound/\"" = {
+      email = "mattias.sjodin@epidemicsound.com";
     };
   };
 

@@ -13,7 +13,3 @@ function R(name)
   require("plenary.reload").reload_module(name)
   return require(name)
 end
-
--- local dadbod = require("utils.dadbod")
--- -- Now you can use the function like this:
--- dadbod.get_dadbod_connections()

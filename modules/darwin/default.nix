@@ -10,10 +10,8 @@
 
   # system wide packages (all users)
   environment.systemPackages = with pkgs; [
-    # TODO: uncomment later
-    # brave
-    # slack
-    raycast # unfree license
+    brave
+    raycast
     neovim
     git
     tmux
@@ -24,8 +22,6 @@
 
   homebrew = {
     enable = true;
-    # some weird gvpx issue installing using home-manager..
-    brews = [ "podman" ];
     casks = [ "ghostty" ]; # TODO: move to home-manager after resolve upstream
   };
 
@@ -51,7 +47,7 @@
   # TODO: use overlays instead
   # whitelist unfree packages 
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [ "terraform" "raycast" "slack" ];
+    builtins.elem (lib.getName pkg) [ "terraform" "raycast" ];
 
   # do garbage collection bi-daily to keep disk usage low
   nix.gc = {

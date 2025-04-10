@@ -6,6 +6,7 @@ return {
   },
   {
     "kndndrj/nvim-dbee",
+    enabled = false,
     dev = true,
     build = function()
       local binary = vim.fn.expand("$HOME") .. "/.local/share/nvim/dbee/bin/dbee"

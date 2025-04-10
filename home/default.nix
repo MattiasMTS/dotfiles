@@ -36,7 +36,6 @@ in {
     zoxide = (import ./programs/zoxide.nix { inherit pkgs; });
     go = import ./programs/go.nix { inherit pkgs; };
     java = import ./programs/java.nix { inherit pkgs; };
-    awscli = { enable = true; };
     lazygit = import ./programs/lazygit.nix { inherit pkgs; };
     gh = import ./programs/gh.nix { inherit pkgs; };
     bat = { enable = true; }; # for syntax highlighting in fzf
@@ -59,22 +58,17 @@ in {
     # uv
     # duckdb
     terraform
-    terragrunt
+    # terragrunt
     python310
     nodejs_23
     pnpm_9
-    # nodePackages.aws-cdk
     kubernetes-helm
     minikube
 
     kotlin
     jdk17
     gradle
-    # mosquitto
-    go-migrate
     tree
-    inputs.nixpkgs-poetry-1_8_5.legacyPackages.${pkgs.system}.poetry
-    inputs.nixpkgs-rancher-2_7_0.legacyPackages.${pkgs.system}.rancher
     ruff
     # (google-cloud-sdk.withExtraComponents
     #       [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])

@@ -25,15 +25,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
 })
 
-vim.api.nvim_create_autocmd("BufWritePost", {
-  desc = "Format unit test SQL file on save.",
-  pattern = "*.sql",
-  callback = function()
-    local script_path = vim.fn.expand("$HOME") .. "/.config/nvim/after/scripts/format_sql_test_tables.py"
-    vim.cmd("silent !" .. script_path .. " %")
-  end,
-})
-
 vim.api.nvim_create_autocmd("BufReadPost", {
   desc = "Enable csv viewer when opening csv fiels",
   pattern = "*.csv",

@@ -4,11 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    # pinned versions
-    nixpkgs-poetry-1_8_5.url =
-      "github:nixos/nixpkgs/c792c60b8a97daa7efe41a6e4954497ae410e0c1";
-    nixpkgs-rancher-2_7_0.url =
-      "github:NixOS/nixpkgs/976fa3369d722e76f37c77493d99829540d43845";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
@@ -33,12 +28,12 @@
 
   };
   outputs = { self, nixpkgs, nix-darwin, home-manager, nix-homebrew
-    , homebrew-core, homebrew-cask, homebrew-bundle, nixpkgs-poetry-1_8_5
-    , nixpkgs-rancher-2_7_0, neovim-nightly-overlay, ... }@inputs:
+    , homebrew-core, homebrew-cask, homebrew-bundle, neovim-nightly-overlay, ...
+    }@inputs:
     let
-      username = "mattiassjodin";
+      username = "mattias.sjodin";
       system = "aarch64-darwin";
-      hostname = "Mattiass-MacBook-Pro-2";
+      hostname = "Mattiass-MacBook-Pro";
       inherit (self) outputs;
     in {
       # Build darwin flake using:
@@ -67,7 +62,7 @@
               enable = true;
 
               # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
-              enableRosetta = true;
+              enableRosetta = false;
 
               # User owning the Homebrew prefix
               user = username;

@@ -72,6 +72,7 @@ return {
     "saghen/blink.cmp",
     dependencies = {
       "MattiasMTS/cmp-dbee",
+      enabled = false,
       ft = { "sql" },
       dev = true,
       dependencies = { "kndndrj/nvim-dbee" },
