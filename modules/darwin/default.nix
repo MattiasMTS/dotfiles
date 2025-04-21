@@ -10,7 +10,6 @@
 
   # system wide packages (all users)
   environment.systemPackages = with pkgs; [
-    brave
     raycast
     neovim
     git
@@ -23,6 +22,8 @@
   homebrew = {
     enable = true;
     casks = [ "ghostty" ]; # TODO: move to home-manager after resolve upstream
+    brews = [ "pipenv" "pyenv" ];
+    taps = [ ];
   };
 
   # enable flakes globally

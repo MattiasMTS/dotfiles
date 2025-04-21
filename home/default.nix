@@ -26,8 +26,6 @@ in {
       package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
       withPython3 = true;
     };
-    # FIXME: broken build on v1.0.1
-    # ghostty = import ./programs/ghostty.nix { inherit pkgs; };
     zsh = import ./programs/zsh.nix { inherit config pkgs lib; };
     starship = import ./programs/starship.nix { inherit pkgs; };
     git = import ./programs/git.nix { inherit username lib; };
@@ -37,6 +35,7 @@ in {
     go = import ./programs/go.nix { inherit pkgs; };
     java = import ./programs/java.nix { inherit pkgs; };
     lazygit = import ./programs/lazygit.nix { inherit pkgs; };
+    lazydocker = import ./programs/lazydocker.nix { inherit pkgs; };
     gh = import ./programs/gh.nix { inherit pkgs; };
     bat = { enable = true; }; # for syntax highlighting in fzf
     k9s = { enable = true; };
@@ -54,27 +53,32 @@ in {
     sesh
     kubectl
     kubectx
-    # stern
-    # uv
-    # duckdb
     terraform
-    # terragrunt
-    python310
+    python313
     nodejs_23
-    pnpm_9
+    # pnpm_9
     kubernetes-helm
     minikube
+    cargo
+    duckdb
 
-    kotlin
-    jdk17
-    gradle
+    # kotlin
+    # jdk17
+    # gradle
     tree
     ruff
-    # (google-cloud-sdk.withExtraComponents
-    #       [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
+    # remember to disable ipv6, otherwise super slow gcloud
+    # networksetup -setv6off Wi-Fi
+    (google-cloud-sdk.withExtraComponents
+      (with pkgs.google-cloud-sdk.components;
+        [
+          gke-gcloud-auth-plugin
+          # kubectl
+        ]))
     # google-cloud-sql-proxy
-    # grpcurl
     presenterm
+    docker
+    pre-commit
   ];
 
 }

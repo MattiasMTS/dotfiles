@@ -2,9 +2,7 @@
 return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    opts = {
-      model = "claude-3.7-sonnet", -- Default model to use, see ':CopilotChatModels' for available models
-    },
+    opts = { model = "gemini-2.0-flash-001" },
   },
   {
     "zbirenbaum/copilot.lua",
