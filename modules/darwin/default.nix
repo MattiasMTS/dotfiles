@@ -48,7 +48,7 @@
   # TODO: use overlays instead
   # whitelist unfree packages 
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [ "terraform" "raycast" ];
+    builtins.elem (lib.getName pkg) [ "terraform" "raycast" "obsidian" ];
 
   # do garbage collection bi-daily to keep disk usage low
   nix.gc = {

@@ -7,6 +7,7 @@
     format = "$all";
     directory.truncation_length = 5;
     battery.display = [{ threshold = 50; }];
+    gcloud.format = "[$symbol$project (\\($region\\))]($style) ";
   };
 
 }

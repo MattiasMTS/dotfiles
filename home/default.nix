@@ -55,6 +55,7 @@ in {
     kubectx
     terraform
     python313
+    python313Packages.ipython
     nodejs_23
     # pnpm_9
     kubernetes-helm
@@ -65,6 +66,7 @@ in {
     # kotlin
     # jdk17
     # gradle
+    obsidian
     tree
     ruff
     # remember to disable ipv6, otherwise super slow gcloud
@@ -78,7 +80,20 @@ in {
     # google-cloud-sql-proxy
     presenterm
     docker
+    docker-compose
     pre-commit
+
+    # LSP executables (for nvim)
+    yaml-language-server
+    lua-language-server
+    pyright
+    gopls
+    # html-lsp
+    # json-lsp
+    # helm-ls
+    # bash-language-server
+    # docker-language-server
+    # docker-compose-language-service
   ];
 
 }
