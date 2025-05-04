@@ -27,15 +27,25 @@
     };
 
   };
-  outputs = { self, nixpkgs, nix-darwin, home-manager, nix-homebrew
-    , homebrew-core, homebrew-cask, homebrew-bundle, neovim-nightly-overlay, ...
+  outputs =
+    { self
+    , nixpkgs
+    , nix-darwin
+    , home-manager
+    , nix-homebrew
+    , homebrew-core
+    , homebrew-cask
+    , homebrew-bundle
+    , neovim-nightly-overlay
+    , ...
     }@inputs:
     let
       username = "mattias.sjodin";
       system = "aarch64-darwin";
       hostname = "Mattiass-MacBook-Pro";
       inherit (self) outputs;
-    in {
+    in
+    {
       # Build darwin flake using:
       # darwin-rebuild switch --flake ~/nix
       darwinConfigurations."${hostname}" = nix-darwin.lib.darwinSystem {

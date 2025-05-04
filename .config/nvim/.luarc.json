@@ -62,4 +62,3 @@
   "diagnostics.disable": ["different-requires", "no-unknown"],
   "diagnostics.globals": ["vim"]
 }
-

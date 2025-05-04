@@ -25,7 +25,7 @@ deps:
 switch:
 	@echo "Switching nix-darwin configuration.."
 	git add .
-	darwin-rebuild switch --verbose --flake .# --show-trace
+	sudo darwin-rebuild switch --verbose --flake .# --show-trace
 
 .PHONY: update
 update:

@@ -6,7 +6,6 @@
   autosuggestion.enable = true;
   shellAliases = {
     # general misc
-    vim = "nvim";
     lg = "lazygit";
     ld = "lazydocker";
     ls = "ls --color=auto";
@@ -20,7 +19,6 @@
     # shortcuts to projects
     es = "cd ~/src/github.com/epidemicsound/";
     pj = "cd ~/src/github.com/projects/";
-    dot = "cd ~/src/github.com/projects/dotfiles/";
     # terraform
     tf = "terraform";
     tg = "terragrunt";
@@ -33,16 +31,14 @@
     gp = "git push";
     gs = "git status";
     gt = "git tag";
-    jf = "jj git fetch";
-    jn = "jj new";
-    js = "jj st";
-    jg = "jj git";
   };
-  sessionVariables = {
-    EDITOR = "nvim";
-    GONOPROXY = "none";
-  };
-  initExtra = ''
+  # TODO: check how to make this work with sessionVariables
+  initContent = ''
+    export USE_GKE_GCLOUD_AUTH_PLUGIN="true"
+    export GOPROXY="https://proxy.golang.org,https://europe-west1-go.pkg.dev/es-shared-mgmt-02dd/eu-we1-golang,direct"
+    export GONOSUMDB="github.com/epidemicsound/*"
+    export GOPRIVATE=
+
     if [ -n "$TTY" ]; then
       export GPG_TTY=$(tty)
     else

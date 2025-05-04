@@ -6,7 +6,7 @@ return {
   },
   {
     "kndndrj/nvim-dbee",
-    enabled = false,
+    enabled = true,
     dev = true,
     build = function()
       local binary = vim.fn.expand("$HOME") .. "/.local/share/nvim/dbee/bin/dbee"
@@ -22,83 +22,7 @@ return {
           require("dbee.sources").FileSource:new(vim.fn.expand("$HOME") .. "/.local/share/db_ui/connections.json"),
         },
         -- editor
-        editor = {
-          -- mappings = {
-          --   { key = "<C-m>", mode = "v", action = "run_selection" },
-          --   { key = "<C-m>", mode = "n", action = "run_file" },
-          --   { key = "<C-r>", mode = "n", action = "refresh" },
-          --   { key = "<CR>", mode = "n", action = "run_under_cursor" },
-          --   {
-          --     key = "<CR>",
-          --     mode = "n",
-          --     action = function()
-          --       local bufnr = vim.api.nvim_get_current_buf()
-          --       local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-          --       local cursor = vim.api.nvim_win_get_cursor(0)
-          --       local cursor_row = cursor[1] - 1
-          --
-          --       -- backward propagation for statement (i.e. newline or semicolon)
-          --       local start_row, end_row = cursor_row, cursor_row
-          --       for i = cursor_row, 0, -1 do
-          --         local line = lines[i + 1]
-          --         local is_boundary = line == "" or (i < cursor_row and line:match(";%s*$"))
-          --         if is_boundary then
-          --           start_row = i + 1
-          --           break
-          --         end
-          --         -- top of the file (edge case)
-          --         if i == 0 then
-          --           start_row = 0
-          --         end
-          --       end
-          --
-          --       -- forward propagation for statement (i.e. newline or semicolon)
-          --       for i = cursor_row, #lines - 1 do
-          --         local line = lines[i + 1]
-          --         local is_boundary = (line:match(";%s*$") or line == "") and i >= cursor_row
-          --
-          --         if is_boundary then
-          --           end_row = i
-          --           if line == "" then
-          --             end_row = i - 1
-          --           end
-          --           break
-          --         elseif i == #lines - 1 then
-          --           -- end of the file (edge case)
-          --           end_row = i
-          --         end
-          --       end
-          --
-          --       local query_lines = {}
-          --       for i = start_row, end_row do
-          --         table.insert(query_lines, lines[i + 1])
-          --       end
-          --
-          --       local query = table.concat(query_lines, "\n")
-          --       if query and query ~= "" then
-          --         -- highlight the query
-          --         local ns_id = vim.api.nvim_create_namespace("dbee_query_highlight")
-          --         vim.api.nvim_set_hl(0, "DBeeRunUnderCursor", { sp = "#b5bd68", undercurl = true })
-          --         vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
-          --         vim.api.nvim_buf_set_extmark(bufnr, ns_id, start_row, 0, {
-          --           end_row = end_row + 1,
-          --           end_col = 0,
-          --           hl_group = "DBeeRunUnderCursor",
-          --           priority = 100,
-          --         })
-          --
-          --         -- run the query
-          --         dbee.execute(query)
-          --
-          --         -- fade out the highlight
-          --         vim.defer_fn(function()
-          --           vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
-          --         end, 750)
-          --       end
-          --     end,
-          --   },
-          -- },
-        },
+        -- editor = {},
         -- result
         result = {
           -- number of rows in the results set to display per page

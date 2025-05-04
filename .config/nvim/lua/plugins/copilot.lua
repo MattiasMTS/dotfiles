@@ -1,12 +1,19 @@
--- Copilot.
 return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    opts = { model = "gemini-2.0-flash-001" },
+    enabled = false,
+    cmd = "CopilotChat",
+    opts = {
+      model = "gemini-2.0-flash-001",
+    },
   },
   {
     "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
+    enabled = true,
+    dependencies = { "L3MON4D3/LuaSnip" },
+    event = "BufReadPost",
+    cmd = "Copilot",
+    build = ":Copilot auth",
     opts = {
       panel = { enabled = false },
       suggestion = {

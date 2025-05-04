@@ -7,6 +7,7 @@ return {
     enabled = true,
     opts = {
       transparent = true,
+      italic = { strings = false, emphasis = false, comments = false, folds = false },
       overrides = function(hl, c)
         -- gitglame
         hl.GitSignsCurrentLineBlame = { fg = c.comment }
@@ -22,6 +23,16 @@ return {
         hl.BlinkCmpMenuBorder = { fg = c.dull_blue, bg = c.bg_hard }
         hl.BlinkCmpMenuSelection = { bg = c.teal }
       end,
+    },
+  },
+  {
+    "webhooked/kanso.nvim",
+    lazy = false,
+    priority = 1000,
+    enabled = false,
+    opts = {
+      transparent = false,
+      theme = "ink",
     },
   },
   {
@@ -148,10 +159,5 @@ return {
         end,
       },
     },
-  },
-  {
-    "rktjmp/lush.nvim",
-    cmd = "Lushify",
-    lazy = true,
   },
 }

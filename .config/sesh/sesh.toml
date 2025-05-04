@@ -2,10 +2,3 @@
 name = "dotfiles"
 path = "~/src/github.com/projects/dotfiles"
 
-[[session]]
-name = "projects"
-path = "~/src/github.com/projects/"
-
-[[session]]
-name = "es"
-path = "~/src/github.com/epidemicsound/"

@@ -2,6 +2,11 @@ return {
   {
     "nvim-neo-tree/neo-tree.nvim",
     enabled = true,
+    branch = "v3.x",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+    },
     opts = {
       window = {
         position = "left",
@@ -12,6 +17,7 @@ return {
         },
       },
       filesystem = {
+        use_libuv_file_watcher = true,
         filtered_items = {
           visible = true,
         },
@@ -20,13 +26,14 @@ return {
         },
       },
     },
+    keys = {
+      {
+        "<leader>e",
+        function()
+          require("neo-tree.command").execute({ toggle = true })
+        end,
+        desc = "Explorer NeoTree (Root Dir)",
+      },
+    },
   },
-  -- {
-  --   "folke/snacks.nvim",
-  --   opts = {
-  --     picker = {
-  --       enabled = true,
-  --     },
-  --   },
-  -- },
 }

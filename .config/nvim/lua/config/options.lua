@@ -1,15 +1,10 @@
--- -- Default options that are always set:
--- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- therefore some of the ones below are commented out
-
 -- trying this out we'll see
--- vim.g.lazyvim_python_lsp = "basedpyright"
-vim.g.lazyvim_python_ruff = "ruff"
-
--- vim.g.autoformat = true -- lazyvim enabled
+vim.g.autoformat = true
 
 -- mouse
 vim.opt.mouse = "a" -- mouse allowed in all modes
+
+vim.opt.autowrite = true
 
 -- Show whitespace (trying this out)
 vim.opt.list = true
@@ -24,39 +19,47 @@ vim.opt.hlsearch = true -- highlight search result, clear C-l
 vim.opt.incsearch = true -- look incremental
 vim.opt.swapfile = false
 vim.opt.showcmd = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
-vim.opt.inccommand = "split" -- preview incremental substitute -- lazyvim
+vim.opt.inccommand = "split"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
 -- numbers on the left
-vim.opt.number = true -- lazyvim enabled
-vim.opt.relativenumber = true -- lazyvim enabled
+vim.opt.number = true
+vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
 
 vim.opt.errorbells = false -- no error sound
-vim.opt.showmode = false -- status bar displayed using lualine -- lazyvim
+vim.opt.showmode = false -- status bar displayed using lualine
 
 -- indenting
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
+-- vim.opt.shiftwidth = 4
+vim.opt.tabstop = 2
+vim.opt.smartindent = true
+vim.opt.expandtab = true -- spaces rather than tbas
 
 -- extras
 vim.opt.backspace = "start,eol,indent"
 vim.opt.path:append({ "**" }) -- finding files, search down into subfolders
 vim.opt.completeopt = "menu,menuone,noinsert"
+vim.opt.wildmode = "longest:full,full" -- Command-line completion mode
+vim.opt.clipboard = "unnamedplus" -- share clipboard
+vim.opt.linebreak = true -- Wrap lines at convenient points
 
 -- Completion.
 vim.opt.wildignore:append({ ".DS_Store" })
 
 -- Highlight stuff & cursor
 vim.opt.cursorline = true -- highlight current line
+vim.opt.termguicolors = true -- True color support
 
 vim.opt.scrolloff = 10
 vim.opt.smoothscroll = true
 vim.opt.isfname:append("@-@")
 
-vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.linebreak = true
 
 vim.opt.colorcolumn = "90"

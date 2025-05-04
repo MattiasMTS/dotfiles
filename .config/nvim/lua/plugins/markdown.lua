@@ -2,7 +2,7 @@ return {
   {
     "OXY2DEV/markview.nvim",
     enabled = false,
-    ft = "markdown",
+    ft = { "markdown", "codecompanion" },
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
@@ -25,9 +25,23 @@ return {
     end,
   },
   {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
+    ft = { "markdown", "codecompanion" },
+    -- TODO: checkout connecting this to obsidian.nvim
+    opts = {
+      completions = {
+        blink = { enabled = true },
+        lsp = { enabled = true },
+      },
+    },
+  },
+  {
     "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreview", "MarkdownPreviewToggle" },
+    opts = {},
     keys = {
-      { "n", "<leader>md", "<cmd>MarkdownPreviewToggle<CR>" },
+      { "<leader>md", "<cmd>MarkdownPreviewToggle<CR>" },
     },
   },
 }
