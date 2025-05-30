@@ -1,4 +1,5 @@
 local methods = vim.lsp.protocol.Methods
+-- TODO: add helper aucommands LspInfo, LspStart, LspStop, LspRestart, etc.
 
 --- Sets up LSP keymaps and autocommands for the given buffer.
 ---@param client vim.lsp.Client

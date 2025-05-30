@@ -25,6 +25,7 @@ return {
         "gowork",
         "gosum",
         "gotmpl",
+        "templ",
         "helm",
         "bash",
         "gitcommit",

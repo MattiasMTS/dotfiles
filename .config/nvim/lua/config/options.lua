@@ -59,7 +59,7 @@ vim.opt.scrolloff = 10
 vim.opt.smoothscroll = true
 vim.opt.isfname:append("@-@")
 
-vim.opt.wrap = false
+vim.opt.wrap = true
 vim.opt.linebreak = true
 
 vim.opt.colorcolumn = "90"
