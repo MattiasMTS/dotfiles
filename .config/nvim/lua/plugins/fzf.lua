@@ -3,6 +3,7 @@ return {
   dependencies = { "echasnovski/mini.icons" },
   cmd = "FzfLua",
   keys = {
+    -- misc
     { "<leader>f<", "<cmd>FzfLua resume<cr>", desc = "Resume last command" },
     { "<leader>fb", "<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
     -- find

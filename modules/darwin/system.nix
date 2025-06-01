@@ -1,4 +1,11 @@
-{ pkgs, lib, config, inputs, username, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  username,
+  ...
+}:
 # NOTE: docs for nix-darwin found
 # https://daiderd.com/nix-darwin/manual/index.html
 {
@@ -29,29 +36,24 @@
       # Incomplete list of macOS `defaults` commands :
       #   https://github.com/yannbertrand/macos-defaults
       NSGlobalDomain = {
-        "com.apple.swipescrolldirection" =
-          false; # enable natural scrolling(default to true)
-        "com.apple.sound.beep.feedback" =
-          0; # disable beep sound when pressing volume up/down key
+        "com.apple.swipescrolldirection" = false; # enable natural scrolling(default to true)
+        "com.apple.sound.beep.feedback" = 0; # disable beep sound when pressing volume up/down key
         AppleInterfaceStyle = "Dark"; # dark mode
         AppleKeyboardUIMode = 3; # Mode 3 enables full keyboard control.
         ApplePressAndHoldEnabled = false; # enable press and hold
 
         # sets how long it takes before it starts repeating.
-        InitialKeyRepeat =
-          15; # normal minimum is 15 (225 ms), maximum is 120 (1800 ms)
+        InitialKeyRepeat = 15; # normal minimum is 15 (225 ms), maximum is 120 (1800 ms)
         # sets how fast it repeats once it starts.
         KeyRepeat = 2; # normal minimum is 2 (30 ms), maximum is 120 (1800 ms)
       };
 
       CustomUserPreferences = {
-        ".GlobalPreferences" = {
-          # automatically switch to a new space when switching to the application
-          AppleSpacesSwitchOnActivate = true;
-        };
         NSGlobalDomain = {
           # Add a context menu item for showing the Web Inspector in web views
           WebKitDeveloperExtras = true;
+          # automatically switch to a new space when switching to the application
+          AppleSpacesSwitchOnActivate = true;
         };
         "com.apple.desktopservices" = {
           # Avoid creating .DS_Store files on network or USB volumes
@@ -62,8 +64,7 @@
           "spans-displays" = 0; # Display have seperate spaces
         };
         "com.apple.WindowManager" = {
-          EnableStandardClickToShowDesktop =
-            0; # Click wallpaper to reveal desktop
+          EnableStandardClickToShowDesktop = 0; # Click wallpaper to reveal desktop
           StandardHideDesktopIcons = 0; # Show items on desktop
           HideDesktop = 0; # Do not hide items on desktop & stage manager
           StageManagerHideWidgets = 0;
@@ -78,7 +79,9 @@
         #   location = "~/Desktop";
         #   type = "png";
         # };
-        "com.apple.AdLib" = { allowApplePersonalizedAdvertising = false; };
+        "com.apple.AdLib" = {
+          allowApplePersonalizedAdvertising = false;
+        };
         # Prevent Photos from opening automatically when devices are plugged in
         "com.apple.ImageCapture".disableHotPlug = true;
       };

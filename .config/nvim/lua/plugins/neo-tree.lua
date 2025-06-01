@@ -3,10 +3,7 @@ return {
     "nvim-neo-tree/neo-tree.nvim",
     enabled = true,
     branch = "v3.x",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-    },
+    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     opts = {
       window = {
         position = "left",

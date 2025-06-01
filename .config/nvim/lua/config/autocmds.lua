@@ -13,18 +13,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
   desc = "Disable New Line Comment",
 })
 
--- vim.api.nvim_create_autocmd("VimEnter", {
---   desc = "Auto select virtualenv Nvim open",
---   pattern = "*",
---   callback = function()
---     local venv = vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";")
---     if venv ~= "" then
---       require("venv-selector").retrieve_from_cache()
---     end
---   end,
---   once = true,
--- })
-
 vim.api.nvim_create_autocmd("BufReadPost", {
   desc = "Enable csv viewer when opening csv fiels",
   pattern = "*.csv",

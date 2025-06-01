@@ -28,16 +28,17 @@
 
   };
   outputs =
-    { self
-    , nixpkgs
-    , nix-darwin
-    , home-manager
-    , nix-homebrew
-    , homebrew-core
-    , homebrew-cask
-    , homebrew-bundle
-    , neovim-nightly-overlay
-    , ...
+    {
+      self,
+      nixpkgs,
+      nix-darwin,
+      home-manager,
+      nix-homebrew,
+      homebrew-core,
+      homebrew-cask,
+      homebrew-bundle,
+      neovim-nightly-overlay,
+      ...
     }@inputs:
     let
       username = "mattias.sjodin";

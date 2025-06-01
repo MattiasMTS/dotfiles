@@ -16,6 +16,7 @@ return {
         -- dockerfile
         dockerfile = { "hadolint" },
 
+        -- TODO: fix this
         -- github actions
         -- ["yaml.ghactions"] = { "actionlint" },
 
