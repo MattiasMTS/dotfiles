@@ -2,7 +2,8 @@
 # ghostty +show-config --default --docs | vim
 
 # color
-background = #1B1D26
+# background = #1B1D26
+theme = "catppuccin-mocha"
 
 # fonts
 font-family = "Maple Mono NF"
@@ -25,8 +26,8 @@ mouse-hide-while-typing = true
 # window
 initial-window = true
 resize-overlay = never
-background-opacity = 1
-background-blur-radius = 30
+background-opacity = 0.90
+background-blur = 40
 window-save-state = always
 window-step-resize = false
 window-padding-balance = true

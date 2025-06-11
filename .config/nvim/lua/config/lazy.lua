@@ -42,4 +42,4 @@ require("lazy").setup({
 })
 
 -- cmd post lazy is loaded
-vim.cmd([[colorscheme hybrid]])
+vim.cmd([[colorscheme catppuccin]])

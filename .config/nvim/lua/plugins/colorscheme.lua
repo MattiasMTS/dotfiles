@@ -4,7 +4,7 @@ return {
     name = "hybrid",
     priority = 1000,
     lazy = false,
-    enabled = true,
+    enabled = false,
     opts = {
       transparent = true,
       italic = { strings = false, emphasis = false, comments = false, folds = false },
@@ -26,16 +26,6 @@ return {
     },
   },
   {
-    "webhooked/kanso.nvim",
-    lazy = false,
-    priority = 1000,
-    enabled = false,
-    opts = {
-      transparent = false,
-      theme = "ink",
-    },
-  },
-  {
     "folke/tokyonight.nvim",
     priority = 1000,
     lazy = false,
@@ -46,11 +36,11 @@ return {
     name = "catppuccin",
     priority = 1000,
     lazy = false,
-    enabled = false,
+    enabled = true,
     opts = {
-      flavour = "mocha", -- latte, frappe, macchiato, mocha
+      flavour = "mocha",
       transparent_background = false,
-      show_end_of_buffer = true,
+      show_end_of_buffer = true, -- I like the ~ at the end of the buffer
       term_colors = true,
       compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
       dim_inactive = {
@@ -58,6 +48,21 @@ return {
         shade = "dark",
         percentage = 0.15,
       },
+      styles = {
+        comments = {},
+        conditionals = { "bold" },
+        functions = { "bold" },
+        operators = { "bold" },
+        keywords = { "bold" },
+        loops = { "bold" },
+        strings = {},
+        variables = {},
+        numbers = {},
+        booleans = { "bold" },
+        properties = {},
+        types = {},
+      },
+      default_integrations = true,
       integrations = {
         treesitter = true,
         native_lsp = {
@@ -68,88 +73,54 @@ return {
             warnings = { "underline" },
             information = { "underline" },
           },
+          virtual_text = {
+            errors = {},
+            hints = {},
+            warnings = {},
+            information = {},
+          },
         },
-        cmp = true,
-        dashboard = true,
-        dropbar = { enabled = false, color_mode = true },
-        fern = false,
-        fidget = false,
-        flash = false,
-        gitgutter = false,
+        blink_cmp = true,
+        dropbar = { enabled = true, color_mode = true },
         gitsigns = true,
-        harpoon = false,
-        headlines = false,
-        hop = false,
-        illuminate = true,
-        indent_blankline = { enabled = false, colored_indent_levels = false },
-        leap = false,
-        lightspeed = false,
-        lsp_saga = false,
-        lsp_trouble = false,
-        markdown = true,
-        mason = true,
-        mini = false,
-        navic = { enabled = true },
-        neogit = false,
-        neotest = false,
-        neotree = { enabled = true, show_root = true, transparent_panel = false },
-        noice = true,
-        notify = true,
-        nvimtree = false,
-        overseer = false,
-        pounce = false,
-        rainbow_delimiters = true,
+        mini = { enabled = true, indentscope_color = "" },
+        neotree = { enabled = true, show_root = true, transparent_panel = true },
         render_markdown = true,
-        sandwich = false,
+        markdown = true,
         semantic_tokens = true,
-        telescope = { enabled = true },
+        fzf = true,
         treesitter_context = true,
+        grug_far = true,
       },
       highlight_overrides = {
         all = function(cp)
           return {
             -- For base configs
             NormalFloat = { fg = cp.text, bg = cp.mantle },
-            FloatBorder = {
-              fg = cp.mantle,
-              bg = cp.mantle,
-            },
+            FloatBorder = { fg = cp.mantle, bg = cp.mantle },
+            CursorLineNr = { fg = cp.green },
 
-            -- testing out undercurl
+            -- For native lsp configs
+            -- testing out undercurl instead of sideline
             DiagnosticVirtualTextError = { bg = cp.none },
             DiagnosticVirtualTextWarn = { bg = cp.none },
             DiagnosticVirtualTextInfo = { bg = cp.none },
             DiagnosticVirtualTextHint = { bg = cp.none },
-
-            -- For native lsp configs
             LspInfoBorder = { link = "FloatBorder" },
 
-            -- For mason.nvim
-            MasonNormal = { link = "NormalFloat" },
-
-            -- For nvim-cmp
+            -- For blink
             Pmenu = { fg = cp.overlay2, bg = cp.base },
             PmenuBorder = { fg = cp.surface1, bg = cp.base },
             PmenuSel = { bg = cp.green, fg = cp.base },
-            CmpItemAbbr = { fg = cp.overlay2 },
-            CmpItemAbbrMatch = { fg = cp.blue, style = { "bold" } },
-            CmpDoc = { link = "NormalFloat" },
-            CmpDocBorder = {
-              fg = cp.mantle,
-              bg = cp.mantle,
-            },
-
-            -- For nvim-notify
-            NotifyBackground = { bg = cp.base },
+            BlinkCmpKind = { fg = cp.overlay2 },
+            BlinkCmpKindMatch = { fg = cp.blue, style = { "bold" } },
+            BlinkCmpDoc = { link = "NormalFloat" },
+            BlinkCmpDocBorder = { fg = cp.mantle, bg = cp.mantle },
 
             -- For neo-tree
             NeoTreeNormal = { bg = cp.mantle }, -- Set a darker background for Neo-tree
             NeoTreeNormalNC = { bg = cp.mantle }, -- Set a darker background for non-current Neo-tree window
             NeoTreeEndOfBuffer = { bg = cp.mantle }, -- Set a darker background for end of buffer in Neo-tree
-
-            -- For trouble.nvim
-            TroubleNormal = { bg = cp.base },
-            TroubleNormalNC = { bg = cp.base },
 
             -- For treesitter
             ["@keyword.return"] = { fg = cp.pink, style = {} },

@@ -56,12 +56,12 @@ vim.opt.smartindent = true
 vim.opt.expandtab = true -- spaces rather than tbas
 
 -- extras
+vim.o.winborder = "rounded" -- default border style where applicable 0.11 nvim
 vim.opt.backspace = "start,eol,indent"
 vim.opt.path:append({ "**" }) -- finding files, search down into subfolders
 vim.opt.completeopt = "menu,menuone,noinsert" -- no insert until I command so
 vim.opt.wildmode = "longest:full,full" -- Command-line completion mode
 vim.opt.clipboard = "unnamedplus" -- share clipboard
-vim.opt.linebreak = true -- Wrap lines at convenient points
 
 -- Completion.
 vim.opt.wildignore:append({ ".DS_Store" })
@@ -70,11 +70,11 @@ vim.opt.wildignore:append({ ".DS_Store" })
 vim.opt.cursorline = true -- highlight current line
 vim.opt.termguicolors = true -- True color support
 
-vim.opt.scrolloff = 8
+vim.opt.scrolloff = 10
 vim.opt.smoothscroll = true
 vim.opt.isfname:append("@-@")
 
-vim.opt.wrap = false -- no line wrap
+vim.opt.wrap = true
 vim.opt.linebreak = true -- wrap lines at convenient points
 
 vim.opt.colorcolumn = "90"

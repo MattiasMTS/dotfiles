@@ -9,7 +9,6 @@ local function on_attach(client, bufnr)
     mode = mode or "n"
     vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = "LSP: " .. desc })
   end
-  -- TODO: add inlay-hints support when needed
 
   -- conform to upstream LSP keymaps defined in:
   -- https://neovim.io/doc/user/lsp.html#lsp-defaults
@@ -50,6 +49,12 @@ local function on_attach(client, bufnr)
     map("grD", function()
       require("fzf-lua").lsp_definitions({ jump1 = false })
     end, "Peek definition")
+  end
+
+  if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+    map("<leader>th", function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }))
+    end, "[T]oggle Inlay [H]ints")
   end
 
   if client:supports_method(methods.textDocument_documentHighlight) then
@@ -95,7 +100,7 @@ vim.diagnostic.config({
     end,
   },
   severity_sort = true,
-  float = { border = "rounded", source = "if_many" },
+  float = { source = "if_many" },
   underline = { severity = vim.diagnostic.severity.ERROR },
   signs = {
     text = {
