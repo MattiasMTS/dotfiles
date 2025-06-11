@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   enable = true;
   history.size = 10000;
   enableCompletion = true;
@@ -15,7 +16,6 @@
     # kubernetes
     k = "kubectl";
     kc = "kubectx";
-    kn = "kubens";
     # shortcuts to projects
     es = "cd ~/src/github.com/epidemicsound/";
     pj = "cd ~/src/github.com/projects/";

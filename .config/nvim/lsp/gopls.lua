@@ -1,11 +1,22 @@
 ---@type vim.lsp.Config
 return {
   cmd = { "gopls" },
-  filetypes = { "go", "gomod", "gowork", "gotmpl" },
+  filetypes = { "go", "gomod", "gowork", "gotmpl", "templ", "tmpl" },
   settings = {
-    -- env = { GOEXPERIMENT = "rangefunc" },
-    formatting = { gofumpt = false }, -- managed by conform
+    gofumpt = false, -- managed by conform instead
+    usePlaceholders = true,
     -- https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
-    hints = {},
+    hints = {
+      parameterNames = true,
+      assignVariableTypes = true,
+      constantValues = true,
+      compositeLiteralTypes = true,
+      compositeLiteralFields = true,
+      functionTypeParameters = true,
+    },
+    staticcheck = true,
+    vulncheck = "imports",
+    analysisProgressReporting = true,
+    templateExtensions = { "templ", "tmpl" },
   },
 }

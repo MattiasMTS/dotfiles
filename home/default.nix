@@ -107,8 +107,11 @@ in
     tflint
     tfsec
 
+    rustup
+
     python313
     python313Packages.ipython
+    python313Packages.sqlfmt
 
     # pnpm_9
     nodejs_24
@@ -144,25 +147,37 @@ in
     protobuf
     protolint
     buf
-    cargo
 
     # LSP execs, formatter and linters for neovim
     yaml-language-server
+    yamllint
+
     vim-language-server
     lua-language-server
+    stylua
+
     # kotlin-language-server
     # kotlinLspWrapper
     bash-language-server
+
     dockerfile-language-server-nodejs
     docker-compose-language-service
+
     pyright
+    basedpyright
+
     gopls
+    templ
+    superhtml
+    golines
+    gofumpt
+    # golangci-lint
+    # golangci-lint-langserver
+
     terraform-ls
     nil
     helm-ls
-    gofumpt
-    stylua
-    yamllint
+    markdown-oxide # trying this out
 
     kotlinLspWrapper
   ];
