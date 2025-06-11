@@ -6,9 +6,11 @@
 theme = "catppuccin-mocha"
 
 # fonts
-font-family = "Maple Mono NF"
-font-style = Medium
-font-style-bold = Bold
+font-family = "Fira Code"
+font-family-bold = "Fira Code"
+font-family-italic = "Maple Mono NF"
+font-family-bold-italic = "Maple Mono NF"
+font-family = "Symbols Nerd Font Mono"
 font-size = 14
 
 # cursor
@@ -39,7 +41,7 @@ confirm-close-surface = false
 # behavior
 quit-after-last-window-closed = true
 shell-integration = zsh
-shell-integration-features = cursor, sudo, title
+shell-integration-features = cursor,sudo,no-title
 
 # macos
 macos-option-as-alt = left

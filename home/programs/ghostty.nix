@@ -1,5 +1,6 @@
-{ ... }: {
-  enable = true;
+{ ... }:
+{
+  enable = false;
   enableZshIntegration = true;
   installVimSyntax = true;
 
@@ -15,4 +16,3 @@
     mouse-hide-while-typing = true;
   };
 }
-
