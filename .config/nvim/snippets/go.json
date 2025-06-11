@@ -1,7 +1,0 @@
-{
-  "if-err-not-nil": {
-    "prefix": "iferr",
-    "body": ["if err != nil {", "\treturn ${1:nil, }err", "}"],
-    "description": "if err not nil return"
-  }
-}

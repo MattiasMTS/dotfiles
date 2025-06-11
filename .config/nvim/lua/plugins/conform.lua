@@ -17,18 +17,30 @@ return {
       terraform = { "terraform_fmt" },
       tf = { "terraform_fmt" },
       ["terraform-vars"] = { "terraform_fmt" },
-      go = { "gofumpt", "goimports" },
+      go = { "gofumpt", "goimports", "golines" },
       javascript = { "prettier", name = "dprint", lsp_format = "fallback" },
       json = { "prettier", stop_on_first = true, name = "dprint" },
       jsonc = { "prettier", stop_on_first = true, name = "dprint" },
       lua = { "stylua" },
-      kotlin = { "ktfmt" }, -- NOTE: trying ktfmt instead of ktlint
+      kotlin = { "ktfmt" },
       nix = { "nixfmt" },
+      sql = { "sqlfmt" },
     },
     formatters = {
+      golines = {
+        prepend_args = {
+          "--base-formatter=gofumpt",
+          "--ignore-generated",
+          "--tab-len=1",
+          "--max-len=120",
+        },
+      },
       gofumpt = {
         prepend_args = { "-extra", "-w", "$FILENAME" },
         stdin = false,
+      },
+      goimports = {
+        args = { "-srcdir", "$FILENAME" },
       },
     },
   },

@@ -7,40 +7,31 @@ return {
         version = "*",
         lazy = true,
       },
-      "rafamadriz/friendly-snippets",
+      { "rafamadriz/friendly-snippets" },
     },
     build = "cargo build --release",
     event = "InsertEnter",
     opts = {
-      appearance = {
-        kind_icons = {
-          Text = "󰉿",
-          Method = "󰆧",
-          Function = "󰊕",
-          Constructor = "",
-
-          Field = "󰜢",
-          Class = "󰠱",
-          Property = "󰜢",
-
-          Variable = "󰀫",
-          Interface = "",
-          Module = "",
-          Unit = "󰑭",
-          Value = "󰎠",
-          Enum = "",
-          Keyword = "󰌋",
-          Snippet = "",
-          Color = "󰏘",
-          File = "󰈙",
-          Reference = "󰈇",
-          Folder = "󰉋",
-          EnumMember = "",
-          Constant = "󰏿",
-          Struct = "󰙅",
-          Event = "",
-          Operator = "󰆕",
-          TypeParameter = "󰬛",
+      menu = {
+        draw = {
+          components = {
+            kind_icon = {
+              text = function(ctx)
+                local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                return kind_icon
+              end,
+              highlight = function(ctx)
+                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                return hl
+              end,
+            },
+            kind = {
+              highlight = function(ctx)
+                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                return hl
+              end,
+            },
+          },
         },
       },
       keymap = {
@@ -63,7 +54,7 @@ return {
       completion = {
         list = {
           selection = { preselect = true, auto_insert = false },
-          max_items = 10,
+          max_items = 200,
         },
         documentation = { auto_show = true },
         ghost_text = { enabled = false },

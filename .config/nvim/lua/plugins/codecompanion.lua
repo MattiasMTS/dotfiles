@@ -1,10 +1,11 @@
-local function gemini_copilot_model()
+---@param model string|nil
+local function copilot_model(model)
   local ok, codecompanion = pcall(require, "codecompanion.adapters")
   if not ok then
     return
   end
   return codecompanion.extend("copilot", {
-    schema = { model = { default = "gemini-2.5-pro" } },
+    schema = { model = { default = model or "gemini-2.5-pro" } },
   })
 end
 
@@ -36,8 +37,8 @@ return {
         diff = { enabled = true },
       },
       strategies = {
-        chat = { adapter = gemini_copilot_model() },
-        inline = { adapter = gemini_copilot_model() },
+        chat = { adapter = copilot_model() },
+        inline = { adapter = copilot_model() },
       },
       extensions = {
         history = {

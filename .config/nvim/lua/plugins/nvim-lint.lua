@@ -16,6 +16,9 @@ return {
         -- dockerfile
         dockerfile = { "hadolint" },
 
+        -- go
+        -- go = { "golangci_lint", "gosec" },
+
         -- TODO: fix this
         -- github actions
         -- ["yaml.ghactions"] = { "actionlint" },

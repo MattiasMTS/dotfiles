@@ -8,6 +8,7 @@ return {
     "kndndrj/nvim-dbee",
     enabled = true,
     dev = true,
+    cmd = "Dbee",
     build = function()
       local binary = vim.fn.expand("$HOME") .. "/.local/share/nvim/dbee/bin/dbee"
       if vim.fn.filereadable(binary) ~= 0 then

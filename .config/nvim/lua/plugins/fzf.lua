@@ -4,7 +4,7 @@ return {
   cmd = "FzfLua",
   keys = {
     -- misc
-    { "<leader>f<", "<cmd>FzfLua resume<cr>", desc = "Resume last command" },
+    { "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Resume last command" },
     { "<leader>fb", "<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
     -- find
     { "<leader>fc", "<cmd>FzfLua highlights<cr>", desc = "Highlights" },
@@ -43,7 +43,7 @@ return {
         -- prefer vertical splits
         actions = { ["enter"] = actions.help_vert },
       },
-      preview = { hidden = true },
+      winopts = { preview = { hidden = true } },
     }
   end,
 }

@@ -26,6 +26,7 @@ return {
         "gosum",
         "gotmpl",
         "templ",
+        "superhtml",
         "helm",
         "bash",
         "gitcommit",
@@ -68,11 +69,6 @@ return {
       --   --   scope_incremental = false,
       --   --   node_decremental = "<bs>",
       --   -- },
-      -- },
-      -- indent = {
-      --   enable = true,
-      --   -- Treesitter unindents Yaml lists for some reason.
-      --   disable = { "yaml" },
       -- },
     },
     config = function(_, opts)

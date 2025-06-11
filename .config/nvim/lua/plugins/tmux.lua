@@ -6,6 +6,8 @@ return {
     },
     event = "BufEnter",
     opts = {
+      default_amount = 3,
+      ignored_buftypes = { "nofile", "prompt", "quickfix" },
       ignored_filetypes = { "NeoTree" },
       resize_mode = {
         hooks = {
