@@ -1,6 +1,6 @@
 ---@type vim.lsp.Config
 return {
-  cmd = { "pyright-langserver", "--stdio" },
+  cmd = { "basedpyright-langserver", "--stdio" },
   filetypes = { "python" },
   root_markers = {
     "pyproject.toml",
@@ -13,5 +13,10 @@ return {
     ".ruff.toml",
     "uv.lock",
     ".git",
+  },
+  settings = {
+    basedpyright = {
+      analysis = { typeCheckingMode = "strict" },
+    },
   },
 }

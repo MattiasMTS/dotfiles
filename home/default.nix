@@ -73,19 +73,11 @@ in
     lazygit = import ./programs/lazygit.nix { inherit pkgs; };
     lazydocker = import ./programs/lazydocker.nix { inherit pkgs; };
     gh = import ./programs/gh.nix { inherit pkgs; };
-    bat = {
-      enable = true;
-    }; # for syntax highlighting in fzf
-    k9s = {
-      enable = true;
-    };
-    ripgrep = {
-      enable = true;
-    };
-    jq = {
-      enable = true;
-    };
     ssh = import ./programs/ssh.nix { inherit pkgs; };
+    bat.enable = true;
+    k9s.enable = true;
+    ripgrep.enable = true;
+    jq.enable = true;
   };
 
   # user specific packages instead of system wide
@@ -163,7 +155,7 @@ in
     dockerfile-language-server-nodejs
     docker-compose-language-service
 
-    pyright
+    # pyright
     basedpyright
 
     gopls
