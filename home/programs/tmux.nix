@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   enable = true;
 
   aggressiveResize = true;
@@ -9,8 +10,7 @@
   keyMode = "vi";
   shell = "${pkgs.zsh}/bin/zsh";
   shortcut = "a";
-  terminal =
-    "xterm-ghostty"; # better undercurl see https://x.com/mitchellh/status/1847372611577401877?mx=2
+  terminal = "xterm-256color";
   newSession = true;
   secureSocket = false;
   sensibleOnTop = false; # bug with starship/shell stuff..
@@ -111,4 +111,3 @@
     )\""
   '';
 }
-
