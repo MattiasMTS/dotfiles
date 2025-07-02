@@ -13,6 +13,9 @@ return {
           min_window_height = 20,
         },
       },
+      {
+        "ngalaiko/tree-sitter-go-template",
+      },
     },
     version = false,
     build = ":TSUpdate",
@@ -60,16 +63,6 @@ return {
       },
       highlight = { enable = true },
       auto_install = false,
-      -- TODO: look into incremental selection
-      -- incremental_selection = {
-      --   enable = true,
-      --   -- keymaps = {
-      --   --   init_selection = "<cr>",
-      --   --   node_incremental = "<cr>",
-      --   --   scope_incremental = false,
-      --   --   node_decremental = "<bs>",
-      --   -- },
-      -- },
     },
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)

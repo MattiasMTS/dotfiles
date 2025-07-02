@@ -1,14 +1,3 @@
----@param model string|nil
-local function copilot_model(model)
-  local ok, codecompanion = pcall(require, "codecompanion.adapters")
-  if not ok then
-    return
-  end
-  return codecompanion.extend("copilot", {
-    schema = { model = { default = model or "gemini-2.5-pro" } },
-  })
-end
-
 return {
   {
     "olimorris/codecompanion.nvim",
@@ -16,7 +5,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-lua/plenary.nvim",
       "ravitemer/codecompanion-history.nvim",
-      -- "ravitemer/mcphub.nvim",
+      "ravitemer/mcphub.nvim",
     },
     cmd = { "CodeCompanionChat", "CodeCompanionActions" },
     enabled = true,
@@ -34,11 +23,12 @@ return {
           },
         },
         action_palette = { provider = "fzf_lua" },
-        diff = { enabled = true },
+        diff = { enabled = true, provider = "mini_diff" },
       },
       strategies = {
-        chat = { adapter = copilot_model() },
-        inline = { adapter = copilot_model() },
+        chat = { adapter = { name = "copilot", model = "gemini-2.5-pro" } },
+        inline = { adapter = { name = "copilot", model = "gpt-4.5" } },
+        roles = { user = "mattiasmts" },
       },
       extensions = {
         history = {
@@ -46,19 +36,15 @@ return {
           opts = {
             keymap = "gh",
             save_chat_keymap = "sc",
-            auto_save = true,
-            expiration_days = 14,
+            auto_save = false,
+            auto_generate_title = true,
+            continue_last_chat = false,
+            delete_on_clearing_chat = false,
+            expiration_days = 7,
             picker = "fzf-lua",
+            dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
           },
         },
-        --   mcphub = {
-        --     callback = "mcphub.extensions.codecompanion",
-        --     opts = {
-        --       make_vars = true,
-        --       make_slash_commands = true,
-        --       show_result_in_chat = true,
-        --     },
-        --   },
       },
     },
     -- check these https://codecompanion.olimorris.dev/usage/chat-buffer/#keymaps
@@ -68,11 +54,11 @@ return {
         "<leader>ca", "<cmd>CodeCompanionActions<cr>", {"n", "v"}, noremap = true, silent = true,
       },
       {
-        "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", {"n"}, noremap = true, silent = true,
+        "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", {"n", "v"}, noremap = true, silent = true,
       },
-      {
-        "<leader>cc", "<cmd>CodeCompanionChat Add<cr>", {"v"}, noremap = true, silent = true,
-      },
+      -- {
+      --   "<leader>cc", "<cmd>CodeCompanionChat Add<cr>", {"v"}, noremap = true, silent = true,
+      -- },
       --stylua: ignore end
     },
   },

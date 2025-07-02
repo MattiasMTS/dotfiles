@@ -26,12 +26,13 @@ require("lazy").setup({
   checker = { enabled = false }, -- check for updates
   change_detection = { notify = false },
   performance = {
+    cache = { enabled = true },
     rtp = {
       disabled_plugins = {
         "gzip",
-        "matchit",
-        "matchparen",
-        "netrwPlugin",
+        -- "matchit",
+        -- "matchparen",
+        -- "netrwPlugin",
         "tarPlugin",
         "tohtml",
         "tutor",
@@ -42,4 +43,4 @@ require("lazy").setup({
 })
 
 -- cmd post lazy is loaded
-vim.cmd([[colorscheme catppuccin]])
+vim.cmd([[colorscheme tokyonight-storm]])

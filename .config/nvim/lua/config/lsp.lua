@@ -23,16 +23,10 @@ local function on_attach(client, bufnr)
 
   map("gra", "<cmd>FzfLua lsp_code_actions<cr>", "vim.lsp.buf.code_action()", { "n", "x" })
   map("grr", "<cmd>FzfLua lsp_references<cr>", "vim.lsp.buf.references()")
-  map("gry", "<cmd>FzfLua lsp_typedefs<cr>", "Go to type definition")
+  map("grt", "<cmd>FzfLua lsp_typedefs<cr>", "Go to type definition")
   map("gri", "<cmd>FzfLua lsp_implementations<cr>", "Go to implementation")
-  map("gO", "<cmd>FzfLua lsp_document_symbols<cr>", "Document symbols")
-  map("<leader>cd", vim.diagnostic.open_float, "Open Line Diagnostics")
-
-  map("<leader>fs", "<cmd>FzfLua lsp_document_symbols<cr>", "Document symbols")
-  map("<leader>fS", function()
-    -- Disable the grep switch header.
-    require("fzf-lua").lsp_live_workspace_symbols({ no_header_i = true })
-  end, "Workspace symbols")
+  map("grs", "<cmd>FzfLua lsp_document_symbols<cr>", "Document symbols")
+  map("gro", vim.diagnostic.open_float, "Open Line Diagnostics")
 
   -- stylua: ignore start
   map("[d", function() vim.diagnostic.jump({ count = -1 }) end, "Previous diagnostic")

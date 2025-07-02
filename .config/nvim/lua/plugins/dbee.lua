@@ -53,17 +53,10 @@ return {
     keys = {
       {
         "<leader>bt",
-        ":lua require('dbee').toggle()<CR>",
-        desc = "toggle db_ui",
-        mode = "n",
-        silent = true,
-      },
-      {
-        "<leader>bb",
         function()
-          require("utils.dadbod").get_dadbod_connections()
+          require("dbee").toggle()
         end,
-        desc = "set credentials and toggle db_ui",
+        desc = "toggle db_ui",
         mode = "n",
         silent = true,
       },

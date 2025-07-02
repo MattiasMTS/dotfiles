@@ -1,16 +1,14 @@
--- turn off paste mode when leaving insert mode.
--- nice to have for e.g. json files
 vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+  desc = "Disable paste mode when leaving insert mode",
   pattern = "*",
   command = "set nopaste",
 })
 
--- disable trailing new line comment
 vim.api.nvim_create_autocmd("BufEnter", {
+  desc = "Disable trailing newline comment",
   callback = function()
     vim.opt.formatoptions:remove({ "c", "r", "o" })
   end,
-  desc = "Disable New Line Comment",
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -20,19 +18,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("big_file", { clear = true }),
-  desc = "Disable features in big files",
-  pattern = "bigfile",
-  callback = function(args)
-    vim.schedule(function()
-      vim.bo[args.buf].syntax = vim.filetype.match({ buf = args.buf }) or ""
-    end)
-  end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("close_with_q", { clear = true }),
-  desc = "Close with <q>",
+  desc = "Close filetypes by pressing <q>",
   pattern = {
     "git",
     "help",
@@ -43,6 +30,25 @@ vim.api.nvim_create_autocmd("FileType", {
   },
   callback = function(args)
     vim.keymap.set("n", "q", "<cmd>quit<cr>", { buffer = args.buf })
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
+  desc = "Enable cursorline in active window",
+  callback = function()
+    if vim.w.auto_cursorline then
+      vim.wo.cursorline = true
+      vim.w.auto_cursorline = nil
+    end
+  end,
+})
+vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
+  desc = "Disable cursorline in inactive window",
+  callback = function()
+    if vim.wo.cursorline then
+      vim.w.auto_cursorline = true
+      vim.wo.cursorline = false
+    end
   end,
 })
 
@@ -62,7 +68,35 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("yank_highlight", { clear = true }),
   desc = "Highlight on yank",
   callback = function()
-    -- Setting a priority higher than the LSP references one.
-    vim.hl.on_yank({ higroup = "IncSearch", priority = 250 })
+    vim.hl.on_yank({ higroup = "IncSearch" })
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = "*.ghostty",
+  callback = function()
+    vim.bo.filetype = "ghostty"
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  group = vim.api.nvim_create_augroup("go_template_filetype", { clear = true }),
+  pattern = "*.gotmpl,*.tmpl,*.tpl",
+  callback = function()
+    vim.bo.filetype = "gotmpl"
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  group = vim.api.nvim_create_augroup("helmfile_filetype", { clear = true }),
+  pattern = {
+    "*/templates/*.tpl",
+    "*/templates/*.yaml",
+    "*/templates/*.yml",
+    "helmfile*.yaml",
+    "helmfile*.yml",
+  },
+  callback = function()
+    vim.bo.filetype = "helm"
   end,
 })

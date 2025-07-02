@@ -6,8 +6,8 @@ return {
     lazy = false,
     enabled = false,
     opts = {
-      transparent = true,
-      italic = { strings = false, emphasis = false, comments = false, folds = false },
+      transparent = false,
+      italic = { strings = false, emphasis = false, comments = true, folds = false },
       overrides = function(hl, c)
         -- gitglame
         hl.GitSignsCurrentLineBlame = { fg = c.comment }
@@ -26,21 +26,36 @@ return {
     },
   },
   {
-    "folke/tokyonight.nvim",
+    "olimorris/onedarkpro.nvim",
     priority = 1000,
     lazy = false,
     enabled = false,
+    opts = {},
+  },
+  {
+    "folke/tokyonight.nvim",
+    priority = 1000,
+    lazy = false,
+    enabled = true,
+    opts = {
+      styles = {
+        comments = { italic = true },
+        keywords = {},
+        functions = {},
+        variables = {},
+      },
+      lualine_bold = true,
+    },
   },
   {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
     lazy = false,
-    enabled = true,
+    enabled = false,
     opts = {
-      flavour = "mocha",
+      flavour = "macchiato",
       transparent_background = false,
-      show_end_of_buffer = true, -- I like the ~ at the end of the buffer
       term_colors = true,
       compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
       dim_inactive = {

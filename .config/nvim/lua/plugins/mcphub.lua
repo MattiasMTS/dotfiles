@@ -1,9 +1,8 @@
 return {
-  -- TODO: fix npm for nix
   {
     "ravitemer/mcphub.nvim",
     enabled = false,
-    build = "npm install -g mcp-hub@latest",
+    -- build = "", # Managed by flake.nix
     event = "VeryLazy",
     opts = {},
   },

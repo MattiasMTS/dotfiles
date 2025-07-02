@@ -1,14 +1,10 @@
 return {
   {
     "mrjones2014/smart-splits.nvim",
-    dependencies = {
-      "kwkarlwang/bufresize.nvim",
-    },
     event = "BufEnter",
     opts = {
       default_amount = 3,
       ignored_buftypes = { "nofile", "prompt", "quickfix" },
-      ignored_filetypes = { "NeoTree" },
       resize_mode = {
         hooks = {
           on_leave = function()

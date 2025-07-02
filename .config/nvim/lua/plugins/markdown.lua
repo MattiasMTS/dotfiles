@@ -13,6 +13,7 @@ return {
   },
   {
     "iamcco/markdown-preview.nvim",
+    enabled = false,
     cmd = { "MarkdownPreview", "MarkdownPreviewToggle" },
     opts = {},
     keys = {
