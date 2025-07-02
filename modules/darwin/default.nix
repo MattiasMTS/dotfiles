@@ -29,7 +29,6 @@
     brews = [
       "pipenv"
       "pyenv"
-      "asyncapi"
     ];
     taps = [ ];
   };
@@ -55,9 +54,7 @@
 
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
-    # nerd-fonts.iosevka
-    # nerd-fonts.commit-mono
-    # nerd-fonts.fira-code
+    nerd-fonts.fira-code
     maple-mono.NF
   ];
 
