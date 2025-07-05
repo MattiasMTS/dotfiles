@@ -32,6 +32,9 @@ let
     CLASSPATH=$(find ${kotlinLsp}/lib -name "*.jar" | tr '\n' ':')
     exec java -cp "$CLASSPATH" com.intellij.internal.statistic.uploader.EventLogUploader "$@"
   '';
+
+  mcphub = inputs.mcp-hub.packages."${pkgs.system}".default;
+  nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 in
 {
   programs.home-manager.enable = true;
@@ -53,7 +56,7 @@ in
   programs = {
     neovim = {
       enable = true;
-      package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+      package = nvim-nightly;
       defaultEditor = true;
 
       withPython3 = true;
@@ -104,6 +107,8 @@ in
     python313
     python313Packages.ipython
     python313Packages.sqlfmt
+    vectorcode # used in codecompanion
+    mcphub # used in codecompanion
 
     # pnpm_9
     nodejs_24
@@ -114,7 +119,6 @@ in
     uv
     ruff
     pre-commit
-    copier
 
     kotlin
     jdk17
@@ -135,6 +139,8 @@ in
 
     docker
     docker-compose
+    dockerfile-language-server-nodejs
+    docker-compose-language-service
 
     protobuf
     protolint
@@ -151,9 +157,6 @@ in
     # kotlin-language-server
     # kotlinLspWrapper
     bash-language-server
-
-    dockerfile-language-server-nodejs
-    docker-compose-language-service
 
     # pyright
     basedpyright

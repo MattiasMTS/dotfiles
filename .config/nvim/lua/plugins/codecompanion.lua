@@ -6,6 +6,7 @@ return {
       "nvim-lua/plenary.nvim",
       "ravitemer/codecompanion-history.nvim",
       "ravitemer/mcphub.nvim",
+      "Davidyz/VectorCode",
     },
     cmd = { "CodeCompanionChat", "CodeCompanionActions" },
     enabled = true,
@@ -23,12 +24,11 @@ return {
           },
         },
         action_palette = { provider = "fzf_lua" },
-        diff = { enabled = true, provider = "mini_diff" },
+        diff = { provider = "mini_diff" },
       },
       strategies = {
         chat = { adapter = { name = "copilot", model = "gemini-2.5-pro" } },
-        inline = { adapter = { name = "copilot", model = "gpt-4.5" } },
-        roles = { user = "mattiasmts" },
+        inline = { adapter = { name = "copilot", model = "gpt-4.1" } },
       },
       extensions = {
         history = {
@@ -36,13 +36,24 @@ return {
           opts = {
             keymap = "gh",
             save_chat_keymap = "sc",
-            auto_save = false,
+            auto_save = true,
             auto_generate_title = true,
             continue_last_chat = false,
-            delete_on_clearing_chat = false,
-            expiration_days = 7,
+            delete_on_clearing_chat = true,
+            expiration_days = 3,
             picker = "fzf-lua",
             dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+          },
+        },
+        vectorcode = {
+          opts = { add_tool = true },
+        },
+        mcphub = {
+          callback = "mcphub.extensions.codecompanion",
+          opts = {
+            make_vars = true, -- Show mcp tool results in chat
+            make_slash_commands = true, -- Convert resources to #variables
+            show_result_in_chat = true, -- Add prompts as /slash commands
           },
         },
       },
@@ -56,9 +67,6 @@ return {
       {
         "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", {"n", "v"}, noremap = true, silent = true,
       },
-      -- {
-      --   "<leader>cc", "<cmd>CodeCompanionChat Add<cr>", {"v"}, noremap = true, silent = true,
-      -- },
       --stylua: ignore end
     },
   },
