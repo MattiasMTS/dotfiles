@@ -1,4 +1,2 @@
 bin/.local/bin
 result # nix output
-.config/nvim/lua/utils/dadbod.lua
-.config/mcphub/*

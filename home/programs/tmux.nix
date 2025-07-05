@@ -1,4 +1,7 @@
 { pkgs, ... }:
+let
+  terminal = "xterm-256color";
+in
 {
   enable = true;
 
@@ -10,7 +13,7 @@
   keyMode = "vi";
   shell = "${pkgs.zsh}/bin/zsh";
   shortcut = "a";
-  terminal = "xterm-256color";
+  terminal = terminal;
   newSession = true;
   secureSocket = false;
   sensibleOnTop = false; # bug with starship/shell stuff..
@@ -29,14 +32,30 @@
         set -g @yank_action 'copy-pipe' # instead of copy-pipe-cancel, to not jump to bottom
       '';
     }
+    {
+      plugin = tokyo-night-tmux;
+      extraConfig = ''
+        # colorscheme
+        set -g @tokyo-night-tmux_theme storm    # storm | day | default to 'night'
+        set -g @tokyo-night-tmux_transparent 1  # 1 (100%) or 0
 
+        # status bar config
+        set -g @tokyo-night-tmux_window_id_style none
+        set -g @tokyo-night-tmux_pane_id_style super
+        set -g @tokyo-night-tmux_zoom_id_style dsquare
+
+        # window style
+        set -g @tokyo-night-tmux_window_tidy_icons 0 # tidy icons
+      '';
+    }
   ];
   extraConfig = ''
     # Undercurl
+    set -g default-terminal "${terminal}"
     set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
     set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 
-    # kitty graphics protocol
+    # kitty graphics protocol (for image in neovim)
     set -gq allow-passthrough on
     set -g visual-activity off
 
@@ -48,25 +67,25 @@
     unbind -T copy-mode-vi MouseDragEnd1Pane
 
     # transparent background line
-    set -g pane-active-border-style 'fg=magenta,bg=default'
-    set -g pane-border-style 'fg=brightblack,bg=default'
-    set -g status-style 'bg=default'
-    set -g status-interval 5
+    # set -g pane-active-border-style 'fg=magenta,bg=default'
+    # set -g pane-border-style 'fg=brightblack,bg=default'
+    # set -g status-style 'bg=default'
+    # set -g status-interval 5
 
     # Left status
-    set -g status-left-length 50
-    set -g status-left '#[fg=blue,bold]#S #[fg=white,nobold]'
+    # set -g status-left-length 50
+    # set -g status-left '#[fg=blue,bold]#S #[fg=white,nobold]'
 
     # Window activity notification
     setw -g monitor-activity on
 
     # Window status
-    setw -g window-status-format '#[fg=brightblack]#I:#W'
-    setw -g window-status-current-format '#{?window_zoomed_flag,#[fg=yellow][Z],#[fg=magenta,bold]}#I:#W'
+    # setw -g window-status-format '#[fg=brightblack]#I:#W'
+    # setw -g window-status-current-format '#{?window_zoomed_flag,#[fg=yellow][Z],#[fg=magenta,bold]}#I:#W'
 
     # Right status - just time and date
-    set -g status-right-length 50
-    set -g status-right '#[fg=white]%H:%M #[fg=brightblack]%Y-%m-%d'
+    # set -g status-right-length 50
+    # set -g status-right '#[fg=white]%H:%M #[fg=brightblack]%Y-%m-%d'
 
     # keybindings
     bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
