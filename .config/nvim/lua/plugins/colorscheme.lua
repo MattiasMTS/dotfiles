@@ -52,10 +52,10 @@ return {
     name = "catppuccin",
     priority = 1000,
     lazy = false,
-    enabled = false,
+    enabled = true,
     opts = {
       flavour = "macchiato",
-      transparent_background = false,
+      transparent_background = true,
       term_colors = true,
       compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
       dim_inactive = {

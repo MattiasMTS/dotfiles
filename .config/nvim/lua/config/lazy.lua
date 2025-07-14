@@ -41,6 +41,4 @@ require("lazy").setup({
     },
   },
 })
-
--- cmd post lazy is loaded
-vim.cmd([[colorscheme tokyonight-storm]])
+vim.cmd([[colorscheme catppuccin]])

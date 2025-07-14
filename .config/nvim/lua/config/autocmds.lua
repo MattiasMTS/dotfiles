@@ -33,24 +33,24 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
-  desc = "Enable cursorline in active window",
-  callback = function()
-    if vim.w.auto_cursorline then
-      vim.wo.cursorline = true
-      vim.w.auto_cursorline = nil
-    end
-  end,
-})
-vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
-  desc = "Disable cursorline in inactive window",
-  callback = function()
-    if vim.wo.cursorline then
-      vim.w.auto_cursorline = true
-      vim.wo.cursorline = false
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
+--   desc = "Enable cursorline in active window",
+--   callback = function()
+--     if vim.w.auto_cursorline then
+--       vim.wo.cursorline = true
+--       vim.w.auto_cursorline = nil
+--     end
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
+--   desc = "Disable cursorline in inactive window",
+--   callback = function()
+--     if vim.wo.cursorline then
+--       vim.w.auto_cursorline = true
+--       vim.wo.cursorline = false
+--     end
+--   end,
+-- })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
   group = vim.api.nvim_create_augroup("last_location", { clear = true }),

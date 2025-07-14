@@ -68,7 +68,7 @@ vim.opt.clipboard = "unnamedplus" -- share clipboard
 vim.opt.wildignore:append({ ".DS_Store" })
 
 -- Highlight stuff & cursor
-vim.opt.cursorline = true -- highlight current line
+vim.opt.cursorline = false -- highlight current line
 vim.opt.termguicolors = true -- True color support
 
 vim.opt.scrolloff = 10
