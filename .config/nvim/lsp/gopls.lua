@@ -7,14 +7,14 @@ return {
       gofumpt = false, -- managed by conform instead
       usePlaceholders = true,
       -- https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
-      hints = {
-        parameterNames = true,
-        assignVariableTypes = true,
-        constantValues = true,
-        compositeLiteralTypes = true,
-        compositeLiteralFields = true,
-        functionTypeParameters = true,
-      },
+      -- hints = {
+      --   parameterNames = true,
+      --   assignVariableTypes = true,
+      --   constantValues = true,
+      --   compositeLiteralTypes = true,
+      --   compositeLiteralFields = true,
+      --   functionTypeParameters = true,
+      -- },
       staticcheck = true,
       vulncheck = "imports",
       analysisProgressReporting = true,
