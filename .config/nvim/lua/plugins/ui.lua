@@ -2,26 +2,29 @@ return {
   {
     "Bekaboo/dropbar.nvim",
     event = "BufEnter",
-    enabled = true,
+    enabled = false,
   },
   {
     "nvim-lualine/lualine.nvim",
     enabled = true,
     dev = false,
     event = "BufEnter",
-    opts = function()
-      return {
-        options = {
-          component_separators = "",
-          section_separators = "",
-        },
-        sections = {
-          lualine_x = { "lsp_status" },
-          lualine_z = { "encoding" },
-        },
-        extensions = { "quickfix", "neo-tree", "fzf", "lazy" },
-      }
-    end,
+    opts = {
+      options = {
+        component_separators = "",
+        section_separators = "",
+      },
+      sections = {
+        lualine_y = { "lsp_status" },
+        lualine_z = { "encoding" },
+      },
+      extensions = {
+        "quickfix",
+        "neo-tree",
+        "fzf",
+        "lazy",
+      },
+    },
   },
   {
     "akinsho/bufferline.nvim",
@@ -41,12 +44,13 @@ return {
     },
     opts = {
       options = {
-        -- stylua: ignore
+        --stylua: ignore start
         close_command = function(n) _G.Snacks.bufdelete(n) end,
-        -- stylua: ignore
         right_mouse_command = function(n) _G.Snacks.bufdelete(n) end,
+        -- stylua: ignore end
         diagnostics = "nvim_lsp",
         always_show_bufferline = false,
+        separator_style = "slope",
         offsets = {
           {
             filetype = "neo-tree",

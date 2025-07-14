@@ -7,8 +7,9 @@ return {
       "ravitemer/codecompanion-history.nvim",
       "ravitemer/mcphub.nvim",
       "Davidyz/VectorCode",
+      "franco-ruggeri/codecompanion-spinner.nvim",
     },
-    cmd = { "CodeCompanionChat", "CodeCompanionActions" },
+    cmd = { "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd", "CodeCompanionHistory" },
     enabled = true,
     opts = {
       --Refer to: https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
@@ -27,7 +28,8 @@ return {
         diff = { provider = "mini_diff" },
       },
       strategies = {
-        chat = { adapter = { name = "copilot", model = "gemini-2.5-pro" } },
+        chat = { adapter = { name = "copilot", model = "gpt-4o" } },
+        -- chat = { adapter = { name = "copilot", model = "gemini-2.5-pro" } },
         inline = { adapter = { name = "copilot", model = "gpt-4.1" } },
       },
       extensions = {
@@ -45,9 +47,9 @@ return {
             dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
           },
         },
-        vectorcode = {
-          opts = { add_tool = true },
-        },
+        -- vectorcode = {
+        --   opts = { add_tool = true },
+        -- },
         mcphub = {
           callback = "mcphub.extensions.codecompanion",
           opts = {
@@ -62,12 +64,18 @@ return {
     keys = {
     --stylua: ignore start
       {
-        "<leader>ca", "<cmd>CodeCompanionActions<cr>", {"n", "v"}, noremap = true, silent = true,
+        "<leader>ca", "<cmd>CodeCompanionActions<cr>", {"n", "v"}, { noremap = true, silent = true },
       },
       {
-        "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", {"n", "v"}, noremap = true, silent = true,
+        "<leader>ct", "<cmd>CodeCompanionChat Toggle<cr>", {"n", "v"}, { noremap = true, silent = true },
       },
       --stylua: ignore end
     },
+  },
+  {
+    "franco-ruggeri/codecompanion-spinner.nvim",
+    lazy = true,
+    enabled = true,
+    opts = {},
   },
 }
