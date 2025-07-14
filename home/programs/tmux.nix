@@ -33,19 +33,17 @@ in
       '';
     }
     {
-      plugin = tokyo-night-tmux;
+      plugin = catppuccin;
       extraConfig = ''
-        # colorscheme
-        set -g @tokyo-night-tmux_theme storm    # storm | day | default to 'night'
-        set -g @tokyo-night-tmux_transparent 1  # 1 (100%) or 0
+        set -g @catppuccin_flavor "macchiato"
+        set -g @catppuccin_window_status_style "rounded"
 
-        # status bar config
-        set -g @tokyo-night-tmux_window_id_style none
-        set -g @tokyo-night-tmux_pane_id_style super
-        set -g @tokyo-night-tmux_zoom_id_style dsquare
-
-        # window style
-        set -g @tokyo-night-tmux_window_tidy_icons 0 # tidy icons
+        set -g status-right-length 100
+        set -g status-left-length 100
+        set -g status-left ""
+        set -g status-right "#{E:@catppuccin_status_application}"
+        set -ag status-right "#{E:@catppuccin_status_session}"
+        set -ag status-right "#{E:@catppuccin_status_uptime}"
       '';
     }
   ];
@@ -53,7 +51,7 @@ in
     # Undercurl
     set -g default-terminal "${terminal}"
     set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
-    set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
+    set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
 
     # kitty graphics protocol (for image in neovim)
     set -gq allow-passthrough on
@@ -66,26 +64,8 @@ in
     set -g mouse on
     unbind -T copy-mode-vi MouseDragEnd1Pane
 
-    # transparent background line
-    # set -g pane-active-border-style 'fg=magenta,bg=default'
-    # set -g pane-border-style 'fg=brightblack,bg=default'
-    # set -g status-style 'bg=default'
-    # set -g status-interval 5
-
-    # Left status
-    # set -g status-left-length 50
-    # set -g status-left '#[fg=blue,bold]#S #[fg=white,nobold]'
-
-    # Window activity notification
-    setw -g monitor-activity on
-
-    # Window status
-    # setw -g window-status-format '#[fg=brightblack]#I:#W'
-    # setw -g window-status-current-format '#{?window_zoomed_flag,#[fg=yellow][Z],#[fg=magenta,bold]}#I:#W'
-
-    # Right status - just time and date
-    # set -g status-right-length 50
-    # set -g status-right '#[fg=white]%H:%M #[fg=brightblack]%Y-%m-%d'
+    # Window activity notificationf
+    set -g monitor-activity on
 
     # keybindings
     bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
@@ -128,5 +108,6 @@ in
         --preview-window 'right:55%' \
         --preview 'sesh preview {}'
     )\""
+
   '';
 }

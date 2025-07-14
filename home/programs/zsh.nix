@@ -22,15 +22,6 @@
     # terraform
     tf = "terraform";
     tg = "terragrunt";
-    # git
-    ga = "git add";
-    gc = "git commit";
-    gco = "git checkout";
-    gcp = "git cherry-pick";
-    gdiff = "git diff";
-    gp = "git push";
-    gs = "git status";
-    gt = "git tag";
   };
   # TODO: check how to make this work with sessionVariables
   initContent = ''

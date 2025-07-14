@@ -1,4 +1,5 @@
-{ username, ... }: {
+{ username, ... }:
+{
   enable = true;
   userName = "MattiasMTS";
   userEmail = "mattias.sjodin.6764@hotmail.com";
@@ -61,4 +62,3 @@
           sort | uniq -c | sort -rn | head -10'';
   };
 }
-

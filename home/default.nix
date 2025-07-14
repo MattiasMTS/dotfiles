@@ -107,7 +107,7 @@ in
     python313
     python313Packages.ipython
     python313Packages.sqlfmt
-    vectorcode # used in codecompanion
+    # vectorcode # used in codecompanion
     mcphub # used in codecompanion
 
     # pnpm_9
