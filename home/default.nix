@@ -100,7 +100,7 @@ in
 
     terraform
     tflint
-    tfsec
+    trivy
 
     rustup
 

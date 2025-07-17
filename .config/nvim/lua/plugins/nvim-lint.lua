@@ -6,8 +6,8 @@ return {
       events = { "BufWritePost", "BufReadPost", "InsertLeave" },
       linters_by_ft = {
         -- terraform
-        terraform = { "terraform_validate", "tfsec", "tflint" },
-        tf = { "terraform_validate", "tfsec", "tflint" },
+        terraform = { "terraform_validate", "trivy", "tflint" },
+        tf = { "terraform_validate", "trivy", "tflint" },
         ["terraform-vars"] = { "terraform_validate", "tfsec", "tflint" },
 
         -- kotlin
