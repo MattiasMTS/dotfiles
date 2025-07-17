@@ -1,5 +1,4 @@
 local methods = vim.lsp.protocol.Methods
--- TODO: add helper aucommands LspInfo, LspStart, LspStop, LspRestart, etc.
 
 --- Sets up LSP keymaps and autocommands for the given buffer.
 ---@param client vim.lsp.Client
@@ -27,6 +26,7 @@ local function on_attach(client, bufnr)
   map("gri", "<cmd>FzfLua lsp_implementations<cr>", "Go to implementation")
   map("grs", "<cmd>FzfLua lsp_document_symbols<cr>", "Document symbols")
   map("gro", vim.diagnostic.open_float, "Open Line Diagnostics")
+  map("grw", "<cmd>FzfLua lsp_workspace_diagnostics<cr>", "Workspace diagnostics") -- TODO: should checkout trouble.nvim
 
   -- stylua: ignore start
   map("[d", function() vim.diagnostic.jump({ count = -1 }) end, "Previous diagnostic")
@@ -47,8 +47,12 @@ local function on_attach(client, bufnr)
 
   if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
     map("<leader>th", function()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }))
+      vim.g.inlay_hints = not vim.g.inlay_hints
+      vim.lsp.inlay_hint.enable(vim.g.inlay_hints, { bufnr = bufnr })
+      vim.notify("[Inlay Hints] " .. (vim.g.inlay_hints and "enabled" or "disabled"))
     end, "[T]oggle Inlay [H]ints")
+
+    vim.lsp.inlay_hint.enable(vim.g.inlay_hints, { bufnr = bufnr })
   end
 
   if client:supports_method(methods.textDocument_documentHighlight) then
@@ -168,17 +172,95 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+local function enable_lsp_servers()
+  local server_configs = vim
+    .iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
+    :map(function(file)
+      return vim.fn.fnamemodify(file, ":t:r")
+    end)
+    :totable()
+  vim.lsp.enable(server_configs)
+end
+
 -- Set up LSP servers (load before the first buffer is read).
 vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
   once = true,
-  callback = function()
-    local server_configs = vim
-      .iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
-      :map(function(file)
-        return vim.fn.fnamemodify(file, ":t:r")
+  callback = enable_lsp_servers,
+})
+
+-- Useful LSP commands.
+
+vim.api.nvim_create_user_command("LspInfo", function()
+  local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
+  if #clients == 0 then
+    vim.notify("No LSP clients attached to this buffer.", vim.log.levels.INFO)
+    return
+  end
+
+  local client_names = vim
+    .iter(clients)
+    :map(function(client)
+      return client.name
+    end)
+    :totable()
+
+  vim.notify(("LSP clients attached to this buffer: %s"):format(table.concat(client_names, ", ")), vim.log.levels.INFO)
+end, {
+  desc = "Show LSP information for the current buffer",
+})
+
+vim.api.nvim_create_user_command("LspStart", function(_)
+  enable_lsp_servers()
+end, {
+  nargs = "?",
+  desc = "Start LSP server(s)",
+})
+
+vim.api.nvim_create_user_command("LspStop", function(opts)
+  local clients = opts.fargs
+
+  if #clients == 0 then
+    clients = vim
+      .iter(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
+      :map(function(client)
+        return client.name
       end)
       :totable()
+  end
 
-    vim.lsp.enable(server_configs)
-  end,
+  for _, name in ipairs(clients) do
+    if vim.lsp.config[name] == nil then
+      vim.notify(("LSP server %s is not configured."):format(name))
+    else
+      vim.lsp.enable(name, false)
+    end
+  end
+end, {
+  nargs = "?",
+  desc = "Stop LSP server(s)",
+})
+
+vim.api.nvim_create_user_command("LspRestart", function(opts)
+  local clients = opts.fargs
+
+  if #clients == 0 then
+    clients = vim
+      .iter(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
+      :map(function(client)
+        return client.name
+      end)
+      :totable()
+  end
+
+  for _, name in ipairs(clients) do
+    if vim.lsp.config[name] == nil then
+      vim.notify(("LSP server %s is not configured."):format(name))
+    else
+      vim.notify(("Restarting LSP server %s..."):format(name))
+      vim.lsp.enable(name, true)
+    end
+  end
+end, {
+  nargs = "?",
+  desc = "Restart LSP server(s)",
 })

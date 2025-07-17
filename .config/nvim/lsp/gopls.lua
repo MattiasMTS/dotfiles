@@ -2,23 +2,25 @@
 return {
   cmd = { "gopls" },
   filetypes = { "go", "gomod", "gowork", "gotmpl", "templ", "tmpl" },
+  -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
   settings = {
     gopls = {
-      gofumpt = false, -- managed by conform instead
+      gofumpt = false, -- replaced with conform
       usePlaceholders = true,
-      -- https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
-      -- hints = {
-      --   parameterNames = true,
-      --   assignVariableTypes = true,
-      --   constantValues = true,
-      --   compositeLiteralTypes = true,
-      --   compositeLiteralFields = true,
-      --   functionTypeParameters = true,
-      -- },
       staticcheck = true,
       vulncheck = "imports",
-      analysisProgressReporting = true,
+      hints = {
+        parameterNames = true,
+        assignVariableTypes = true,
+        constantValues = true,
+        compositeLiteralTypes = true,
+        compositeLiteralFields = true,
+        functionTypeParameters = true,
+        rangeVariableTypes = false,
+      },
+      semanticTokens = true,
       templateExtensions = { "templ", "tmpl" },
+      analysisProgressReporting = true,
     },
   },
 }
