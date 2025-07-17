@@ -28,8 +28,7 @@ return {
         diff = { provider = "mini_diff" },
       },
       strategies = {
-        chat = { adapter = { name = "copilot", model = "gpt-4o" } },
-        -- chat = { adapter = { name = "copilot", model = "gemini-2.5-pro" } },
+        chat = { adapter = { name = "copilot", model = "gpt-4.1" } },
         inline = { adapter = { name = "copilot", model = "gpt-4.1" } },
       },
       extensions = {

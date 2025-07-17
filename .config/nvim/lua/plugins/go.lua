@@ -2,7 +2,7 @@ return {
   {
     "olexsmir/gopher.nvim",
     branch = "develop",
-    enabled = true,
+    enabled = false,
     build = function()
       vim.cmd([[silent! GoInstallDeps]])
     end,

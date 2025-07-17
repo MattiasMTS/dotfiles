@@ -25,10 +25,10 @@
   };
   # TODO: check how to make this work with sessionVariables
   initContent = ''
+    # run before: go run github.com/GoogleCloudPlatform/artifact-registry-go-tools/cmd/auth@v0.1.0 refresh
     export USE_GKE_GCLOUD_AUTH_PLUGIN="true"
     export GOPROXY="https://proxy.golang.org,https://europe-west1-go.pkg.dev/es-shared-mgmt-02dd/eu-we1-golang,direct"
     export GONOSUMDB="github.com/epidemicsound/*"
-    export GOPRIVATE=
 
     if [ -n "$TTY" ]; then
       export GPG_TTY=$(tty)

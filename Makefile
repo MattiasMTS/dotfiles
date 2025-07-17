@@ -29,13 +29,17 @@ switch:
 
 .PHONY: update
 update:
-	nix flake update
+	@if [ -n "$(pkg)" ]; then \
+		nix flake update $(pkg); \
+	else \
+		nix flake update; \
+	fi
 	@echo "All updates completed"
 
 .PHONY: clean
 clean:
 	@echo "Running garbage collection.."
-	nix-collect-garbage -d --verbose
+	sudo nix-collect-garbage -d --verbose
 
 .PHONY: check
 check:
