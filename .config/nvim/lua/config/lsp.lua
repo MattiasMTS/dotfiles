@@ -180,6 +180,7 @@ local function enable_lsp_servers()
     end)
     :totable()
   vim.lsp.enable(server_configs)
+  -- vim.lsp.buf.workspace_diagnostics()
 end
 
 -- Set up LSP servers (load before the first buffer is read).
@@ -256,7 +257,6 @@ vim.api.nvim_create_user_command("LspRestart", function(opts)
     if vim.lsp.config[name] == nil then
       vim.notify(("LSP server %s is not configured."):format(name))
     else
-      vim.notify(("Restarting LSP server %s..."):format(name))
       vim.lsp.enable(name, true)
     end
   end
