@@ -96,6 +96,7 @@ in
 
     kubectl
     kubectx
+    kubernetes-helm
     # minikube
 
     terraform
