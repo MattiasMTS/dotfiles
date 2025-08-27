@@ -97,7 +97,7 @@ in
     kubectl
     kubectx
     kubernetes-helm
-    # minikube
+    minikube
 
     terraform
     tflint
