@@ -155,8 +155,7 @@ in
     lua-language-server
     stylua
 
-    # kotlin-language-server
-    # kotlinLspWrapper
+    kotlin-language-server # TODO: migrate to kotlinLspWrapper
     bash-language-server
 
     # pyright
@@ -175,6 +174,6 @@ in
     helm-ls
     markdown-oxide # trying this out
 
-    kotlinLspWrapper
+    # kotlinLspWrapper
   ];
 }
