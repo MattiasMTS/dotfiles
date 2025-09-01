@@ -13,9 +13,7 @@ return {
           min_window_height = 20,
         },
       },
-      {
-        "ngalaiko/tree-sitter-go-template",
-      },
+      { "ngalaiko/tree-sitter-go-template" },
     },
     version = false,
     build = ":TSUpdate",

@@ -2,9 +2,10 @@ return {
   {
     "linux-cultist/venv-selector.nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-telescope/telescope.nvim", event = "VeryLazy" },
+    enabled = true,
     opts = {
-      settings = { notify_user_on_venv_activation = true },
+      notify_user_on_venv_activation = true,
+      picker = "fzf",
     },
     keys = {
       { "<leader>cv", "<cmd>VenvSelect<cr>" },
