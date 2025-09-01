@@ -122,7 +122,7 @@ in
     pre-commit
 
     kotlin
-    jdk17
+    jdk21
     gradle
     ktlint
     ktfmt
