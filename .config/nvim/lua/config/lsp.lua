@@ -20,7 +20,7 @@ local function on_attach(client, bufnr)
   -- "gO" is mapped in Normal mode to vim.lsp.buf.document_symbol()
   -- CTRL-S is mapped in Insert mode to vim.lsp.buf.signature_help()
 
-  map("gra", "<cmd>FzfLua lsp_code_actions<cr>", "vim.lsp.buf.code_action()", { "n", "x" })
+  map("gra", "<cmd>FzfLua lsp_code_actions silent=true<cr>", "vim.lsp.buf.code_action()", { "n", "x" })
   map("grr", "<cmd>FzfLua lsp_references<cr>", "vim.lsp.buf.references()")
   map("grt", "<cmd>FzfLua lsp_typedefs<cr>", "Go to type definition")
   map("gri", "<cmd>FzfLua lsp_implementations<cr>", "Go to implementation")
