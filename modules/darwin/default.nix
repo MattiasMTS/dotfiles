@@ -25,7 +25,10 @@
 
   homebrew = {
     enable = true;
-    casks = [ "ghostty" ]; # TODO: move to home-manager after resolve upstream
+    casks = [
+      "ghostty"
+      "spotify"
+    ];
     brews = [
       "pipenv"
       "pyenv"
