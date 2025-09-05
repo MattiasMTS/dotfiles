@@ -102,6 +102,7 @@ in
     terraform
     tflint
     trivy
+    atlas
 
     rustup
 
