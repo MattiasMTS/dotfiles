@@ -64,7 +64,7 @@ in
     set -g mouse on
     unbind -T copy-mode-vi MouseDragEnd1Pane
 
-    # Window activity notificationf
+    # Window activity notification
     set -g monitor-activity on
 
     # keybindings
