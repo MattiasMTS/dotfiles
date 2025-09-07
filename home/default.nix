@@ -138,6 +138,7 @@ in
         pubsub-emulator
       ]
     ))
+    google-cloud-sql-proxy
 
     docker
     docker-compose
