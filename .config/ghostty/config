@@ -4,7 +4,7 @@
 # color
 # background = #1B1D26
 # theme = "/Users/mattias.sjodin/.local/share/nvim/lazy/tokyonight.nvim/extras/ghostty/tokyonight_moon"
-theme = catppuccin-macchiato
+theme = Catppuccin Macchiato
 
 # fonts
 font-family = "Fira Code"
