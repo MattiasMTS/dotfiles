@@ -13,6 +13,8 @@ return {
       },
       current_line_blame_formatter = "  <author>, <author_time:%Y-%m-%d> - <summary>",
       max_file_length = 40000, -- Disable if file is longer than this (in lines)
+      gh = true,
+      attach_to_untracked = true,
       on_attach = function()
         local gs = require("gitsigns")
         vim.keymap.set("n", "<leader>gb", function()
