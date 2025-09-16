@@ -52,6 +52,7 @@ return {
         ["<C-e>"] = { "hide" },
       },
       completion = {
+        menu = { scrollbar = false },
         list = {
           selection = { preselect = true, auto_insert = false },
           max_items = 200,

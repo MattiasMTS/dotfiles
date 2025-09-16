@@ -2,6 +2,7 @@
 return {
   cmd = { "gopls" },
   filetypes = { "go", "gomod", "gowork", "gotmpl", "templ", "tmpl" },
+  root_markers = { "go.work", "go.mod", ".git" },
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
   settings = {
     gopls = {
