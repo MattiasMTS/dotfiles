@@ -29,8 +29,8 @@ mouse-hide-while-typing = true
 # window
 initial-window = true
 resize-overlay = never
-background-opacity = 1
-background-blur = 30
+background-opacity = 0.95
+background-blur = 40
 window-save-state = always
 window-step-resize = false
 window-padding-balance = true
