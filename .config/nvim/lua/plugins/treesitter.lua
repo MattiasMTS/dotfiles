@@ -1,6 +1,8 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    version = false,
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-context",
@@ -15,12 +17,12 @@ return {
       },
       { "ngalaiko/tree-sitter-go-template", ft = "go" },
     },
-    version = false,
     build = ":TSUpdate",
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+    cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
     event = { "VeryLazy" },
     opts = {
       ensure_installed = {
+        "nix",
         "go",
         "gomod",
         "gowork",
@@ -30,7 +32,7 @@ return {
         "superhtml",
         "helm",
         "bash",
-        "gitcommit",
+        "dockerfile",
         "graphql",
         "html",
         "java",
@@ -42,13 +44,9 @@ return {
         "markdown",
         "markdown_inline",
         "python",
-        "rst",
-        "ninja",
-        "query",
-        "rasi",
-        "regex",
+        "jinja",
+        "jinja_inline",
         "rust",
-        "scss",
         "toml",
         "tsx",
         "typescript",
@@ -58,12 +56,16 @@ return {
         "terraform",
         "hcl",
         "proto",
+        "kotlin",
+        "sql",
       },
+      indent = { enable = true },
       highlight = { enable = true },
-      auto_install = false,
+      folds = { enable = false },
+      auto_install = true,
     },
     config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
+      require("nvim-treesitter").setup(opts)
     end,
   },
 }
