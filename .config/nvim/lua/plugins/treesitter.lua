@@ -18,8 +18,6 @@ return {
       { "ngalaiko/tree-sitter-go-template", ft = "go" },
     },
     build = ":TSUpdate",
-    cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
-    event = { "VeryLazy" },
     opts = {
       ensure_installed = {
         "nix",
@@ -58,14 +56,16 @@ return {
         "proto",
         "kotlin",
         "sql",
+        "regex",
       },
-      indent = { enable = true },
+      indent = { enable = true, disable = { "yaml" } },
       highlight = { enable = true },
       folds = { enable = false },
-      auto_install = true,
+      auto_install = false,
     },
     config = function(_, opts)
       require("nvim-treesitter").setup(opts)
+      require("nvim-treesitter").install(opts.ensure_installed)
     end,
   },
 }
