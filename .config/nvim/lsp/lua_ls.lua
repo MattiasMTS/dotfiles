@@ -12,6 +12,7 @@ return {
         enable = true,
         arrayIndex = "Disable",
       },
+      codeLens = { enable = true },
       runtime = { version = "LuaJIT" }, -- cuz neovim uses LuaJIT
       workspace = {
         checkThirdParty = false,

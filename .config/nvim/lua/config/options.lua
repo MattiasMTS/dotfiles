@@ -7,17 +7,17 @@ vim.opt.mouse = "a" -- mouse allowed in all modes
 
 vim.opt.autowrite = true
 
--- Show whitespace (trying this out)
-vim.opt.list = true
-vim.opt.showbreak = "↪"
-vim.opt.listchars = {
-  tab = "▸ ",
-  trail = "·",
-  extends = "›",
-  precedes = "‹",
-  nbsp = "␣",
-  eol = "↲",
-}
+-- -- Show whitespace (trying this out)
+-- vim.opt.list = true
+-- vim.opt.showbreak = "↪"
+-- vim.opt.listchars = {
+--   tab = "▸ ",
+--   trail = "·",
+--   extends = "›",
+--   precedes = "‹",
+--   nbsp = "␣",
+--   eol = "↲",
+-- }
 
 vim.opt.fillchars = {
   foldopen = "",

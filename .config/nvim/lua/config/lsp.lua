@@ -1,5 +1,4 @@
 local methods = vim.lsp.protocol.Methods
-
 --- Sets up LSP keymaps and autocommands for the given buffer.
 ---@param client vim.lsp.Client
 ---@param bufnr integer
@@ -71,14 +70,6 @@ local function on_attach(client, bufnr)
       buffer = bufnr,
       callback = vim.lsp.buf.clear_references,
     })
-
-    -- vim.api.nvim_create_autocmd("LspDetach", {
-    --   buffer = bufnr,
-    --   group = under_cursor_highlights_group,
-    --   callback = function(event2)
-    --     vim.lsp.buf.clear_references()
-    --   end,
-    -- })
   end
 end
 
@@ -172,6 +163,22 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+-- create an autocommand to set up codelense
+vim.api.nvim_create_autocmd("LspAttach", {
+  desc = "Configure LSP codelens",
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+    if client and client:supports_method("textDocument/codeLens", args.buf) then
+      vim.lsp.codelens.refresh()
+      vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+        buffer = args.buf,
+        callback = vim.lsp.codelens.refresh,
+      })
+    end
+  end,
+})
+
 local function enable_lsp_servers()
   local server_configs = vim
     .iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
@@ -180,7 +187,6 @@ local function enable_lsp_servers()
     end)
     :totable()
   vim.lsp.enable(server_configs)
-  -- vim.lsp.buf.workspace_diagnostics()
 end
 
 -- Set up LSP servers (load before the first buffer is read).
