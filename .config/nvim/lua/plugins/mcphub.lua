@@ -1,7 +1,7 @@
 return {
   {
     "ravitemer/mcphub.nvim",
-    enabled = true,
+    enabled = false,
     -- build = "", # Managed by flake.nix
     cmd = "MCPHub",
     event = "VeryLazy",

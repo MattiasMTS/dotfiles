@@ -5,7 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    mcp-hub.url = "github:ravitemer/mcp-hub";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -39,7 +38,6 @@
       homebrew-cask,
       homebrew-bundle,
       neovim-nightly-overlay,
-      mcp-hub,
       ...
     }@inputs:
     let

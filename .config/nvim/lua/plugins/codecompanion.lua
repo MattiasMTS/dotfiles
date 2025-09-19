@@ -5,8 +5,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-lua/plenary.nvim",
       "ravitemer/codecompanion-history.nvim",
-      "ravitemer/mcphub.nvim",
-      "Davidyz/VectorCode",
+      -- "ravitemer/mcphub.nvim",
       "franco-ruggeri/codecompanion-spinner.nvim",
     },
     cmd = { "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd", "CodeCompanionHistory" },
@@ -23,9 +22,16 @@ return {
             pinned_buffer = " ",
             watched_buffer = "👀 ",
           },
+          fold_context = true,
+          child_window = { opts = { wrap = true } },
         },
         action_palette = { provider = "fzf_lua" },
         diff = { provider = "mini_diff" },
+      },
+      memory = {
+        opts = {
+          chat = { enabled = true },
+        },
       },
       strategies = {
         chat = { adapter = { name = "copilot", model = "gpt-4.1" } },
@@ -46,17 +52,14 @@ return {
             dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
           },
         },
-        -- vectorcode = {
-        --   opts = { add_tool = true },
+        -- mcphub = {
+        --   callback = "mcphub.extensions.codecompanion",
+        --   opts = {
+        --     make_vars = true, -- Show mcp tool results in chat
+        --     make_slash_commands = true, -- Convert resources to #variables
+        --     show_result_in_chat = true, -- Add prompts as /slash commands
+        --   },
         -- },
-        mcphub = {
-          callback = "mcphub.extensions.codecompanion",
-          opts = {
-            make_vars = true, -- Show mcp tool results in chat
-            make_slash_commands = true, -- Convert resources to #variables
-            show_result_in_chat = true, -- Add prompts as /slash commands
-          },
-        },
       },
     },
     -- check these https://codecompanion.olimorris.dev/usage/chat-buffer/#keymaps
