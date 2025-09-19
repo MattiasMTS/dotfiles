@@ -22,6 +22,20 @@ return {
           enabled = true,
         },
       },
+      default_component_configs = {
+        icon = {
+          provider = function(icon, node)
+            local mini = require("mini.icons")
+
+            local ok, text = pcall(mini.get, node.type, node.name)
+            if not ok then
+              return
+            end
+
+            icon.text = text
+          end,
+        },
+      },
     },
     keys = {
       {
@@ -30,6 +44,19 @@ return {
           require("neo-tree.command").execute({ toggle = true })
         end,
         desc = "Explorer NeoTree (Root Dir)",
+      },
+    },
+  },
+  {
+    "mbbill/undotree",
+    enabled = true,
+    cmd = { "UndotreeToggle", "UndotreeFocus", "UndotreeHide", "UndotreeShow", "UndotreePersistUndo" },
+    opts = {},
+    keys = {
+      {
+        "<leader>u",
+        "<Cmd>UndotreeToggle<CR>",
+        desc = "Toggle Undotree",
       },
     },
   },
