@@ -33,7 +33,7 @@ let
     exec java -cp "$CLASSPATH" com.intellij.internal.statistic.uploader.EventLogUploader "$@"
   '';
 
-  mcphub = inputs.mcp-hub.packages."${pkgs.system}".default;
+  # mcphub = inputs.mcp-hub.packages."${pkgs.system}".default;
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 in
 {
@@ -71,7 +71,7 @@ in
     tmux = import ./programs/tmux.nix { inherit pkgs; };
     fzf = import ./programs/fzf.nix { inherit pkgs lib; };
     zoxide = (import ./programs/zoxide.nix { inherit pkgs; });
-    go = import ./programs/go.nix { inherit pkgs; };
+    go = import ./programs/go.nix { inherit pkgs username; };
     java = import ./programs/java.nix { inherit pkgs; };
     lazygit = import ./programs/lazygit.nix { inherit pkgs; };
     lazydocker = import ./programs/lazydocker.nix { inherit pkgs; };
@@ -110,7 +110,7 @@ in
     python313Packages.ipython
     python313Packages.sqlfmt
     # vectorcode # used in codecompanion
-    mcphub # used in codecompanion
+    # mcphub # used in codecompanion
 
     # pnpm_9
     nodejs_24
@@ -142,12 +142,13 @@ in
 
     docker
     docker-compose
-    dockerfile-language-server-nodejs
+    dockerfile-language-server
     docker-compose-language-service
 
     protobuf
     protolint
     buf
+    tree-sitter
 
     # LSP execs, formatter and linters for neovim
     yaml-language-server

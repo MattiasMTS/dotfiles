@@ -1,8 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 {
   enable = true;
 
   package = pkgs.go_1_25;
-  goPath = "go";
-  goBin = "go/bin";
+  env = {
+    GOPATH = "/Users/${username}/go";
+    GOBIN = "/Users/${username}/go/bin";
+  };
 }
