@@ -36,7 +36,7 @@ return {
     "folke/tokyonight.nvim",
     priority = 1000,
     lazy = false,
-    enabled = true,
+    enabled = false,
     opts = {
       styles = {
         comments = { italic = true },

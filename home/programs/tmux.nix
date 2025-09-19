@@ -48,7 +48,7 @@ in
         set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_overlay_0},none]│"
         set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_maroon}]  #{pane_current_command} "
         set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_overlay_0},none]│"
-        set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
+        # set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
         set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_overlay_0},none]#{?window_zoomed_flag,│,}"
         set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_yellow}]#{?window_zoomed_flag,  zoom ,}"
 
@@ -88,8 +88,7 @@ in
     set -g window-status-current-style "bg=#{@thm_peach},fg=#{@thm_bg},bold"
 
     # Undercurl
-    # set -g default-terminal "${terminal}"
-    set -g default-terminal "screen-256color"
+    set -g default-terminal "${terminal}"
     set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
     set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
 
