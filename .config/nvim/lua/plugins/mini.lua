@@ -1,6 +1,6 @@
 return {
   {
-    "echasnovski/mini.icons",
+    "nvim-mini/mini.icons",
     lazy = true,
     version = false,
     event = "VeryLazy",
@@ -24,7 +24,7 @@ return {
   },
   -- better diff (e.g. git, codecompanion, diff buffers, etc)
   {
-    "echasnovski/mini.diff",
+    "nvim-mini/mini.diff",
     version = false,
     event = "VeryLazy",
     config = function()
@@ -37,7 +37,7 @@ return {
   },
   -- auto pairs
   {
-    "echasnovski/mini.pairs",
+    "nvim-mini/mini.pairs",
     version = false,
     event = "InsertEnter",
     opts = {
@@ -55,7 +55,7 @@ return {
   },
   -- Highlight patterns in text.
   {
-    "echasnovski/mini.hipatterns",
+    "nvim-mini/mini.hipatterns",
     version = false,
     event = "BufReadPost",
     opts = function()

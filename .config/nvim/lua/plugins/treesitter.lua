@@ -62,7 +62,7 @@ return {
         "sql",
         "regex",
       },
-      indent = { enable = true },
+      indent = { enable = false },
       highlight = { enable = true },
       auto_install = false,
     },
