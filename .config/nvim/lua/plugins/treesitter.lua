@@ -61,6 +61,7 @@ return {
         "kotlin",
         "sql",
         "regex",
+        "make",
       },
       indent = { enable = false },
       highlight = { enable = true },

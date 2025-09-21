@@ -1,13 +1,5 @@
 return {
   {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    enabled = false,
-    cmd = "CopilotChat",
-    opts = {
-      model = "gemini-2.0-flash-001",
-    },
-  },
-  {
     "zbirenbaum/copilot.lua",
     enabled = true,
     dependencies = { "L3MON4D3/LuaSnip" },
@@ -27,14 +19,13 @@ return {
           accept_line = "<M-l>",
           next = "<M-]>",
           prev = "<M-[>",
-          dismiss = "/",
+          dismiss = "<C-/>",
         },
       },
       filetypes = {
         yaml = true,
         markdown = true,
       },
-      copilot_model = "gemini-2.5-pro",
     },
   },
 }
