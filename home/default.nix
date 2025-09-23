@@ -178,5 +178,6 @@ in
     markdown-oxide # trying this out
 
     # kotlinLspWrapper
+    steampipe
   ];
 }

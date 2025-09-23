@@ -60,7 +60,7 @@ return {
     event = "BufReadPost",
     opts = function()
       local highlighters = {}
-      for _, word in ipairs({ "todo", "note", "hack", "fix", "perf" }) do
+      for _, word in ipairs({ "todo", "note", "hack", "fix", "perf", "fixme" }) do
         highlighters[word] = {
           pattern = string.format("%%f[%%w]()%s()%%f[%%W]", word:upper()),
           group = string.format("MiniHipatterns%s", word:sub(1, 1):upper() .. word:sub(2)),
