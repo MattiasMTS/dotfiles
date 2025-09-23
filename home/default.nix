@@ -114,6 +114,9 @@ in
 
     # pnpm_9
     nodejs_24
+    bun
+    vtsls
+    deno
     nodePackages.prettier
     nodePackages.vscode-json-languageserver
 
