@@ -92,7 +92,7 @@ in
     obsidian
     tree
     nixfmt-rfc-style
-    # presenterm
+    presenterm
 
     kubectl
     kubectx
