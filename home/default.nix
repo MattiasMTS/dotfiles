@@ -8,6 +8,7 @@
 }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
+  dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
 
   # Fetch and extract the Kotlin LSP zip file
   kotlinLsp =
@@ -45,12 +46,9 @@ in
   xdg.enable = true;
 
   # packages managed outside of home-manager
-  xdg.configFile.nvim = {
-    source = mkOutOfStoreSymlink "/Users/${username}/src/github.com/projects/dotfiles/.config/nvim";
-    force = true;
-  };
-  xdg.configFile.ghostty.source = mkOutOfStoreSymlink "/Users/${username}/src/github.com/projects/dotfiles/.config/ghostty";
-  xdg.configFile.sesh.source = mkOutOfStoreSymlink "/Users/${username}/src/github.com/projects/dotfiles/.config/sesh";
+  xdg.configFile.nvim.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/nvim";
+  xdg.configFile.ghostty.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/ghostty";
+  xdg.configFile.sesh.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/sesh";
 
   # applications/programs
   programs = {
@@ -182,5 +180,6 @@ in
 
     # kotlinLspWrapper
     steampipe
+    temporal-cli
   ];
 }

@@ -100,5 +100,10 @@
     };
   };
 
-  security.pam.services.sudo_local.touchIdAuth = true;
+  # I'm lazy
+  security.pam.services.sudo_local = {
+    enable = true;
+    reattach = true;
+    touchIdAuth = true;
+  };
 }
