@@ -1,5 +1,5 @@
 { pkgs, ... }:
 {
-  enable = false;
+  enable = true;
   package = pkgs.jdk21;
 }

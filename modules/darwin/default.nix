@@ -29,10 +29,7 @@
       "ghostty"
       "spotify"
     ];
-    brews = [
-      "pipenv"
-      "pyenv"
-    ];
+    brews = [ ];
     taps = [ ];
   };
 

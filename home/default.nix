@@ -68,6 +68,7 @@ in
     git = import ./programs/git.nix { inherit username lib; };
     tmux = import ./programs/tmux.nix { inherit pkgs; };
     fzf = import ./programs/fzf.nix { inherit pkgs lib; };
+    direnv = import ./programs/direnv.nix { inherit pkgs lib; };
     zoxide = (import ./programs/zoxide.nix { inherit pkgs; });
     go = import ./programs/go.nix { inherit pkgs username; };
     java = import ./programs/java.nix { inherit pkgs; };
@@ -96,6 +97,7 @@ in
     kubectx
     kubernetes-helm
     minikube
+    stern
 
     terraform
     tflint
