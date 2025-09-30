@@ -172,8 +172,7 @@ in
     superhtml
     golines
     gofumpt
-    # golangci-lint
-    # golangci-lint-langserver
+    copilot-language-server
 
     terraform-ls
     nil

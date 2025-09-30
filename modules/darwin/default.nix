@@ -74,6 +74,7 @@
       "terraform"
       "raycast"
       "obsidian"
+      "copilot-language-server"
     ];
 
   # do garbage collection bi-daily to keep disk usage low

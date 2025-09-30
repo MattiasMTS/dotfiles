@@ -149,6 +149,9 @@ vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
   return register_capability(err, res, ctx)
 end
 
+-- enable builtin NES
+vim.lsp.inline_completion.enable()
+
 -- Create an autocommand to set up LSP keymaps when an LSP client attaches to a buffer.
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "Configure LSP keymaps",
