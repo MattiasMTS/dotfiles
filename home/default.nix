@@ -10,29 +10,21 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
 
-  # Fetch and extract the Kotlin LSP zip file
-  kotlinLsp =
-    pkgs.runCommand "kotlin-lsp"
-      {
-        buildInputs = [ pkgs.unzip ];
-      }
-      ''
-        mkdir -p $out/lib
-        unzip ${
-          pkgs.fetchurl {
-            url = "https://download-cdn.jetbrains.com/kotlin-lsp/0.252.16998/kotlin-0.252.16998.zip";
-            sha256 = "bWXvrTm0weirPqdmP/WSLySdsOWU0uBubx87MVvKoDc=";
-          }
-        } -d $out/lib
-      '';
-
-  # Create a wrapper script to run the Kotlin LSP
-  kotlinLspWrapper = pkgs.writeShellScriptBin "kotlin-lsp" ''
-    #!/usr/bin/env bash
-    # Build the classpath with all .jar files in the lib directory
-    CLASSPATH=$(find ${kotlinLsp}/lib -name "*.jar" | tr '\n' ':')
-    exec java -cp "$CLASSPATH" com.intellij.internal.statistic.uploader.EventLogUploader "$@"
-  '';
+  copilot-cli = pkgs.buildNpmPackage {
+    pname = "copilot-cli";
+    version = "0.0.331";
+    src = pkgs.fetchurl {
+      url = "https://registry.npmjs.org/@github/copilot/-/copilot-0.0.331.tgz";
+      sha256 = "sha256-+UxS3YeHuiNKa3TSGNpEKrvD7o7rmfEYoesUirluxFA=";
+    };
+    npmDepsHash = "sha256-towDD5nkPkju1ZbE0xgybM02tuM/5NuFAu1zdZFSlJ4=";
+    # requires a lock file... get this manually by fetching the tar and
+    # running npm install --package-lock-only
+    postPatch = ''
+      cp  ${./../copilot/package-lock.json} ./package-lock.json
+    '';
+    dontNpmBuild = true;
+  };
 
   # mcphub = inputs.mcp-hub.packages."${pkgs.system}".default;
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
@@ -179,8 +171,8 @@ in
     helm-ls
     markdown-oxide # trying this out
 
-    # kotlinLspWrapper
     steampipe
     temporal-cli
+    copilot-cli
   ];
 }
