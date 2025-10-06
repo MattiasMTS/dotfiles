@@ -16,6 +16,7 @@
 
   # system wide packages (all users)
   environment.systemPackages = with pkgs; [
+    brave
     raycast
     neovim
     git
@@ -76,5 +77,6 @@
       "terraform"
       "raycast"
       "copilot-language-server"
+      "claude-code"
     ];
 }

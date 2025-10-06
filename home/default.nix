@@ -61,7 +61,6 @@ in
     go = import ./programs/go.nix { inherit pkgs username; };
     java = import ./programs/java.nix { inherit pkgs; };
     lazygit = import ./programs/lazygit.nix { inherit pkgs; };
-    lazydocker = import ./programs/lazydocker.nix { inherit pkgs; };
     gh = import ./programs/gh.nix { inherit pkgs; };
     ssh = import ./programs/ssh.nix { inherit pkgs; };
     bat.enable = true;
@@ -73,6 +72,7 @@ in
   # user specific packages instead of system wide
   home.packages = with pkgs; [
     devenv_1_8_1
+    tree-sitter
     fzf
     fd
     delta
@@ -80,26 +80,22 @@ in
     tree
     nixfmt-rfc-style
     presenterm
-    # devenv
+    clang
+    claude-code
 
     kubectl
     kubectx
     kubernetes-helm
     minikube
-    stern
 
     terraform
     tflint
     trivy
-    atlas
 
     rustup
-
     python313
     python313Packages.ipython
     python313Packages.sqlfmt
-    # vectorcode # used in codecompanion
-    # mcphub # used in codecompanion
 
     # pnpm_9
     nodejs_24
@@ -113,11 +109,11 @@ in
     ruff
     pre-commit
 
-    kotlin
-    jdk21
-    gradle
-    ktlint
-    ktfmt
+    # kotlin
+    # jdk21
+    # gradle
+    # ktlint
+    # ktfmt
 
     # remember to disable ipv6, otherwise super slow gcloud
     # networksetup -setv6off Wi-Fi
@@ -131,15 +127,14 @@ in
     ))
     google-cloud-sql-proxy
 
-    docker
-    docker-compose
+    # docker
+    # docker-compose
     # dockerfile-language-server
-    docker-compose-language-service
+    # docker-compose-language-service
 
-    protobuf
-    protolint
-    buf
-    tree-sitter
+    # protobuf
+    # protolint
+    # buf
 
     # LSP execs, formatter and linters for neovim
     yaml-language-server
@@ -149,7 +144,7 @@ in
     lua-language-server
     stylua
 
-    kotlin-language-server # TODO: migrate to kotlinLspWrapper
+    #kotlin-language-server # TODO: migrate to kotlinLspWrapper
     bash-language-server
 
     # pyright
@@ -157,17 +152,15 @@ in
 
     gopls
     templ
-    superhtml
     golines
     gofumpt
     copilot-language-server
 
+    temporal-cli
     terraform-ls
     nil
     helm-ls
-    markdown-oxide # trying this out
-
-    steampipe
-    temporal-cli
+    #markdown-oxide # trying this out
+    #steampipe
   ];
 }
