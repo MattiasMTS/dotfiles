@@ -8,30 +8,26 @@
 }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
-
-  copilot-cli = pkgs.buildNpmPackage {
-    pname = "copilot-cli";
-    version = "0.0.331";
-    src = pkgs.fetchurl {
-      url = "https://registry.npmjs.org/@github/copilot/-/copilot-0.0.331.tgz";
-      sha256 = "sha256-+UxS3YeHuiNKa3TSGNpEKrvD7o7rmfEYoesUirluxFA=";
-    };
-    npmDepsHash = "sha256-towDD5nkPkju1ZbE0xgybM02tuM/5NuFAu1zdZFSlJ4=";
-    # requires a lock file... get this manually by fetching the tar and
-    # running npm install --package-lock-only
-    postPatch = ''
-      cp  ${./../copilot/package-lock.json} ./package-lock.json
-    '';
-    dontNpmBuild = true;
-  };
-
-  # mcphub = inputs.mcp-hub.packages."${pkgs.system}".default;
+  dotfilesPath = "/Users/mattiassjodin/src/github.com/projects/dotfiles";
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+  devenv_1_8_1 = inputs.devenv.packages.${pkgs.system}.devenv;
+  # devenv_1_8_1 = pkgs.devenv.overrideAttrs (old: {
+  #   version = "1.8.1";
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "cachix";
+  #     repo = "devenv";
+  #     tag = "v1.8.1";
+  #     hash = "sha256-YsSFlVWUu4RSYnObqcBJ4Mr3bJVVhuFhaQAktHytBAI=";
+  #   };
+  #   # cargoHash = "sha256-zJorGAsp5k5oBuXogYqEPVexcNsYCeiTmrQqySd1AGs=";
+  #   cargoHash = pkgs.lib.fakeSha256;
+  #   # cargoHash = "sha256-41VmzZvoRd2pL5/o6apHztpS2XrL4HGPIJPBkUbPL1I=";
+  #
+  # });
 in
 {
   programs.home-manager.enable = true;
-  home.stateVersion = "25.11";
+  home.stateVersion = "25.05";
 
   home.username = username;
   home.homeDirectory = "/Users/${username}";
@@ -76,14 +72,15 @@ in
 
   # user specific packages instead of system wide
   home.packages = with pkgs; [
+    devenv_1_8_1
     fzf
     fd
     delta
     sesh
-    obsidian
     tree
     nixfmt-rfc-style
     presenterm
+    # devenv
 
     kubectl
     kubectx
@@ -109,7 +106,6 @@ in
     bun
     vtsls
     deno
-    nodePackages.prettier
     nodePackages.vscode-json-languageserver
 
     duckdb
@@ -137,7 +133,7 @@ in
 
     docker
     docker-compose
-    dockerfile-language-server
+    # dockerfile-language-server
     docker-compose-language-service
 
     protobuf
@@ -173,6 +169,5 @@ in
 
     steampipe
     temporal-cli
-    copilot-cli
   ];
 }

@@ -34,20 +34,22 @@
   };
 
   # enable flakes globally
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-  nix.optimise.automatic = true;
-  # Auto upgrade nix package and the daemon service.
-  nix.enable = true;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+    keep-outputs = true
+    keep-derivations = true
+  '';
+  # managed by determinate
+  nix.enable = false;
 
-  # extra host specs
-  # https://github.com/nix-darwin/nix-darwin/issues/1035
-  # networking.extraHosts = ''
-  #   127.0.0.1	  kubernetes.docker.internal
-  #   127.0.0.1   kubernetes.default.svc.cluster.local
-  # '';
+  # ingest to custom conf.nix
+  determinate-nix.customSettings = {
+    eval-cores = 0;
+    extra-experimental-features = [
+      "build-time-fetch-tree" # Enables build-time flake inputs
+      "parallel-eval" # Enables parallel evaluation
+    ];
+  };
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;
@@ -73,13 +75,6 @@
     builtins.elem (lib.getName pkg) [
       "terraform"
       "raycast"
-      "obsidian"
       "copilot-language-server"
     ];
-
-  # do garbage collection bi-daily to keep disk usage low
-  nix.gc = {
-    automatic = lib.mkDefault true;
-    options = lib.mkDefault "--delete-older-than 2d";
-  };
 }

@@ -27,8 +27,8 @@
       all = true;
     };
 
-    "includeIf \"gitdir:~/epidemicsound/\"" = {
-      email = "mattias.sjodin@epidemicsound.com";
+    "includeIf \"gitdir:~/lovablelabs/\"" = {
+      email = "msjodin@lovable.dev";
     };
   };
 

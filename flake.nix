@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
@@ -11,6 +10,12 @@
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    determinate = {
+      url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    devenv.url = "github:cachix/devenv/v1.8.1";
 
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-core = {
@@ -38,10 +43,12 @@
       homebrew-cask,
       homebrew-bundle,
       neovim-nightly-overlay,
+      determinate,
+      devenv,
       ...
     }@inputs:
     let
-      username = "mattias.sjodin";
+      username = "mattiassjodin";
       system = "aarch64-darwin";
       hostname = "Mattiass-MacBook-Pro";
       inherit (self) outputs;
@@ -54,6 +61,8 @@
         specialArgs = { inherit inputs username; };
         modules = [
           # `nix-darwin` config
+          inputs.determinate.darwinModules.default
+
           ./modules/darwin/default.nix
           ./modules/darwin/system.nix
 
@@ -86,12 +95,12 @@
 
               };
               # Optional: Enable fully-declarative tap management
-              #
               # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
               mutableTaps = false;
             };
           }
         ];
       };
+
     };
 }

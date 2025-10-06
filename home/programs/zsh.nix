@@ -17,19 +17,13 @@
     k = "kubectl";
     kc = "kubectx";
     # shortcuts to projects
-    es = "cd ~/src/github.com/epidemicsound/";
+    le = "cd ~/src/github.com/lovable/";
     pj = "cd ~/src/github.com/projects/";
     # terraform
     tf = "terraform";
-    tg = "terragrunt";
   };
   # TODO: check how to make this work with sessionVariables
   initContent = ''
-    # run before: go run github.com/GoogleCloudPlatform/artifact-registry-go-tools/cmd/auth@v0.1.0 refresh
-    export USE_GKE_GCLOUD_AUTH_PLUGIN="true"
-    export GOPROXY="https://proxy.golang.org,https://europe-west1-go.pkg.dev/es-shared-mgmt-02dd/eu-we1-golang,direct"
-    export GONOSUMDB="github.com/epidemicsound/*"
-
     if [ -n "$TTY" ]; then
       export GPG_TTY=$(tty)
     else
