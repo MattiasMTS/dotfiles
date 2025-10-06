@@ -6,7 +6,7 @@ return {
   },
   {
     "kndndrj/nvim-dbee",
-    enabled = true,
+    enabled = false,
     dev = true,
     cmd = "Dbee",
     build = function()
