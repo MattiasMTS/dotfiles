@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 {
   enable = true;
   history.size = 10000;
@@ -24,6 +24,8 @@
   };
   # TODO: check how to make this work with sessionVariables
   initContent = ''
+    export PATH=$PATH:/Users/${username}/go/bin
+
     if [ -n "$TTY" ]; then
       export GPG_TTY=$(tty)
     else

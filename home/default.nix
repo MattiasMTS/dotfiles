@@ -51,7 +51,14 @@ in
       vimdiffAlias = true;
       vimAlias = true;
     };
-    zsh = import ./programs/zsh.nix { inherit config pkgs lib; };
+    zsh = import ./programs/zsh.nix {
+      inherit
+        config
+        pkgs
+        lib
+        username
+        ;
+    };
     starship = import ./programs/starship.nix { inherit pkgs; };
     git = import ./programs/git.nix { inherit username lib; };
     tmux = import ./programs/tmux.nix { inherit pkgs; };
