@@ -95,7 +95,7 @@ in
     kubernetes-helm
     minikube
 
-    opentofu
+    terraform
     tflint
     trivy
 
@@ -164,7 +164,7 @@ in
     copilot-language-server
 
     temporal-cli
-    tofu-ls
+    terraform-ls
     nil
     helm-ls
     #markdown-oxide # trying this out

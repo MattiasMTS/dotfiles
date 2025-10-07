@@ -74,6 +74,7 @@
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [
+      "terraform"
       "raycast"
       "copilot-language-server"
       "claude-code"
