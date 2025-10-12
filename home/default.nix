@@ -93,7 +93,8 @@ in
     kubectl
     kubectx
     kubernetes-helm
-    minikube
+    kind
+    spacectl
 
     terraform
     tflint

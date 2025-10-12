@@ -19,8 +19,8 @@
     # shortcuts to projects
     le = "cd ~/src/github.com/lovable/";
     pj = "cd ~/src/github.com/projects/";
-    # terraform
-    tf = "terraform";
+    tf = "tofu";
+    ch = "clickhouse-cli";
   };
   # TODO: check how to make this work with sessionVariables
   initContent = ''
