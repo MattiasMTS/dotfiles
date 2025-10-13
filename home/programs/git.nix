@@ -10,6 +10,8 @@
     format = "ssh";
   };
 
+  lfs.enable = true;
+
   extraConfig = {
     interactive.diffFilter = "delta --color-only";
     delta.navigate = true;

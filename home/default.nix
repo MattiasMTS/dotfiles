@@ -8,22 +8,9 @@
 }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  dotfilesPath = "/Users/mattiassjodin/src/github.com/projects/dotfiles";
+  dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
   devenv_1_8_1 = inputs.devenv.packages.${pkgs.system}.devenv;
-  # devenv_1_8_1 = pkgs.devenv.overrideAttrs (old: {
-  #   version = "1.8.1";
-  #   src = pkgs.fetchFromGitHub {
-  #     owner = "cachix";
-  #     repo = "devenv";
-  #     tag = "v1.8.1";
-  #     hash = "sha256-YsSFlVWUu4RSYnObqcBJ4Mr3bJVVhuFhaQAktHytBAI=";
-  #   };
-  #   # cargoHash = "sha256-zJorGAsp5k5oBuXogYqEPVexcNsYCeiTmrQqySd1AGs=";
-  #   cargoHash = pkgs.lib.fakeSha256;
-  #   # cargoHash = "sha256-41VmzZvoRd2pL5/o6apHztpS2XrL4HGPIJPBkUbPL1I=";
-  #
-  # });
 in
 {
   programs.home-manager.enable = true;
@@ -93,12 +80,14 @@ in
     kubectl
     kubectx
     kubernetes-helm
+    kustomize
     kind
     spacectl
 
     terraform
     tflint
     trivy
+    opentofu
 
     rustup
     python313
@@ -117,14 +106,7 @@ in
     ruff
     pre-commit
 
-    # kotlin
-    # jdk21
-    # gradle
-    # ktlint
-    # ktfmt
-
-    # remember to disable ipv6, otherwise super slow gcloud
-    # networksetup -setv6off Wi-Fi
+    awscli2
     (google-cloud-sdk.withExtraComponents (
       with pkgs.google-cloud-sdk.components;
       [
@@ -135,10 +117,12 @@ in
     ))
     google-cloud-sql-proxy
 
-    # docker
-    # docker-compose
-    # dockerfile-language-server
-    # docker-compose-language-service
+    docker
+    docker-compose
+    dockerfile-language-server
+    docker-compose-language-service
+    colima
+    lazydocker
 
     # protobuf
     # protolint

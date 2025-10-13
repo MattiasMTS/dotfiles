@@ -29,6 +29,7 @@
     casks = [
       "ghostty"
       "spotify"
+      # "orbstack"
     ];
     brews = [ ];
     taps = [ ];
@@ -45,7 +46,7 @@
 
   # ingest to custom conf.nix
   determinate-nix.customSettings = {
-    eval-cores = 0;
+    eval-cores = 1;
     extra-experimental-features = [
       "build-time-fetch-tree" # Enables build-time flake inputs
       "parallel-eval" # Enables parallel evaluation
