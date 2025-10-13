@@ -48,6 +48,7 @@ in
     };
     starship = import ./programs/starship.nix { inherit pkgs; };
     git = import ./programs/git.nix { inherit username lib; };
+    jujutsu = import ./programs/jujutsu.nix { inherit username lib; };
     tmux = import ./programs/tmux.nix { inherit pkgs; };
     fzf = import ./programs/fzf.nix { inherit pkgs lib; };
     direnv = import ./programs/direnv.nix { inherit pkgs lib; };
@@ -76,13 +77,14 @@ in
     presenterm
     clang
     claude-code
+    spacectl
 
     kubectl
     kubectx
     kubernetes-helm
     kustomize
-    kind
-    spacectl
+    k3d
+    rancher
 
     terraform
     tflint

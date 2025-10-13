@@ -4,13 +4,13 @@
 
   settings = {
     user = {
-      name = "MattiasMTS";
+      name = "Mattias Sjödin";
       email = "mattias.sjodin.6764@hotmail.com";
     };
 
     # SSH signing configuration
     signing = {
-      sign-all = true;
+      behavior = "own";
       backend = "ssh";
       key = "/Users/${username}/.ssh/id_ed25519.pub";
     };
@@ -24,7 +24,7 @@
     # UI configuration - use delta for diffs
     ui = {
       default-command = "log";
-      diff.tool = [
+      diff-formatter = [
         "delta"
         "--color-only"
       ];
@@ -71,7 +71,7 @@
     # Conditional configuration for work repositories
     "--scope" = [
       {
-        "--when" = {
+        when = {
           repositories = [ "~/lovablelabs" ];
         };
         user = {
