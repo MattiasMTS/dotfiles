@@ -23,7 +23,12 @@
 
     # UI configuration - use delta for diffs
     ui = {
-      default-command = "log";
+      default-command = [
+        "log"
+        "--no-pager"
+        "--limit"
+        "7"
+      ];
       diff-formatter = [
         "delta"
         "--color-only"
