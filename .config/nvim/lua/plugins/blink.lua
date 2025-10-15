@@ -9,9 +9,12 @@ return {
       },
       { "rafamadriz/friendly-snippets" },
     },
-    build = "cargo build --release",
-    event = "InsertEnter",
+    -- build = "cargo build --release", # TODO: build it via nix instead
+    event = { "InsertEnter", "CmdlineEnter" },
     opts = {
+      fuzzy = {
+        implementation = "lua",
+      },
       keymap = {
         preset = "default",
         -- better selection
@@ -30,16 +33,58 @@ return {
         ["<C-e>"] = { "hide" },
       },
       completion = {
-        menu = { scrollbar = false },
+        menu = {
+          scrollbar = true,
+          draw = { treesitter = { "lsp" } },
+        },
         list = {
           selection = { preselect = true, auto_insert = false },
           max_items = 200,
         },
-        documentation = { auto_show = true },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 200,
+        },
         ghost_text = { enabled = false },
       },
-      signature = { enabled = true },
-      cmdline = { enabled = false },
+      signature = {
+        enabled = true,
+        trigger = {
+          show_on_keyword = true,
+          enabled = true,
+          show_on_insert = true,
+          show_on_trigger_character = true,
+        },
+        window = {
+          max_width = 50,
+          min_width = 50,
+          max_height = 20,
+          border = "double",
+          treesitter_highlighting = true,
+          show_documentation = true,
+        },
+      },
+      cmdline = {
+        enabled = true,
+        keymap = {
+          preset = "cmdline",
+          ["<Right>"] = false,
+          ["<Left>"] = false,
+          ["<C-j>"] = { "select_next", "fallback" },
+          ["<C-k>"] = { "select_prev", "fallback" },
+          ["<Down>"] = { "select_next", "fallback" },
+          ["<Up>"] = { "select_prev", "fallback" },
+        },
+        completion = {
+          list = { selection = { preselect = false } },
+          menu = {
+            auto_show = function(_)
+              return vim.fn.getcmdtype() == ":"
+            end,
+          },
+          ghost_text = { enabled = true },
+        },
+      },
 
       sources = {
         default = { "lsp", "path", "snippets", "lazydev", "codecompanion" },
