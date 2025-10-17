@@ -57,6 +57,7 @@ in
     lazygit = import ./programs/lazygit.nix { inherit pkgs; };
     gh = import ./programs/gh.nix { inherit pkgs; };
     ssh = import ./programs/ssh.nix { inherit pkgs; };
+    aerospace = import ./programs/aerospace.nix { inherit pkgs lib; };
     bat.enable = true;
     k9s.enable = true;
     ripgrep.enable = true;
@@ -77,6 +78,7 @@ in
     clang
     claude-code
     spacectl
+    jjui
 
     kubectl
     kubectx
@@ -137,7 +139,6 @@ in
     lua-language-server
     stylua
 
-    #kotlin-language-server # TODO: migrate to kotlinLspWrapper
     bash-language-server
 
     # pyright
