@@ -29,11 +29,6 @@
         "--limit"
         "7"
       ];
-      diff-formatter = [
-        "delta"
-        "--color-only"
-      ];
-      pager = "delta";
     };
 
     # Aliases similar to your git setup

@@ -10,7 +10,6 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
-  devenv_1_8_1 = inputs.devenv.packages.${pkgs.system}.devenv;
 in
 {
   programs.home-manager.enable = true;
@@ -66,7 +65,7 @@ in
 
   # user specific packages instead of system wide
   home.packages = with pkgs; [
-    devenv_1_8_1
+    devenv
     tree-sitter
     fzf
     fd

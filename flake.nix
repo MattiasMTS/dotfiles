@@ -15,7 +15,6 @@
       url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    devenv.url = "github:cachix/devenv/v1.8.1";
 
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-core = {
@@ -44,7 +43,6 @@
       homebrew-bundle,
       neovim-nightly-overlay,
       determinate,
-      devenv,
       ...
     }@inputs:
     let
