@@ -1,4 +1,4 @@
 { pkgs, lib, ... }:
 {
-  enable = false;
+  enable = true;
 }

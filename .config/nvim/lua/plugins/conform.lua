@@ -17,7 +17,7 @@ return {
       terraform = { "terraform_fmt" },
       tf = { "terraform_fmt" },
       ["terraform-vars"] = { "terraform_fmt" },
-      go = { "gofumpt", "goimports", "golines" },
+      go = { "gofumpt", "goimports" },
       javascript = { "prettier", name = "dprint", lsp_format = "fallback" },
       json = { "prettier", stop_on_first = true, name = "dprint" },
       jsonc = { "prettier", stop_on_first = true, name = "dprint" },
@@ -27,14 +27,14 @@ return {
       sql = { "sqlfmt" },
     },
     formatters = {
-      golines = {
-        prepend_args = {
-          "--base-formatter=gofumpt",
-          "--ignore-generated",
-          "--tab-len=1",
-          "--max-len=120",
-        },
-      },
+      -- golines = {
+      --   prepend_args = {
+      --     "--base-formatter=gofumpt",
+      --     "--ignore-generated",
+      --     "--tab-len=1",
+      --     "--max-len=120",
+      --   },
+      -- },
       gofumpt = {
         prepend_args = { "-extra", "-w", "$FILENAME" },
         stdin = false,
