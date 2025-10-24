@@ -47,3 +47,4 @@ macos-option-as-alt = left
 macos-non-native-fullscreen = visible-menu
 macos-titlebar-style = hidden
 macos-titlebar-proxy-icon = hidden
+keybind = shift+enter=text:\x1b\r
