@@ -10,6 +10,9 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+
+  # Custom packages
+  sqlmesh_lsp = pkgs.callPackage ../pkgs/sqlmesh.nix { };
 in
 {
   programs.home-manager.enable = true;
@@ -77,7 +80,6 @@ in
     presenterm
     clang
     claude-code
-    spacectl
     jjui
 
     kubectl
@@ -91,6 +93,8 @@ in
     tflint
     trivy
     opentofu
+    spacectl
+    grafanactl
 
     rustup
     python313
@@ -108,6 +112,7 @@ in
     uv
     ruff
     pre-commit
+    sqlmesh_lsp
 
     awscli2
     (google-cloud-sdk.withExtraComponents (
