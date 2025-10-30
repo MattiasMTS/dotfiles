@@ -50,6 +50,11 @@
     extra-experimental-features = [
       "build-time-fetch-tree" # Enables build-time flake inputs
       "parallel-eval" # Enables parallel evaluation
+      "external-builders" # Enables linux-builder
+    ];
+    external-builders = ''[{"systems":["aarch64-linux","x86_64-linux"],"program":"/usr/local/bin/determinate-nixd","args":["builder"]}]'';
+    extra-trusted-users = [
+      username
     ];
   };
 

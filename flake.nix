@@ -2,7 +2,7 @@
   description = "nix config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
