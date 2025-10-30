@@ -4,6 +4,9 @@ return {
     opts = {
       cli = {
         mux = { backend = "tmux", enabled = true },
+        win = {
+          split = { width = 120 },
+        },
       },
     },
     keys = {

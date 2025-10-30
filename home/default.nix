@@ -12,7 +12,7 @@ let
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
   # Custom packages
-  sqlmesh_lsp = pkgs.callPackage ../pkgs/sqlmesh.nix { };
+  # sqlmesh_lsp = pkgs.callPackage ../pkgs/sqlmesh.nix { };
 in
 {
   programs.home-manager.enable = true;
@@ -96,7 +96,6 @@ in
     spacectl
     grafanactl
 
-    rustup
     python313
     python313Packages.ipython
     python313Packages.sqlfmt
@@ -112,7 +111,7 @@ in
     uv
     ruff
     pre-commit
-    sqlmesh_lsp
+    # sqlmesh_lsp
 
     awscli2
     (google-cloud-sdk.withExtraComponents (

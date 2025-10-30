@@ -6,23 +6,16 @@
   syntaxHighlighting.enable = true;
   autosuggestion.enable = true;
   shellAliases = {
-    # general misc
     lg = "lazygit";
     ld = "lazydocker";
     ls = "ls --color=auto";
     z = "zoxide";
     cat = "bat";
     tksv = "tmux kill-server";
-    # kubernetes
     k = "kubectl";
     kc = "kubectx";
-    # shortcuts to projects
-    le = "cd ~/src/github.com/lovable/";
-    pj = "cd ~/src/github.com/projects/";
     tf = "tofu";
-    ch = "clickhouse-cli";
   };
-  # TODO: check how to make this work with sessionVariables
   initContent = ''
     export PATH=$PATH:/Users/${username}/go/bin
 

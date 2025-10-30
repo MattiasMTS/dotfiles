@@ -1,6 +1,6 @@
 { username, ... }:
 {
-  enable = true;
+  enable = false;
 
   settings = {
     user = {
