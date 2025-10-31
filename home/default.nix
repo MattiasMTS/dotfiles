@@ -128,7 +128,6 @@ in
     docker-compose
     dockerfile-language-server
     docker-compose-language-service
-    colima
     lazydocker
 
     # protobuf
