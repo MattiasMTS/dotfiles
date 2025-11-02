@@ -111,7 +111,7 @@ in
     uv
     ruff
     pre-commit
-    # sqlmesh_lsp
+    skopeo
 
     awscli2
     (google-cloud-sdk.withExtraComponents (

@@ -54,7 +54,7 @@ vim.opt.scrolloff = 10
 vim.opt.smoothscroll = true
 vim.opt.isfname:append("@-@")
 
-vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.linebreak = true -- wrap lines at convenient points
 
 vim.opt.colorcolumn = "90"
