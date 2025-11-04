@@ -16,7 +16,6 @@
 
   # system wide packages (all users)
   environment.systemPackages = with pkgs; [
-    brave
     raycast
     neovim
     git
@@ -29,7 +28,7 @@
     casks = [
       "ghostty"
       "spotify"
-      # "orbstack"
+      "brave-browser"
     ];
     brews = [ ];
     taps = [ ];
