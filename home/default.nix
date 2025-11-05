@@ -11,8 +11,6 @@ let
   dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
-  # Custom packages
-  # sqlmesh_lsp = pkgs.callPackage ../pkgs/sqlmesh.nix { };
 in
 {
   programs.home-manager.enable = true;
@@ -157,6 +155,7 @@ in
     temporal-cli
     terraform-ls
     nil
+    nixd
     helm-ls
     #markdown-oxide # trying this out
     #steampipe

@@ -104,7 +104,7 @@ in
     unbind -T copy-mode-vi MouseDragEnd1Pane
 
     # Window activity notification
-    set -g monitor-activity on
+    set -g monitor-activity off
 
     # keybindings
     bind-key a last-window
