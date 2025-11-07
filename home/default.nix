@@ -67,7 +67,7 @@ in
 
   # user specific packages instead of system wide
   home.packages = with pkgs; [
-    devenv
+    inputs.devenv-nightly.packages.${pkgs.system}.devenv
     tree-sitter
     fzf
     fd
