@@ -72,6 +72,7 @@ in
     fzf
     fd
     delta
+    difftastic
     sesh
     tree
     nixfmt-rfc-style

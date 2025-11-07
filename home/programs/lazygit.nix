@@ -18,9 +18,9 @@
     };
     os.editPreset = "nvim-remote";
     git.overrideGpg = true;
-    git.paging = {
+    git.pager = {
       colorArg = "always";
-      pager = "delta --dark --paging=never";
+      pager = "difft --color always";
       useConfig = false;
     };
   };

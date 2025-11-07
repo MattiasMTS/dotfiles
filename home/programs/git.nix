@@ -16,10 +16,20 @@
       email = "mattias.sjodin.6764@hotmail.com";
     };
 
+    # difftastic configuration
+    diff = {
+      tool = "difftastic";
+      colorMoved = "default";
+    };
+    difftool = {
+      prompt = false;
+      difftastic.cmd = ''difft "$LOCAL" "$REMOTE"'';
+    };
+    pager.difftool = true;
     interactive.diffFilter = "delta --color-only";
     delta.navigate = true;
+
     merge.conflictstyle = "diff3";
-    diff.colorMoved = "default";
     init.defaultBranch = "main";
     color.ui = true;
     branch.autosetuprebase = "always";
