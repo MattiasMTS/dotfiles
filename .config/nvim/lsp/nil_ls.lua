@@ -3,7 +3,15 @@ return {
   cmd = { "nil" },
   filetypes = { "nix" },
   root_markers = { "flake.nix", ".git" },
+  single_file_support = true,
   settings = {
-    nil_ls = { autoArchive = true },
+    ["nil"] = {
+      nix = {
+        flake = {
+          autoArchive = true, -- Automatically run `nix flake archive`
+          autoEvalInputs = true,
+        },
+      },
+    },
   },
 }

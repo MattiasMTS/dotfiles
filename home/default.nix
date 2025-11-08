@@ -79,21 +79,21 @@ in
     presenterm
     clang
     claude-code
-    jjui
+    cue
 
     kubectl
     kubectx
     kubernetes-helm
     kustomize
-    k3d
-    rancher
+    # k3d
+    # rancher
 
     terraform
     tflint
     trivy
     opentofu
     spacectl
-    grafanactl
+    # grafanactl
 
     python313
     python313Packages.ipython
@@ -110,7 +110,6 @@ in
     uv
     ruff
     pre-commit
-    skopeo
 
     awscli2
     (google-cloud-sdk.withExtraComponents (
@@ -118,7 +117,6 @@ in
       [
         gke-gcloud-auth-plugin
         package-go-module
-        pubsub-emulator
       ]
     ))
     google-cloud-sql-proxy
@@ -151,10 +149,10 @@ in
     templ
     golines
     gofumpt
-    copilot-language-server
+    # copilot-language-server
 
     temporal-cli
-    terraform-ls
+    # terraform-ls
     nil
     nixd
     helm-ls
