@@ -80,6 +80,7 @@ in
     clang
     claude-code
     cue
+    _1password-cli
 
     kubectl
     kubectx
