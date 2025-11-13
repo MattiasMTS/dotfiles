@@ -157,6 +157,7 @@ in
     nil
     nixd
     helm-ls
+    tofu-ls
     #markdown-oxide # trying this out
     #steampipe
   ];
