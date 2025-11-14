@@ -34,8 +34,15 @@ return {
       },
       completion = {
         menu = {
-          scrollbar = true,
-          draw = { treesitter = { "lsp" } },
+          scrollbar = false,
+          draw = {
+            treesitter = { "lsp" },
+            gap = 2,
+            columns = {
+              { "kind_icon", "kind", gap = 1 },
+              { "label", "label_description", gap = 1 },
+            },
+          },
         },
         list = {
           selection = { preselect = true, auto_insert = false },
