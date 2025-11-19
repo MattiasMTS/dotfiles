@@ -5,11 +5,10 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-lua/plenary.nvim",
       "ravitemer/codecompanion-history.nvim",
-      -- "ravitemer/mcphub.nvim",
       "franco-ruggeri/codecompanion-spinner.nvim",
     },
     cmd = { "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd", "CodeCompanionHistory" },
-    enabled = true,
+    enabled = false,
     opts = {
       --Refer to: https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
       display = {
@@ -77,7 +76,7 @@ return {
   {
     "franco-ruggeri/codecompanion-spinner.nvim",
     lazy = true,
-    enabled = true,
+    enabled = false,
     opts = {},
   },
 }
