@@ -57,7 +57,8 @@ vim.opt.isfname:append("@-@")
 vim.opt.wrap = false
 vim.opt.linebreak = true -- wrap lines at convenient points
 
-vim.opt.colorcolumn = "90"
+-- temp disable for now
+-- vim.opt.colorcolumn = "90"
 
 vim.opt.more = false
 vim.opt.foldmethod = "manual"
