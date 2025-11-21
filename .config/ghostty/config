@@ -13,6 +13,7 @@ font-family-italic = "Maple Mono NF"
 font-family-bold-italic = "Maple Mono NF"
 font-family = "Symbols Nerd Font Mono"
 font-size = 14
+custom-shader = cursor_smear.glsl
 
 # cursor
 cursor-style = bar
