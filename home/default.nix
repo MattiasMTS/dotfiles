@@ -79,6 +79,7 @@ in
     presenterm
     clang
     claude-code
+    codex
     cue
     _1password-cli
 
