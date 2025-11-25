@@ -67,7 +67,8 @@ in
 
   # user specific packages instead of system wide
   home.packages = with pkgs; [
-    inputs.devenv-nightly.packages.${pkgs.system}.devenv
+    # inputs.devenv-nightly.packages.${pkgs.system}.devenv
+    devenv
     tree-sitter
     fzf
     fd
@@ -113,7 +114,6 @@ in
     ruff
     pre-commit
 
-    awscli2
     (google-cloud-sdk.withExtraComponents (
       with pkgs.google-cloud-sdk.components;
       [
