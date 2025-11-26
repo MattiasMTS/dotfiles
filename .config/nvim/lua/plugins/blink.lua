@@ -22,7 +22,13 @@ return {
         ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 
         -- enable snippet jumping
-        ["<Tab>"] = { "snippet_forward", "fallback" },
+        ["<Tab>"] = {
+          "snippet_forward",
+          function()
+            return vim.lsp.inline_completion.get()
+          end,
+          "fallback",
+        },
         ["<S-Tab>"] = { "snippet_backward", "fallback" },
 
         -- better navigation
