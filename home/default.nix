@@ -83,6 +83,7 @@ in
     codex
     cue
     _1password-cli
+    parallel
 
     kubectl
     kubectx

@@ -9,6 +9,9 @@ return {
           split = { width = 95 },
         },
       },
+      tools = {
+        claude = { cmd = { "claude", "--model", "claude-opus-4-5-20251101" } },
+      },
     },
     keys = {
       {
@@ -42,7 +45,7 @@ return {
         desc = "Send File",
       },
       {
-        "<leader>av",
+        "<leader>as",
         function()
           require("sidekick.cli").send({ msg = "{selection}" })
         end,
