@@ -6,6 +6,10 @@ return {
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
   settings = {
     gopls = {
+      buildFlags = { "-tags=wireinject,integration" },
+      analyses = {
+        ST1000 = false, -- ignore "docs required in pkg"
+      },
       gofumpt = false, -- replaced with conform
       usePlaceholders = true,
       staticcheck = true,
@@ -17,7 +21,7 @@ return {
         compositeLiteralTypes = true,
         compositeLiteralFields = true,
         functionTypeParameters = true,
-        rangeVariableTypes = false,
+        rangeVariableTypes = true,
       },
       semanticTokens = true,
       templateExtensions = { "templ", "tmpl" },

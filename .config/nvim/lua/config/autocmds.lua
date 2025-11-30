@@ -33,25 +33,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
---   desc = "Enable cursorline in active window",
---   callback = function()
---     if vim.w.auto_cursorline then
---       vim.wo.cursorline = true
---       vim.w.auto_cursorline = nil
---     end
---   end,
--- })
--- vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
---   desc = "Disable cursorline in inactive window",
---   callback = function()
---     if vim.wo.cursorline then
---       vim.w.auto_cursorline = true
---       vim.wo.cursorline = false
---     end
---   end,
--- })
-
 vim.api.nvim_create_autocmd("BufReadPost", {
   group = vim.api.nvim_create_augroup("last_location", { clear = true }),
   desc = "Go to the last location when opening a buffer",
@@ -98,18 +79,5 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
   },
   callback = function()
     vim.bo.filetype = "helm"
-  end,
-})
-
-vim.api.nvim_create_autocmd("ExitPre", {
-  group = vim.api.nvim_create_augroup("octo_exit_pre", { clear = true }),
-  callback = function(ev)
-    local keep = { "octo" }
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-      local buf = vim.api.nvim_win_get_buf(win)
-      if vim.tbl_contains(keep, vim.bo[buf].filetype) then
-        vim.bo[buf].buftype = "" -- set buftype to empty to keep the window
-      end
-    end
   end,
 })
