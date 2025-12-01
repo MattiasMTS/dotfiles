@@ -227,49 +227,49 @@ end, {
 })
 
 vim.api.nvim_create_user_command("LspStop", function(opts)
-  local clients = opts.fargs
+  local clients = vim.lsp.get_clients({
+    bufnr = #opts.fargs == 0 and vim.api.nvim_get_current_buf() or nil,
+    name = opts.fargs[1],
+  })
 
-  if #clients == 0 then
-    clients = vim
-      .iter(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
-      :map(function(client)
-        return client.name
-      end)
-      :totable()
-  end
-
-  for _, name in ipairs(clients) do
-    if vim.lsp.config[name] == nil then
-      vim.notify(("LSP server %s is not configured."):format(name))
-    else
-      vim.lsp.enable(name, false)
-    end
+  for _, client in ipairs(clients) do
+    client:stop()
   end
 end, {
   nargs = "?",
+  complete = function()
+    return vim
+      .iter(vim.lsp.get_clients())
+      :map(function(c)
+        return c.name
+      end)
+      :totable()
+  end,
   desc = "Stop LSP server(s)",
 })
 
 vim.api.nvim_create_user_command("LspRestart", function(opts)
-  local clients = opts.fargs
+  local clients = vim.lsp.get_clients({
+    bufnr = #opts.fargs == 0 and vim.api.nvim_get_current_buf() or nil,
+    name = opts.fargs[1],
+  })
 
-  if #clients == 0 then
-    clients = vim
-      .iter(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
-      :map(function(client)
-        return client.name
-      end)
-      :totable()
-  end
-
-  for _, name in ipairs(clients) do
-    if vim.lsp.config[name] == nil then
-      vim.notify(("LSP server %s is not configured."):format(name))
-    else
-      vim.lsp.enable(name, true)
-    end
+  for _, client in ipairs(clients) do
+    local name = client.name
+    client:stop()
+    vim.defer_fn(function()
+      vim.lsp.enable(name)
+    end, 100)
   end
 end, {
   nargs = "?",
+  complete = function()
+    return vim
+      .iter(vim.lsp.get_clients())
+      :map(function(c)
+        return c.name
+      end)
+      :totable()
+  end,
   desc = "Restart LSP server(s)",
 })
