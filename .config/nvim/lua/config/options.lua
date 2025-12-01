@@ -1,6 +1,6 @@
 -- trying this out we'll see
 vim.g.autoformat = true
-vim.g.inlay_hints = true
+vim.g.inlay_hints = false
 
 -- mouse
 vim.opt.mouse = "a" -- mouse allowed in all modes
