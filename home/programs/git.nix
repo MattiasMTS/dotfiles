@@ -33,7 +33,10 @@
     init.defaultBranch = "main";
     color.ui = true;
     branch.autosetuprebase = "always";
-    rebase.autoStash = true;
+    rebase = {
+      autoStash = true;
+      updateRefs = true; # to make stacked branches work nicely
+    };
     pull.rebase = true;
 
     fetch = {

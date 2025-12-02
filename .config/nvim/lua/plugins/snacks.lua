@@ -7,6 +7,7 @@ return {
       image = { enabled = true },
       lazygit = { enabled = true },
       quickfile = { enabled = true },
+      gh = { enabled = true },
       picker = {
         actions = {
           sidekick_send = function(...)

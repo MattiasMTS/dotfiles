@@ -10,20 +10,30 @@ return {
         tf = { "terraform_validate", "trivy", "tflint" },
         ["terraform-vars"] = { "terraform_validate", "tfsec", "tflint" },
 
-        -- kotlin
-        kotlin = { "ktlint" },
-
         -- dockerfile
         dockerfile = { "hadolint" },
 
         -- go
-        -- go = { "golangci_lint", "gosec" },
+        go = { "golangcilint", "gosec" },
 
-        -- TODO: fix this
+        -- bash
+        sh = { "shellcheck" },
+        bash = { "shellcheck" },
+
+        -- nix
+        nix = { "nix" },
+
+        -- python
+        python = { "ruff" },
+
+        -- yaml
+        yaml = { "yamllint" },
+
+        -- markdown
+        markdown = { "markdownlint" },
+
         -- github actions
-        -- ["yaml.ghactions"] = { "actionlint" },
-
-        -- fileMatch = { "**/.github/workflows/*.yml", "**/.github/workflows/*.yaml", "**/.gitea/workflows/*.yml", "**/.gitea/workflows/*.yaml", "**/.forgejo/workflows/*.yml", "**/.forgejo/workflows/*.yaml" },
+        -- ghaction = { "actionlint" },
       },
     },
   },
