@@ -82,7 +82,6 @@ in
     claude-code
     codex
     cue
-    _1password-cli
     parallel
 
     kubectl
@@ -152,7 +151,8 @@ in
     templ
     golines
     gofumpt
-    # copilot-language-server
+    golangci-lint
+    gosec
 
     temporal-cli
     # terraform-ls

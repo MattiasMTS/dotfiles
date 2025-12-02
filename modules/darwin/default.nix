@@ -21,6 +21,8 @@
     git
     tmux
     gnumake
+    _1password-cli
+    _1password-gui
   ];
 
   homebrew = {
