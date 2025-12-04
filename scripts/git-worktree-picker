@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+git rev-parse --git-dir &>/dev/null || exit 0
+
+repo_root=$(git rev-parse --show-toplevel)
+repo_name=$(basename "$repo_root")
+parent_dir=$(dirname "$repo_root")
+
+list_items() {
+  # existing worktrees: icon name<tab>path
+  git worktree list --porcelain | grep "^worktree" | cut -d' ' -f2- | while read -r wt; do
+    [[ "$wt" = "$repo_root" ]] && continue
+    branch=$(git -C "$wt" branch --show-current 2>/dev/null) || continue
+    [[ -n "$branch" ]] && echo -e "󰘬 ${branch}\t${wt}"
+  done
+
+  # local branches: icon name<tab>branch
+  git branch --format='%(refname:short)' | while read -r b; do
+    [[ "$b" = "main" || "$b" = "master" ]] && continue
+    [[ -d "${parent_dir}/${repo_name}-${b}" ]] && continue
+    echo -e " ${b}\t${b}"
+  done
+
+  # remote branches: icon name<tab>branch
+  git branch -r --format='%(refname:short)' 2>/dev/null | sed 's|^origin/||' | while read -r b; do
+    [[ "$b" = "main" || "$b" = "master" || "$b" = "HEAD" ]] && continue
+    git show-ref --verify --quiet "refs/heads/$b" 2>/dev/null && continue
+    [[ -d "${parent_dir}/${repo_name}-${b}" ]] && continue
+    echo -e " ${b}\t${b}"
+  done
+}
+
+# if not a tty (piped), just output list
+[[ ! -t 1 ]] && { list_items; exit 0; }
+
+selected=$(list_items | fzf-tmux -p 80%,70% \
+  --ansi --no-sort \
+  --delimiter '\t' --with-nth 1 \
+  --border-label " worktrees: $repo_name " \
+  --prompt '󰘬 ' \
+  --header '  enter: switch/create  ^d: delete  ^c: cleanup' \
+  --bind "ctrl-d:execute-silent(git-worktree-session remove {2})+reload($0)" \
+  --bind "ctrl-c:execute(git-worktree-session cleanup)+reload($0)" \
+  --preview-window 'right:50%' \
+  --preview 'git log --oneline -20 {2} 2>/dev/null || echo "new branch"' \
+) || exit 0
+
+branch=$(echo "$selected" | cut -f2)
+[[ -n "$branch" ]] && exec git-worktree-session add "$branch"

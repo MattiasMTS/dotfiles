@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cmd="${1:-}"
+branch="${2#origin/}"
+
+die() { echo "$1" >&2; exit 1; }
+
+[[ -z "$cmd" ]] && die "Usage: git-worktree-session <add|remove|cleanup|list> [branch]"
+git rev-parse --git-dir &>/dev/null || die "Not a git repository"
+
+repo_root=$(git rev-parse --show-toplevel)
+repo_name=$(basename "$repo_root")
+parent_dir=$(dirname "$repo_root")
+
+case "$cmd" in
+  add)
+    [[ -z "$branch" ]] && die "Branch name required"
+
+    worktree_path="${parent_dir}/${repo_name}-${branch}"
+    session_name="${repo_name}-${branch}"
+
+    if git show-ref --verify --quiet "refs/heads/${branch}" 2>/dev/null; then
+      git worktree add "$worktree_path" "$branch"
+    elif git show-ref --verify --quiet "refs/remotes/origin/${branch}" 2>/dev/null; then
+      git worktree add "$worktree_path" "$branch"
+    else
+      git worktree add -b "$branch" "$worktree_path"
+    fi
+
+    tmux has-session -t "$session_name" 2>/dev/null || \
+      tmux new-session -d -s "$session_name" -c "$worktree_path"
+    tmux switch-client -t "$session_name"
+    ;;
+
+  remove)
+    [[ -z "$branch" ]] && die "Branch name required"
+    [[ "${GIT_WORKTREE_NO_AUTO_CLEANUP:-}" = "1" ]] && exit 0
+
+    worktree_path="${parent_dir}/${repo_name}-${branch}"
+    session_name="${repo_name}-${branch}"
+
+    tmux kill-session -t "$session_name" 2>/dev/null || true
+    [[ -d "$worktree_path" ]] && git worktree remove "$worktree_path" --force
+    ;;
+
+  cleanup)
+    git worktree list --porcelain | while read -r line; do
+      [[ "$line" != worktree* ]] && continue
+      wt_path="${line#worktree }"
+      [[ "$wt_path" = "$repo_root" ]] && continue
+
+      wt_branch=$(git -C "$wt_path" branch --show-current 2>/dev/null) || continue
+      [[ -z "$wt_branch" ]] && continue
+
+      if git branch --merged main 2>/dev/null | grep -q "^\s*$wt_branch$"; then
+        tmux kill-session -t "${repo_name}-${wt_branch}" 2>/dev/null || true
+        git worktree remove "$wt_path" --force 2>/dev/null || true
+      fi
+    done
+    ;;
+
+  list)
+    git worktree list
+    ;;
+
+  *)
+    die "Unknown command: $cmd"
+    ;;
+esac

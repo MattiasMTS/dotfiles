@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cmd="${1:-list}"
+
+case "$cmd" in
+  list)
+    # tmux sessions: icon name<tab>path
+    sesh list -t --icons | while read -r line; do
+      name="${line#* }"
+      echo -e "${line}\t${name}"
+    done
+
+    # project folders
+    for dir in ~/src/github.com/projects ~/src/github.com/lovablelabs; do
+      [[ -d "$dir" ]] || continue
+      for project in "$dir"/*/; do
+        [[ -d "$project" ]] || continue
+        project="${project%/}"
+        echo -e " $(basename "$project")\t${project}"
+      done
+    done
+    ;;
+
+  connect)
+    target="${2:-}"
+    [[ -z "$target" ]] && exit 0
+
+    # path or existing session -> sesh; otherwise -> worktree
+    if [[ "$target" == /* && -d "$target" ]]; then
+      exec sesh connect "$target"
+    elif tmux has-session -t "$target" 2>/dev/null; then
+      exec sesh connect "$target"
+    else
+      exec git-worktree-session add "$target"
+    fi
+    ;;
+esac
