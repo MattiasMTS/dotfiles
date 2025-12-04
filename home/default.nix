@@ -10,7 +10,7 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
-
+  git-worktree-session = import ../pkgs/git-worktree-session.nix { inherit pkgs; };
 in
 {
   programs.home-manager.enable = true;
@@ -66,7 +66,9 @@ in
   };
 
   # user specific packages instead of system wide
-  home.packages = with pkgs; [
+  home.packages = [
+    git-worktree-session
+  ] ++ (with pkgs; [
     # inputs.devenv-nightly.packages.${pkgs.system}.devenv
     devenv
     tree-sitter
@@ -162,5 +164,5 @@ in
     tofu-ls
     #markdown-oxide # trying this out
     #steampipe
-  ];
+  ]);
 }
