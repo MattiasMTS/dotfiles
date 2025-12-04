@@ -5,18 +5,31 @@ cmd="${1:-list}"
 
 case "$cmd" in
   list)
-    # tmux sessions: icon name<tab>path
+    # tmux sessions: detect worktree sessions and show repo#safe-branch format
     sesh list -t --icons | while read -r line; do
       name="${line#* }"
+      session_path=$(tmux display-message -t "$name" -p '#{pane_current_path}' 2>/dev/null) || session_path=""
+      if [[ -n "$session_path" && -f "$session_path/.git" ]]; then
+        repo_root=$(git -C "$session_path" rev-parse --git-common-dir 2>/dev/null | xargs dirname) || repo_root=""
+        branch=$(git -C "$session_path" branch --show-current 2>/dev/null) || branch=""
+        repo_name=$(basename "$repo_root")
+        safe_branch="${branch//\//-}"
+        if [[ -n "$repo_root" && -n "$branch" ]]; then
+          echo -e "󰘬 ${repo_name}#${safe_branch}\t${repo_root}#${branch}"
+          continue
+        fi
+      fi
       echo -e "${line}\t${name}"
     done
 
-    # project folders
+    # project folders (exclude worktrees - they have .git as file, not dir)
     for dir in ~/src/github.com/projects ~/src/github.com/lovablelabs; do
       [[ -d "$dir" ]] || continue
       for project in "$dir"/*/; do
         [[ -d "$project" ]] || continue
         project="${project%/}"
+        # skip if .git is a file (worktree) rather than directory (main repo)
+        [[ -f "$project/.git" ]] && continue
         echo -e " $(basename "$project")\t${project}"
       done
     done
@@ -26,13 +39,28 @@ case "$cmd" in
     target="${2:-}"
     [[ -z "$target" ]] && exit 0
 
-    # path or existing session -> sesh; otherwise -> worktree
-    if [[ "$target" == /* && -d "$target" ]]; then
+    # repo#branch -> worktree; path -> sesh; session -> sesh
+    if [[ "$target" == *"#"* ]]; then
+      exec git-worktree-session add "$target"
+    elif [[ "$target" == /* && -d "$target" ]]; then
       exec sesh connect "$target"
     elif tmux has-session -t "$target" 2>/dev/null; then
       exec sesh connect "$target"
     else
       exec git-worktree-session add "$target"
+    fi
+    ;;
+
+  delete)
+    target="${2:-}"
+    [[ -z "$target" ]] && exit 0
+
+    if [[ "$target" == *"#"* ]]; then
+      # worktree: git-worktree-session handles both worktree and tmux session
+      git-worktree-session remove "$target" 2>/dev/null || true
+    else
+      # regular tmux session
+      tmux kill-session -t "$target" 2>/dev/null || true
     fi
     ;;
 esac

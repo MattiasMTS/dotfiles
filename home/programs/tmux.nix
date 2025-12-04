@@ -139,12 +139,10 @@ in
       sesh-list | fzf-tmux -p 80%,70% \
         --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
         --delimiter '\t' --with-nth 1 \
-        --header '  ^a all ^t tmux ^x zoxide ^d kill ^f find ^w worktree' \
-        --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
+        --header '  ^t tmux ^x zoxide ^d kill session ^w worktree' \
         --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t --icons)' \
         --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z --icons)' \
-        --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
-        --bind 'ctrl-d:execute(tmux kill-session -t {2})+reload(sesh-list)' \
+        --bind 'ctrl-d:execute-silent(sesh-list delete {2})+reload(sesh-list)' \
         --bind 'ctrl-w:change-prompt(󰘬  )+reload(git-worktree-picker)' \
         --preview-window 'right:55%' \
         --preview 'sesh preview {2}' \
