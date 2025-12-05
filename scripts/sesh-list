@@ -5,19 +5,14 @@ cmd="${1:-list}"
 
 case "$cmd" in
   list)
-    # tmux sessions: detect worktree sessions and show repo#safe-branch format
+    # tmux sessions: detect worktree sessions by directory name (repo#worktree format)
     sesh list -t --icons | while read -r line; do
       name="${line#* }"
       session_path=$(tmux display-message -t "$name" -p '#{pane_current_path}' 2>/dev/null) || session_path=""
-      if [[ -n "$session_path" && -f "$session_path/.git" ]]; then
-        repo_root=$(git -C "$session_path" rev-parse --git-common-dir 2>/dev/null | xargs dirname) || repo_root=""
-        branch=$(git -C "$session_path" branch --show-current 2>/dev/null) || branch=""
-        repo_name=$(basename "$repo_root")
-        safe_branch="${branch//\//-}"
-        if [[ -n "$repo_root" && -n "$branch" ]]; then
-          echo -e "󰘬 ${repo_name}#${safe_branch}\t${repo_root}#${branch}"
-          continue
-        fi
+      dir_name=$(basename "$session_path")
+      if [[ -n "$session_path" && -f "$session_path/.git" && "$dir_name" == *"#"* ]]; then
+        echo -e "󰘬 ${dir_name}\t${session_path}"
+        continue
       fi
       echo -e "${line}\t${name}"
     done

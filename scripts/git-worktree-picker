@@ -8,15 +8,14 @@ repo_name=$(basename "$repo_root")
 parent_dir=$(dirname "$repo_root")
 
 list_items() {
-  # existing worktrees
+  # existing worktrees - use directory name directly
   git worktree list --porcelain | grep "^worktree" | cut -d' ' -f2- | while read -r wt; do
     [[ "$wt" = "$repo_root" ]] && continue
-    branch=$(git -C "$wt" branch --show-current 2>/dev/null) || continue
-    safe_b="${branch//\//-}"
-    [[ -n "$branch" ]] && echo -e "󰘬 ${repo_name}#${safe_b}\t${repo_root}#${branch}"
+    wt_name=$(basename "$wt")
+    [[ "$wt_name" == *"#"* ]] && echo -e "󰘬 ${wt_name}\t${wt}"
   done
 
-  # local branches
+  # local branches (for creating new worktrees)
   git branch --format='%(refname:short)' | while read -r b; do
     [[ "$b" = "main" || "$b" = "master" ]] && continue
     safe_b="${b//\//-}"
@@ -24,7 +23,7 @@ list_items() {
     echo -e " ${repo_name}#${safe_b}\t${repo_root}#${b}"
   done
 
-  # remote branches
+  # remote branches (for creating new worktrees)
   git branch -r --format='%(refname:short)' 2>/dev/null | sed 's|^origin/||' | while read -r b; do
     [[ "$b" = "main" || "$b" = "master" || "$b" = "HEAD" ]] && continue
     git show-ref --verify --quiet "refs/heads/$b" 2>/dev/null && continue

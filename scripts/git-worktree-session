@@ -8,18 +8,18 @@ die() { echo "$1" >&2; exit 1; }
 
 [[ -z "$cmd" ]] && die "Usage: git-worktree-session <add|remove|cleanup|list> [repo#branch|branch|path]"
 
-# parse arg: repo#branch, path, or branch
-if [[ "$arg" == *"#"* ]]; then
-  # format: /path/to/repo#branch
+# parse arg: path, repo#branch, or branch
+if [[ "$arg" == /* && -d "$arg" ]]; then
+  # full path to existing worktree
+  git_common=$(git -C "$arg" rev-parse --git-common-dir 2>/dev/null) || die "Not a git worktree: $arg"
+  repo_root=$(dirname "$git_common")
+  worktree_path="$arg"
+  worktree_name=$(basename "$arg")
+elif [[ "$arg" == *"#"* ]]; then
+  # format: /path/to/repo#branch (for creating new worktree)
   repo_root="${arg%%#*}"
   branch="${arg#*#}"
   branch="${branch#origin/}"
-elif [[ "$arg" == /* && -d "$arg" ]]; then
-  # full path to worktree
-  git_common=$(git -C "$arg" rev-parse --git-common-dir 2>/dev/null) || die "Not a git worktree: $arg"
-  repo_root=$(dirname "$git_common")
-  branch=$(git -C "$arg" branch --show-current 2>/dev/null) || branch=""
-  worktree_path="$arg"
 else
   # branch name, requires git context
   git rev-parse --git-dir &>/dev/null || die "Not a git repository"
@@ -29,16 +29,24 @@ fi
 
 repo_name=$(basename "$repo_root")
 parent_dir=$(dirname "$repo_root")
-safe_branch="${branch//\//-}"
 
 case "$cmd" in
   add)
-    [[ -z "$branch" ]] && die "Branch name required"
+    # existing worktree path - just switch to session
+    if [[ -n "${worktree_path:-}" ]]; then
+      session_name="${worktree_name}"
+      tmux has-session -t "$session_name" 2>/dev/null || \
+        tmux new-session -d -s "$session_name" -c "$worktree_path"
+      tmux switch-client -t "$session_name"
+      exit 0
+    fi
 
+    # new worktree from branch
+    [[ -z "${branch:-}" ]] && die "Branch name required"
+    safe_branch="${branch//\//-}"
     worktree_path="${parent_dir}/${repo_name}#${safe_branch}"
     session_name="${repo_name}#${safe_branch}"
 
-    # only create worktree if it doesn't already exist
     if [[ ! -d "$worktree_path" ]]; then
       if git -C "$repo_root" show-ref --verify --quiet "refs/heads/${branch}" 2>/dev/null; then
         git -C "$repo_root" worktree add "$worktree_path" "$branch"
@@ -55,12 +63,17 @@ case "$cmd" in
     ;;
 
   remove)
-    [[ -z "$branch" && -z "$worktree_path" ]] && die "Branch name or path required"
+    [[ -z "${branch:-}" && -z "${worktree_path:-}" ]] && die "Branch name or path required"
     [[ "${GIT_WORKTREE_NO_AUTO_CLEANUP:-}" = "1" ]] && exit 0
 
-    # if worktree_path not set from path arg, derive it
-    [[ -z "${worktree_path:-}" ]] && worktree_path="${parent_dir}/${repo_name}#${safe_branch}"
-    session_name="${repo_name}#${safe_branch}"
+    # derive paths if not set
+    if [[ -n "${worktree_path:-}" ]]; then
+      session_name="${worktree_name}"
+    else
+      safe_branch="${branch//\//-}"
+      worktree_path="${parent_dir}/${repo_name}#${safe_branch}"
+      session_name="${repo_name}#${safe_branch}"
+    fi
 
     tmux kill-session -t "$session_name" 2>/dev/null || true
     [[ -d "$worktree_path" ]] && git -C "$repo_root" worktree remove "$worktree_path" --force
@@ -72,12 +85,12 @@ case "$cmd" in
       wt_path="${line#worktree }"
       [[ "$wt_path" = "$repo_root" ]] && continue
 
+      wt_name=$(basename "$wt_path")
       wt_branch=$(git -C "$wt_path" branch --show-current 2>/dev/null) || continue
       [[ -z "$wt_branch" ]] && continue
 
       if git branch --merged main 2>/dev/null | grep -q "^\s*$wt_branch$"; then
-        safe_wt_branch="${wt_branch//\//-}"
-        tmux kill-session -t "${repo_name}#${safe_wt_branch}" 2>/dev/null || true
+        tmux kill-session -t "$wt_name" 2>/dev/null || true
         git worktree remove "$wt_path" --force 2>/dev/null || true
       fi
     done
