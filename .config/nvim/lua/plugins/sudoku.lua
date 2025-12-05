@@ -1,0 +1,31 @@
+return {
+  {
+    "jim-fx/sudoku.nvim",
+    cmd = "Sudoku",
+    opts = {
+      default_mappings = false,
+      mappings = {
+        { key = "x", action = "clear_cell" },
+        { key = "1", action = "insert=1" },
+        { key = "2", action = "insert=2" },
+        { key = "3", action = "insert=3" },
+        { key = "4", action = "insert=3" },
+        { key = "5", action = "insert=3" },
+        { key = "6", action = "insert=3" },
+        { key = "7", action = "insert=3" },
+        { key = "8", action = "insert=3" },
+        { key = "9", action = "insert=3" },
+        { key = "gn", action = "new_game" },
+        { key = "gr", action = "reset_game" },
+        { key = "gs", action = "view=settings" },
+        { key = "gt", action = "view=tip" },
+        { key = "gz", action = "view=zen" },
+        { key = "gh", action = "view=help" },
+        { key = "u", action = "undo" },
+        { key = "<C-r>", action = "redo" },
+        { key = "+", action = "increment" },
+        { key = "-", action = "decrement" },
+      },
+    },
+  },
+}

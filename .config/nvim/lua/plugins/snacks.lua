@@ -4,7 +4,11 @@ return {
     enabled = true,
     opts = {
       bigfile = { enabled = true, size = 1.5 * 1024 * 1024 },
-      image = { enabled = true },
+      image = {
+        enabled = true,
+        math = { enabled = true },
+        doc = { inline = true, float = true },
+      },
       lazygit = { enabled = true },
       quickfile = { enabled = true },
       gh = { enabled = true },
