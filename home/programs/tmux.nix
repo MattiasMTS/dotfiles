@@ -11,7 +11,7 @@ in
   disableConfirmationPrompt = true;
   historyLimit = 100000;
   keyMode = "vi";
-  shell = "${pkgs.zsh}/bin/zsh";
+  shell = "${pkgs.nushell}/bin/nu";
   shortcut = "a";
   terminal = terminal;
   newSession = true;

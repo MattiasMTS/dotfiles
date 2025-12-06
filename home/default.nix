@@ -53,6 +53,7 @@ in
     fzf = import ./programs/fzf.nix { inherit pkgs lib; };
     direnv = import ./programs/direnv.nix { inherit pkgs lib; };
     zoxide = (import ./programs/zoxide.nix { inherit pkgs; });
+    nushell = import ./programs/nushell.nix { inherit pkgs username; };
     go = import ./programs/go.nix { inherit pkgs username; };
     java = import ./programs/java.nix { inherit pkgs; };
     lazygit = import ./programs/lazygit.nix { inherit pkgs; };

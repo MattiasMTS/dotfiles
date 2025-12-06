@@ -8,8 +8,8 @@
   shellAliases = {
     lg = "lazygit";
     ld = "lazydocker";
-    ls = "ls --color=auto";
     z = "zoxide";
+    ls = "ls --color=auto";
     cat = "bat";
     tksv = "tmux kill-server";
     k = "kubectl";
