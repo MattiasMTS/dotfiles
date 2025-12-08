@@ -144,6 +144,11 @@ vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
     return
   end
 
+  -- fix: https://github.com/neovim/neovim/issues/28058
+  if client.capabilities.workspace then
+    client.capabilities.workspace.didChangeWatchedFiles = nil
+  end
+
   on_attach(client, vim.api.nvim_get_current_buf())
 
   return register_capability(err, res, ctx)
