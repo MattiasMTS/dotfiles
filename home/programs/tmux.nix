@@ -65,7 +65,6 @@ in
     }
   ];
   extraConfig = ''
-
     # pane border look and feel
     # setw -g pane-border-status top
     # setw -g pane-border-format ""

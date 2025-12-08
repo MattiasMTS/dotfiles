@@ -34,13 +34,19 @@ case "$cmd" in
     target="${2:-}"
     [[ -z "$target" ]] && exit 0
 
-    # repo#branch -> worktree; path -> sesh; session -> sesh
-    if [[ "$target" == *"#"* ]]; then
-      exec git-worktree-session add "$target"
-    elif [[ "$target" == /* && -d "$target" ]]; then
-      exec sesh connect "$target"
+    # Check existing paths/sessions FIRST, then handle repo#branch format
+    if [[ "$target" == /* && -d "$target" ]]; then
+      # existing directory path - check if it's a worktree
+      if [[ -f "$target/.git" ]]; then
+        exec git-worktree-session add "$target"
+      else
+        exec sesh connect "$target"
+      fi
     elif tmux has-session -t "$target" 2>/dev/null; then
       exec sesh connect "$target"
+    elif [[ "$target" == *"#"* ]]; then
+      # repo#branch format - create new worktree
+      exec git-worktree-session add "$target"
     else
       exec git-worktree-session add "$target"
     fi

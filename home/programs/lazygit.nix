@@ -1,6 +1,8 @@
 { pkgs, ... }:
 {
   enable = true;
+  # enableZshIntegration = true;
+  enableNushellIntegration = true;
 
   settings = {
     notARepository = "quit";
@@ -61,34 +63,6 @@
         ];
         command = "git-worktree-session remove {{.SelectedWorktree.Branch}}";
         loadingText = "Removing worktree...";
-      }
-      # Delete branch with auto-cleanup of worktree
-      {
-        key = "d";
-        context = "localBranches";
-        description = "Delete branch (with worktree cleanup)";
-        prompts = [
-          {
-            type = "confirm";
-            title = "Delete branch '{{.SelectedLocalBranch.Name}}'?";
-          }
-        ];
-        command = "git-worktree-session remove {{.SelectedLocalBranch.Name}} 2>/dev/null || true; git branch -d {{.SelectedLocalBranch.Name}}";
-        loadingText = "Deleting branch...";
-      }
-      # Cleanup all merged worktrees
-      {
-        key = "C";
-        context = "worktrees";
-        description = "Cleanup merged worktrees";
-        prompts = [
-          {
-            type = "confirm";
-            title = "Cleanup all worktrees with merged branches?";
-          }
-        ];
-        command = "git-worktree-session cleanup";
-        loadingText = "Cleaning up...";
       }
     ];
   };

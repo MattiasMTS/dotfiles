@@ -10,6 +10,8 @@
     k = "kubectl";
     kc = "kubectx";
     tf = "tofu";
+    nu-open = "open";
+    open = "^open";
   };
 
   environmentVariables = {
@@ -17,9 +19,6 @@
   };
 
   extraConfig = ''
-    # Add Go bin to PATH
-    $env.PATH = ($env.PATH | split row (char esep) | prepend $"/Users/${username}/go/bin")
-
     # Sesh sessions function with fzf
     def sesh-sessions [] {
       let session = (sesh list | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
@@ -28,17 +27,6 @@
       }
     }
 
-    # Keybinding for Ctrl+F to trigger sesh-sessions
-    $env.config = ($env.config | default {} | merge {
-      keybindings: [
-        {
-          name: sesh_sessions
-          modifier: control
-          keycode: char_f
-          mode: [emacs, vi_normal, vi_insert]
-          event: { send: executehostcommand cmd: "sesh-sessions" }
-        }
-      ]
-    })
+    $env.config.buffer_editor = "vi"
   '';
 }
