@@ -11,6 +11,7 @@ let
   dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
   git-worktree-session = import ../pkgs/git-worktree-session.nix { inherit pkgs; };
+  blink-fuzzy-lib = inputs.blink-cmp.packages.${pkgs.system}.blink-fuzzy-lib;
 in
 {
   programs.home-manager.enable = true;
@@ -24,6 +25,10 @@ in
   xdg.configFile.nvim.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/nvim";
   xdg.configFile.ghostty.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/ghostty";
   xdg.configFile.sesh.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/sesh";
+
+  # Symlink blink.cmp fuzzy library built via Nix to where lazy.nvim expects it
+  home.file.".local/share/nvim/lazy/blink.cmp/target/release/libblink_cmp_fuzzy.dylib".source =
+    "${blink-fuzzy-lib}/lib/libblink_cmp_fuzzy.dylib";
 
   # applications/programs
   programs = {
@@ -69,7 +74,8 @@ in
   # user specific packages instead of system wide
   home.packages = [
     git-worktree-session
-  ] ++ (with pkgs; [
+  ]
+  ++ (with pkgs; [
     # inputs.devenv-nightly.packages.${pkgs.system}.devenv
     devenv
     tree-sitter

@@ -9,12 +9,10 @@ return {
       },
       { "rafamadriz/friendly-snippets" },
     },
-    -- build = "cargo build --release", # TODO: build it via nix instead
+    -- Rust fuzzy lib is built via Nix and symlinked by home-manager
     event = { "InsertEnter", "CmdlineEnter" },
     opts = {
-      fuzzy = {
-        implementation = "lua",
-      },
+      fuzzy = { implementation = "rust" },
       keymap = {
         preset = "default",
         -- better selection
