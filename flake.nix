@@ -6,6 +6,7 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     blink-cmp.url = "github:saghen/blink.cmp";
+    fff-nvim.url = "github:dmtrKovalenko/fff.nvim";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
