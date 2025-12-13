@@ -31,6 +31,7 @@
       "ghostty"
       "spotify"
       "brave-browser"
+      "datagrip"
     ];
     brews = [ ];
     taps = [ ];

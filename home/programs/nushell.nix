@@ -11,7 +11,6 @@
     kc = "kubectx";
     tf = "tofu";
     nu-open = "open";
-    open = "^open";
   };
 
   environmentVariables = {
@@ -28,5 +27,9 @@
     }
 
     $env.config.buffer_editor = "vi"
+    $env.config.show_banner = false
+
+    # Override nushell's open with system open
+    def --wrapped open [...args] { ^open ...$args }
   '';
 }
