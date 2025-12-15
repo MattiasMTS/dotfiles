@@ -58,9 +58,6 @@ in
         set -ga status-right "#[bg=#{@thm_bg},fg=#{@thm_overlay_0}, none]│"
         set -ga status-right "#[bg=#{@thm_bg},fg=#{@thm_overlay_0}, none]│"
         set -ga status-right "#[bg=#{@thm_bg},fg=#{@thm_blue}] 󰭦 %Y-%m-%d 󰅐 %H:%M "
-
-
-
       '';
     }
   ];

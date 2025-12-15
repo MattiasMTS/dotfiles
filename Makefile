@@ -26,6 +26,7 @@ switch:
 	@echo "Switching nix-darwin configuration.."
 	git add .
 	sudo -H nix run nix-darwin -- switch --flake .# -v
+	tmux source ~/.config/tmux/tmux.conf
 
 .PHONY: update
 update:

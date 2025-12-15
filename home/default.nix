@@ -137,7 +137,7 @@ in
     ))
     google-cloud-sql-proxy
 
-    dive
+    delve
     docker
     docker-compose
     dockerfile-language-server
