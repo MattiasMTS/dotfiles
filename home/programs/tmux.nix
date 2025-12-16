@@ -72,7 +72,6 @@ in
     # window look and feel
     set -wg automatic-rename on
     set -g automatic-rename-format "Window"
-
     set -g window-status-format " #I#{?#{!=:#{window_name},Window},: #W,} "
     set -g window-status-style "bg=#{@thm_bg},fg=#{@thm_rosewater}"
     set -g window-status-last-style "bg=#{@thm_bg},fg=#{@thm_peach}"
