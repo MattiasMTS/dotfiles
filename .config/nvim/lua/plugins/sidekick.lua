@@ -6,7 +6,7 @@ return {
       cli = {
         mux = { backend = "tmux", enabled = true },
         win = {
-          split = { width = 95 },
+          split = { width = 85 },
         },
       },
       tools = {

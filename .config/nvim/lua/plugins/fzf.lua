@@ -11,7 +11,7 @@ return {
     { "<leader>fd", "<cmd>FzfLua lsp_document_diagnostics<cr>", desc = "Document diagnostics" },
     { "<leader>fD", "<cmd>FzfLua lsp_workspace_diagnostics<cr>", desc = "Workspace diagnostics" },
     -- { "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find files" },
-    -- { "<leader>fg", "<cmd>FzfLua git_files<cr>", desc = "Find Files (git-files)" },
+    { "<leader>fg", "<cmd>FzfLua git_files<cr>", desc = "Find Files (git-files)" },
 
     -- search
     { "<leader>sg", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },

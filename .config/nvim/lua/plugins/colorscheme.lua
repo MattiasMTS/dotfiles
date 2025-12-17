@@ -54,7 +54,7 @@ return {
     lazy = false,
     enabled = true,
     opts = {
-      flavour = "macchiato",
+      flavour = "mocha",
       transparent_background = true,
       term_colors = true,
       compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
@@ -104,6 +104,7 @@ return {
         markdown = true,
         semantic_tokens = true,
         fzf = true,
+        fff = true,
         treesitter_context = true,
         grug_far = true,
       },

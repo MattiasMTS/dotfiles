@@ -27,13 +27,6 @@ return {
         end,
         desc = "FFFind files",
       },
-      {
-        "<leader>fg",
-        function()
-          require("fff").find_in_git_root()
-        end,
-        desc = "FFFind git files",
-      },
     },
   },
 }
