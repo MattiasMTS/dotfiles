@@ -4,48 +4,47 @@
 # color
 # background = #1B1D26
 # theme = "/Users/mattias.sjodin/.local/share/nvim/lazy/tokyonight.nvim/extras/ghostty/tokyonight_moon"
-theme = Catppuccin Macchiato
+theme = Catppuccin Mocha
 
 # fonts
-font-family = "Fira Code"
-font-family-bold = "Fira Code"
-font-family-italic = "Maple Mono NF"
-font-family-bold-italic = "Maple Mono NF"
-font-family = "Symbols Nerd Font Mono"
-font-size = 14
-custom-shader = cursor_smear.glsl
+# font-family = "Fira Code"
+# font-family-bold = "Fira Code"
+# font-family-italic = "Maple Mono NF"
+# font-family-bold-italic = "Maple Mono NF"
+# font-family = "Symbols Nerd Font Mono"
+font-family = JetBrains Mono
 
-# cursor
-cursor-style = bar
-cursor-style-blink = false
+font-size = 12
+# custom-shader = cursor_smear.glsl
 
 # clipboard
-copy-on-select = clipboard
-clipboard-trim-trailing-spaces = true
+# copy-on-select = clipboard
+# clipboard-trim-trailing-spaces = true
 
 # mouse
-mouse-scroll-multiplier = 1
 mouse-hide-while-typing = true
 
-# window
-initial-window = true
-resize-overlay = never
 background-opacity = 1
-background-blur = 15
-window-save-state = always
-window-step-resize = false
-window-padding-balance = true
-confirm-close-surface = false
+background-blur = 20
+
+# window
+# initial-window = true
+# resize-overlay = never
+# window-save-state = always
+# window-step-resize = false
+# window-padding-balance = true
 confirm-close-surface = false
 
 # behavior
 quit-after-last-window-closed = true
-shell-integration = zsh
-shell-integration-features = cursor,sudo,no-title
+# shell-integration-features = cursor,sudo,no-title
 
 # macos
 macos-option-as-alt = left
 macos-non-native-fullscreen = visible-menu
-macos-titlebar-style = hidden
+macos-titlebar-style = hidden 
 macos-titlebar-proxy-icon = hidden
 keybind = shift+enter=text:\x1b\r
+
+# shell (using nushell)
+# command = bash -l -c nu
