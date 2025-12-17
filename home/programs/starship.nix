@@ -11,5 +11,4 @@
     battery.display = [ { threshold = 50; } ];
     gcloud.disabled = true;
   };
-
 }

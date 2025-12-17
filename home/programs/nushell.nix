@@ -11,11 +11,17 @@
     kc = "kubectx";
     tf = "tofu";
     nu-open = "open";
+    # open = "^open";
   };
 
   environmentVariables = {
     GPG_TTY = "(tty)";
   };
+
+  extraEnv = ''
+    # Override nushell's open with system open (loaded in non-interactive mode)
+    alias open = ^open
+  '';
 
   extraConfig = ''
     # Sesh sessions function with fzf
@@ -30,6 +36,6 @@
     $env.config.show_banner = false
 
     # Override nushell's open with system open
-    def --wrapped open [...args] { ^open ...$args }
+    # def --wrapped open [...args] { ^open ...$args }
   '';
 }

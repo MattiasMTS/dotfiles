@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   enable = true;
-  # enableZshIntegration = true;
+  enableZshIntegration = true;
   enableNushellIntegration = true;
 
   settings = {
@@ -22,9 +22,7 @@
     git = {
       overrideGpg = true;
       pager = {
-        colorArg = "always";
-        pager = "difft --color always";
-        useConfig = false;
+        externalDiffCommand = "difft --color=always";
       };
       log.order = "default";
     };
