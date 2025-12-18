@@ -45,3 +45,5 @@ vim.keymap.set("n", "<leader>lg", function() _G.Snacks.terminal({ "lazygit" }, {
 vim.keymap.set("n", "<leader>gg", function() _G.Snacks.lazygit() end, { desc = "Lazygit (cwd)" })
 vim.keymap.set("n", "<leader>gf", function() _G.Snacks.picker.git_log_file() end, { desc = "Git Current File History" })
 vim.keymap.set("n", "<leader>gl", function() _G.Snacks.picker.git_log() end, { desc = "Git Log (cwd)" })
+vim.keymap.set("n", "<leader>wm", function() _G.Snacks.zen.zoom() end, { desc = "Maximize buffer" })
+vim.keymap.set("n", "<leader>wz", function() _G.Snacks.zen() end, { desc = "Zen mode" })
