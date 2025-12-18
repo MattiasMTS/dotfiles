@@ -2,7 +2,7 @@ return {
   {
     "Piotr1215/presenterm.nvim",
     build = false, -- built via nix
-    -- cmd = "Presenterm",
+    cmd = "Presenterm",
     opts = {
       default_keybindings = true,
       picker = { provider = "fzf" },

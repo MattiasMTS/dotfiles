@@ -24,7 +24,7 @@ return {
       lua = { "stylua" },
       kotlin = { "ktfmt" },
       nix = { "nixfmt" },
-      sql = { "sqlfmt" },
+      sql = { "sqlmesh format" },
     },
     formatters = {
       -- golines = {

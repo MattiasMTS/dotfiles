@@ -1,7 +1,7 @@
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
-    enabled = true,
+    enabled = false,
     branch = "v3.x",
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     opts = {
@@ -44,19 +44,6 @@ return {
           require("neo-tree.command").execute({ toggle = true })
         end,
         desc = "Explorer NeoTree (Root Dir)",
-      },
-    },
-  },
-  {
-    "mbbill/undotree",
-    enabled = true,
-    cmd = { "UndotreeToggle", "UndotreeFocus", "UndotreeHide", "UndotreeShow", "UndotreePersistUndo" },
-    opts = {},
-    keys = {
-      {
-        "<leader>u",
-        "<Cmd>UndotreeToggle<CR>",
-        desc = "Toggle Undotree",
       },
     },
   },
