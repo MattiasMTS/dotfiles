@@ -46,16 +46,8 @@ in
       withNodeJs = true;
 
       vimdiffAlias = true;
-      vimAlias = true;
     };
-    zsh = import ./programs/zsh.nix {
-      inherit
-        config
-        pkgs
-        lib
-        username
-        ;
-    };
+    zsh = import ./programs/zsh.nix { inherit pkgs username; };
     starship = import ./programs/starship.nix { inherit pkgs; };
     git = import ./programs/git.nix { inherit username lib; };
     jujutsu = import ./programs/jujutsu.nix { inherit username lib; };

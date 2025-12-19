@@ -10,8 +10,7 @@
     k = "kubectl";
     kc = "kubectx";
     tf = "tofu";
-    nu-open = "open";
-    # open = "^open";
+    vim = "nvim";
   };
 
   environmentVariables = {
@@ -32,10 +31,20 @@
       }
     }
 
+    # Keybinding for Ctrl+F to trigger sesh-sessions
+    $env.config = ($env.config | default {} | merge {
+      keybindings: [
+        {
+          name: sesh_sessions
+          modifier: control
+          keycode: char_f
+          mode: [emacs, vi_normal, vi_insert]
+          event: { send: executehostcommand cmd: "sesh-sessions" }
+        }
+      ]
+    })
+
     $env.config.buffer_editor = "vi"
     $env.config.show_banner = false
-
-    # Override nushell's open with system open
-    # def --wrapped open [...args] { ^open ...$args }
   '';
 }
