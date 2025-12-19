@@ -12,7 +12,6 @@ let
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
   git-worktree-session = import ../pkgs/git-worktree-session.nix { inherit pkgs; };
   blink-fuzzy-lib = inputs.blink-cmp.packages.${pkgs.system}.blink-fuzzy-lib;
-  fff-nvim-lib = inputs.fff-nvim.packages.${pkgs.system}.default;
 in
 {
   programs.home-manager.enable = true;
@@ -30,10 +29,6 @@ in
   # Symlink blink.cmp fuzzy library built via Nix to where lazy.nvim expects it
   home.file.".local/share/nvim/lazy/blink.cmp/target/release/libblink_cmp_fuzzy.dylib".source =
     "${blink-fuzzy-lib}/lib/libblink_cmp_fuzzy.dylib";
-
-  # Symlink fff.nvim library built via Nix to where lazy.nvim expects it
-  home.file.".local/share/nvim/lazy/fff.nvim/target/release/libfff_nvim.dylib".source =
-    "${fff-nvim-lib}/lib/libfff_nvim.dylib";
 
   # applications/programs
   programs = {
@@ -73,8 +68,8 @@ in
     git-worktree-session
   ]
   ++ (with pkgs; [
-    # inputs.devenv-nightly.packages.${pkgs.system}.devenv
-    devenv
+    inputs.devenv-nightly.packages.${pkgs.system}.devenv
+    # devenv
     tree-sitter
     fzf
     fd
