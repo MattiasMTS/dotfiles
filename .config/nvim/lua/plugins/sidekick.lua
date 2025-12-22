@@ -1,16 +1,40 @@
 return {
+  -- claudecode.nvim provides MCP server + diff accept/deny
+  {
+    "coder/claudecode.nvim",
+    opts = {},
+    keys = {
+      {
+        "<leader>aS",
+        "<cmd>ClaudeCodeTreeAdd<cr>",
+        desc = "Add file to Claude (tree)",
+        ft = { "NvimTree", "neo-tree", "oil" },
+      },
+      { "<C-y>", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<C-n>", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+    },
+  },
+  -- sidekick.nvim for main workflow
   {
     "folke/sidekick.nvim",
+    dependencies = {
+      "coder/claudecode.nvim",
+    },
+    enabled = true,
+    ---@class sidekick.Config
     opts = {
       nes = { enabled = false },
       cli = {
         mux = { backend = "tmux", enabled = true },
         win = {
-          split = { width = 85 },
+          split = { width = 77 },
         },
-      },
-      tools = {
-        claude = { cmd = { "claude", "--model", "claude-opus-4-5-20251101" } },
+        ---@type table<string, sidekick.cli.Config|{}>
+        tools = {
+          claude = {
+            cmd = { "claude", "--continue" },
+          },
+        },
       },
     },
     keys = {
@@ -19,15 +43,8 @@ return {
         function()
           require("sidekick.cli").toggle({ name = "claude" })
         end,
-        desc = "Sidekick Toggle CLI",
+        desc = "Toggle Claude",
         mode = { "n", "t", "x" },
-      },
-      {
-        "<leader>ad",
-        function()
-          require("sidekick.cli").close()
-        end,
-        desc = "Detach a CLI Session",
       },
       {
         "<leader>at",
@@ -58,19 +75,7 @@ return {
           require("sidekick.cli").prompt()
         end,
         mode = { "n", "x" },
-        desc = "Sidekick Select Prompt",
-      },
-      {
-        "<tab>",
-        function()
-          if vim.lsp.inline_completion.get() then
-            return
-          end
-          return "<tab>"
-        end,
-        mode = { "i", "n" },
-        expr = true,
-        desc = "Goto/Apply Next Edit Suggestion",
+        desc = "Select Prompt",
       },
     },
   },
