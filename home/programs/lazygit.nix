@@ -22,7 +22,7 @@
     git = {
       overrideGpg = true;
       pager = {
-        externalDiffCommand = "difft --color=always";
+        useExternalDiffGitConfig = true;
       };
       log.order = "default";
     };

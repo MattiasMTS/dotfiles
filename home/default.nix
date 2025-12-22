@@ -68,8 +68,8 @@ in
     git-worktree-session
   ]
   ++ (with pkgs; [
-    inputs.devenv-nightly.packages.${pkgs.system}.devenv
-    # devenv
+    # inputs.devenv-nightly.packages.${pkgs.system}.devenv
+    devenv
     tree-sitter
     fzf
     fd
@@ -81,8 +81,8 @@ in
     presenterm
     clang
     claude-code
-    codex
-    cue
+    # opencode
+    # cue
     parallel
 
     kubectl
@@ -101,7 +101,7 @@ in
 
     python313
     python313Packages.ipython
-    python313Packages.sqlfmt
+    # python313Packages.sqlfmt
 
     # pnpm_9
     nodejs_24
@@ -129,7 +129,7 @@ in
     docker-compose
     dockerfile-language-server
     docker-compose-language-service
-    lazydocker
+    # lazydocker
 
     # protobuf
     # protolint

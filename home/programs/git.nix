@@ -18,7 +18,7 @@
 
     # difftastic configuration
     diff = {
-      tool = "difftastic";
+      tool = "difft";
       colorMoved = "default";
     };
     difftool = {
