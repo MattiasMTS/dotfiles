@@ -1,7 +1,7 @@
 return {
   {
     "jsborjesson/vim-uppercase-sql",
-    enabled = false,
+    enabled = true,
     ft = { "sql", "psql", "mysql" },
   },
   {

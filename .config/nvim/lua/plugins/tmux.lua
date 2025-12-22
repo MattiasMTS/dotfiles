@@ -2,17 +2,7 @@ return {
   {
     "mrjones2014/smart-splits.nvim",
     event = "BufEnter",
-    opts = {
-      default_amount = 3,
-      ignored_buftypes = { "nofile", "prompt", "quickfix" },
-      resize_mode = {
-        hooks = {
-          on_leave = function()
-            require("bufresize").register()
-          end,
-        },
-      },
-    },
+    opts = {},
     keys = {
       -- cursor movement
       { "<C-l>", ":SmartCursorMoveRight<CR>", silent = true },

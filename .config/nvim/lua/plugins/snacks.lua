@@ -40,6 +40,7 @@ return {
       },
       lazygit = { enabled = true },
       quickfile = { enabled = true },
+      statuscolumn = { enabled = true },
       gh = { enabled = true },
       picker = {
         actions = {
@@ -69,6 +70,45 @@ return {
         center = true, -- center the window
         show = { statusline = true },
       },
+      explorer = {
+        enabled = false,
+        replace_netrw = false,
+        trash = true,
+      },
+      notifier = {
+        enabled = true,
+        margin = { top = 2, right = 1, bottom = 1 },
+        style = "fancy",
+        filter = function(notif)
+          local ignores = {
+            "^No information available$",
+            "^client.supports_method is deprecated",
+            "^Error requesting document symbols$",
+          }
+          return not vim.iter(ignores):any(
+            ---@param pat string
+            function(pat)
+              return string.find(notif.msg, pat) ~= nil
+            end
+          )
+        end,
+      },
     },
+    -- keys = {
+    --   {
+    --     "<leader>e",
+    --     function()
+    --       Snacks.explorer({ cwd = vim.fs.root(0, { ".git" }) })
+    --     end,
+    --     desc = "Explorer Snacks (root dir)",
+    --   },
+    --   {
+    --     "<leader>E",
+    --     function()
+    --       Snacks.explorer()
+    --     end,
+    --     desc = "Explorer Snacks (cwd)",
+    --   },
+    -- },
   },
 }

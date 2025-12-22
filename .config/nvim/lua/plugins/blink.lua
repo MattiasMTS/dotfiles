@@ -41,11 +41,11 @@ return {
           scrollbar = false,
           draw = {
             treesitter = { "lsp" },
-            gap = 2,
-            columns = {
-              { "kind_icon", "kind", gap = 1 },
-              { "label", "label_description", gap = 1 },
-            },
+            -- gap = 2,
+            -- columns = {
+            --   { "kind_icon", "kind", gap = 1 },
+            --   { "label", "label_description", gap = 1 },
+            -- },
           },
         },
         list = {
