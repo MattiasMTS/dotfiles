@@ -29,6 +29,8 @@ vim.opt.signcolumn = "yes"
 
 vim.opt.errorbells = false -- no error sound
 vim.opt.showmode = false -- status bar displayed using lualine
+vim.o.laststatus = 3
+vim.o.statusline = '%{""}'
 
 -- indenting
 vim.opt.tabstop = 2
@@ -42,6 +44,11 @@ vim.opt.path:append({ "**" }) -- finding files, search down into subfolders
 vim.opt.completeopt = "menu,menuone,noinsert" -- no insert until I command so
 vim.opt.wildmode = "longest:full,full" -- Command-line completion mode
 vim.opt.clipboard = "unnamedplus" -- share clipboard
+
+-- Winbar - filename top left per window
+vim.opt.winbar = " %t%m"
+vim.api.nvim_set_hl(0, "WinBar", { bold = true, bg = "#1e1e2e" }) -- active buffer
+vim.api.nvim_set_hl(0, "WinBarNC", { bg = "#1e1e2e" }) -- not active
 
 -- Completion.
 vim.opt.wildignore:append({ ".DS_Store" })
