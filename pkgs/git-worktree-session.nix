@@ -1,5 +1,4 @@
 { pkgs }:
-
 pkgs.stdenv.mkDerivation {
   pname = "git-worktree-session";
   version = "1.0.0";

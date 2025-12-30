@@ -49,7 +49,7 @@ in
     tmux = import ./programs/tmux.nix { inherit pkgs; };
     fzf = import ./programs/fzf.nix { inherit pkgs lib; };
     direnv = import ./programs/direnv.nix { inherit pkgs lib; };
-    zoxide = (import ./programs/zoxide.nix { inherit pkgs; });
+    zoxide = import ./programs/zoxide.nix { inherit pkgs; };
     nushell = import ./programs/nushell.nix { inherit pkgs username; };
     go = import ./programs/go.nix { inherit pkgs username; };
     java = import ./programs/java.nix { inherit pkgs; };
@@ -77,7 +77,7 @@ in
     difftastic
     sesh
     tree
-    nixfmt-rfc-style
+    nixfmt
     presenterm
     clang
     claude-code

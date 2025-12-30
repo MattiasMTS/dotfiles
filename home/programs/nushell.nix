@@ -1,4 +1,8 @@
-{ pkgs, username, ... }:
+{
+  pkgs,
+  username,
+  ...
+}:
 {
   enable = true;
 

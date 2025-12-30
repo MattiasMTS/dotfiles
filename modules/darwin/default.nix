@@ -5,7 +5,6 @@
   ...
 }:
 {
-
   # yes it's I
   users.users.${username} = {
     name = username;
