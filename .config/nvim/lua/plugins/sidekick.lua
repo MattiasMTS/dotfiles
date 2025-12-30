@@ -2,7 +2,14 @@ return {
   -- claudecode.nvim provides MCP server + diff accept/deny
   {
     "coder/claudecode.nvim",
-    opts = {},
+    opts = {
+      diff_opts = {
+        auto_close_on_accept = true,
+        vertical_split = false,
+        open_in_current_tab = true,
+        keep_terminal_focus = false,
+      },
+    },
     keys = {
       {
         "<leader>aS",
@@ -27,12 +34,12 @@ return {
       cli = {
         mux = { backend = "tmux", enabled = true },
         win = {
-          split = { width = 77 },
+          split = { width = 70 },
         },
         ---@type table<string, sidekick.cli.Config|{}>
         tools = {
           claude = {
-            cmd = { "claude", "--continue" },
+            cmd = { "claude", "--continue", "--ide" },
           },
         },
       },

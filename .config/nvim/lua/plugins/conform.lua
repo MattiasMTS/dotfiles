@@ -14,19 +14,23 @@ return {
     format_on_save = {},
     formatters_by_ft = {
       python = { "ruff_organize_imports", "ruff_format" },
-      terraform = { "terraform_fmt" },
-      tf = { "terraform_fmt" },
-      ["terraform-vars"] = { "terraform_fmt" },
+      terraform = { "tofu_fmt" },
+      tf = { "tofu_fmt" },
+      ["terraform-vars"] = { "tofu_fmt" },
       go = { "gofumpt", "goimports" },
       javascript = { "prettier", name = "dprint", lsp_format = "fallback" },
       json = { "prettier", stop_on_first = true, name = "dprint" },
       jsonc = { "prettier", stop_on_first = true, name = "dprint" },
       lua = { "stylua" },
-      kotlin = { "ktfmt" },
       nix = { "nixfmt" },
-      sql = { "sqlmesh format" },
+      -- sql = { "sqlmesh_format" },
     },
     formatters = {
+      -- sqlmesh_format = {
+      --   command = "sqlmesh",
+      --   args = { "format", "$FILENAME" },
+      --   stdin = false,
+      -- },
       -- golines = {
       --   prepend_args = {
       --     "--base-formatter=gofumpt",

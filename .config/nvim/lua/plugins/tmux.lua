@@ -2,7 +2,9 @@ return {
   {
     "mrjones2014/smart-splits.nvim",
     event = "BufEnter",
-    opts = {},
+    opts = {
+      default_amount = 7,
+    },
     keys = {
       -- cursor movement
       { "<C-l>", ":SmartCursorMoveRight<CR>", silent = true },
