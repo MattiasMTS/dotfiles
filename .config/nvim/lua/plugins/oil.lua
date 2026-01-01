@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/oil.nvim",
-    enabled = true,
+    enabled = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = false,
     ---@module 'oil'
@@ -34,12 +34,14 @@ return {
   },
   {
     "JezerM/oil-lsp-diagnostics.nvim",
+    enabled = false,
     dependencies = { "stevearc/oil.nvim" },
     ft = "oil",
     opts = {},
   },
   {
     "benomahony/oil-git.nvim",
+    enabled = false,
     dependencies = { "stevearc/oil.nvim" },
     ft = "oil",
     opts = {},

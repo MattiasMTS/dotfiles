@@ -6,19 +6,17 @@ return {
       diff_opts = {
         auto_close_on_accept = true,
         vertical_split = false,
-        open_in_current_tab = true,
+        open_in_current_tab = false,
         keep_terminal_focus = false,
       },
     },
     keys = {
-      {
-        "<leader>aS",
-        "<cmd>ClaudeCodeTreeAdd<cr>",
-        desc = "Add file to Claude (tree)",
-        ft = { "NvimTree", "neo-tree", "oil" },
-      },
-      { "<C-y>", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-      { "<C-n>", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+      -- Diff management
+      { "<leader>ay", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+      { "<leader>an", "<cmd>ClaudeCodeDiffNext<cr>", desc = "Next diff" },
+      { "<leader>ap", "<cmd>ClaudeCodeDiffPrev<cr>", desc = "Previous diff" },
+      { "<leader>al", "<cmd>ClaudeCodeDiffList<cr>", desc = "List diffs" },
     },
   },
   -- sidekick.nvim for main workflow
@@ -39,7 +37,7 @@ return {
         ---@type table<string, sidekick.cli.Config|{}>
         tools = {
           claude = {
-            cmd = { "claude", "--continue", "--ide" },
+            cmd = { "claude", "--continue" },
           },
         },
       },

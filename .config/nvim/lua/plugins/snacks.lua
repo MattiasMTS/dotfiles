@@ -51,10 +51,7 @@ return {
         win = {
           input = {
             keys = {
-              ["<a-a>"] = {
-                "sidekick_send",
-                mode = { "n", "i" },
-              },
+              ["<a-a>"] = { "sidekick_send", mode = { "n", "i" } },
             },
           },
         },
