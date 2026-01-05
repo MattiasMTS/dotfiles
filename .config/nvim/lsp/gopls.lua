@@ -1,8 +1,8 @@
 ---@type vim.lsp.Config
 return {
   cmd = { "gopls" },
-  filetypes = { "go", "gomod", "gowork", "gotmpl", "templ", "tmpl" },
-  root_markers = { "go.work", "go.mod", ".git" },
+  filetypes = { "go", "gomod", "gowork", "gosum", "gotmpl" },
+  root_markers = { "go.work", "go.mod" },
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
   settings = {
     gopls = {
@@ -40,6 +40,7 @@ return {
       semanticTokens = true,
       templateExtensions = { "templ", "tmpl" },
       analysisProgressReporting = true,
+      directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
     },
   },
 }

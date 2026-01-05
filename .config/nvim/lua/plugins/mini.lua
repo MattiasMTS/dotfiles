@@ -34,6 +34,7 @@ return {
   -- better diff (e.g. git, codecompanion, diff buffers, etc)
   {
     "nvim-mini/mini.diff",
+    enabled = false,
     version = false,
     event = "VeryLazy",
     config = function()

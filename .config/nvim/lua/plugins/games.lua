@@ -4,4 +4,8 @@ return {
     cmd = "Sudoku",
     opts = {},
   },
+  {
+    "piersolenski/skifree.nvim",
+    cmd = "SkiFree",
+  },
 }

@@ -26,25 +26,18 @@ return {
     },
   },
   {
-    "olimorris/onedarkpro.nvim",
-    priority = 1000,
-    lazy = false,
-    enabled = false,
-    opts = {},
-  },
-  {
     "folke/tokyonight.nvim",
     priority = 1000,
     lazy = false,
     enabled = false,
     opts = {
+      style = "moon",
       styles = {
-        comments = { italic = true },
+        comments = {},
         keywords = {},
         functions = {},
         variables = {},
       },
-      lualine_bold = true,
     },
   },
   {
@@ -54,14 +47,17 @@ return {
     lazy = false,
     enabled = true,
     opts = {
-      flavour = "macchiato",
+      flavour = "mocha",
       transparent_background = true,
-      term_colors = true,
       compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
-      dim_inactive = {
-        enabled = false,
-        shade = "dark",
-        percentage = 0.15,
+      show_end_of_buffer = true,
+      lsp_styles = {
+        underlines = {
+          errors = { "undercurl" },
+          hints = { "undercurl" },
+          warnings = { "undercurl" },
+          information = { "undercurl" },
+        },
       },
       styles = {
         comments = {},
@@ -73,28 +69,13 @@ return {
         strings = {},
         variables = {},
         numbers = {},
-        booleans = { "bold" },
+        booleans = {},
         properties = {},
         types = {},
       },
       default_integrations = true,
       integrations = {
         treesitter = true,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "undercurl" },
-            warnings = { "undercurl" },
-            information = { "undercurl" },
-          },
-          virtual_text = {
-            errors = {},
-            hints = {},
-            warnings = {},
-            information = {},
-          },
-        },
         blink_cmp = true,
         gitsigns = true,
         mini = { enabled = true, indentscope_color = "" },
@@ -105,6 +86,7 @@ return {
         fzf = true,
         treesitter_context = true,
         grug_far = true,
+        snacks = true,
       },
       highlight_overrides = {
         all = function(cp)
@@ -113,23 +95,6 @@ return {
             NormalFloat = { fg = cp.text, bg = cp.mantle },
             FloatBorder = { fg = cp.mantle, bg = cp.mantle },
             CursorLineNr = { fg = cp.green },
-
-            -- For native lsp configs
-            -- testing out undercurl instead of sideline
-            DiagnosticVirtualTextError = { bg = cp.none },
-            DiagnosticVirtualTextWarn = { bg = cp.none },
-            DiagnosticVirtualTextInfo = { bg = cp.none },
-            DiagnosticVirtualTextHint = { bg = cp.none },
-            LspInfoBorder = { link = "FloatBorder" },
-
-            -- For blink
-            Pmenu = { fg = cp.overlay2, bg = cp.base },
-            PmenuBorder = { fg = cp.surface1, bg = cp.base },
-            PmenuSel = { bg = cp.green, fg = cp.base },
-            BlinkCmpKind = { fg = cp.overlay2 },
-            BlinkCmpKindMatch = { fg = cp.blue, style = { "bold" } },
-            BlinkCmpDoc = { link = "NormalFloat" },
-            BlinkCmpDocBorder = { fg = cp.mantle, bg = cp.mantle },
 
             -- For neo-tree
             NeoTreeNormal = { bg = cp.mantle }, -- Set a darker background for Neo-tree

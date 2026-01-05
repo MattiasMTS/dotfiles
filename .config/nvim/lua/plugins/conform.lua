@@ -12,37 +12,21 @@ return {
       timeout_ms = 500,
     },
     format_on_save = {},
+    --
     formatters_by_ft = {
       python = { "ruff_organize_imports", "ruff_format" },
       terraform = { "tofu_fmt" },
       tf = { "tofu_fmt" },
       ["terraform-vars"] = { "tofu_fmt" },
-      go = { "gofumpt", "goimports" },
-      javascript = { "prettier", name = "dprint", lsp_format = "fallback" },
-      json = { "prettier", stop_on_first = true, name = "dprint" },
-      jsonc = { "prettier", stop_on_first = true, name = "dprint" },
+      go = { "gofmt", "goimports" },
+      javascript = { "prettier", lsp_format = "fallback" },
+      typescript = { "prettier", lsp_format = "fallback" },
+      json = { "prettier", stop_on_first = true },
+      jsonc = { "prettier", stop_on_first = true },
       lua = { "stylua" },
       nix = { "nixfmt" },
-      -- sql = { "sqlmesh_format" },
     },
     formatters = {
-      -- sqlmesh_format = {
-      --   command = "sqlmesh",
-      --   args = { "format", "$FILENAME" },
-      --   stdin = false,
-      -- },
-      -- golines = {
-      --   prepend_args = {
-      --     "--base-formatter=gofumpt",
-      --     "--ignore-generated",
-      --     "--tab-len=1",
-      --     "--max-len=120",
-      --   },
-      -- },
-      gofumpt = {
-        prepend_args = { "-extra", "-w", "$FILENAME" },
-        stdin = false,
-      },
       goimports = {
         args = { "-srcdir", "$FILENAME" },
       },

@@ -1,43 +1,20 @@
 return {
-  -- claudecode.nvim provides MCP server + diff accept/deny
-  {
-    "coder/claudecode.nvim",
-    opts = {
-      diff_opts = {
-        auto_close_on_accept = true,
-        vertical_split = false,
-        open_in_current_tab = false,
-        keep_terminal_focus = false,
-      },
-    },
-    keys = {
-      -- Diff management
-      { "<leader>ay", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
-      { "<leader>an", "<cmd>ClaudeCodeDiffNext<cr>", desc = "Next diff" },
-      { "<leader>ap", "<cmd>ClaudeCodeDiffPrev<cr>", desc = "Previous diff" },
-      { "<leader>al", "<cmd>ClaudeCodeDiffList<cr>", desc = "List diffs" },
-    },
-  },
   -- sidekick.nvim for main workflow
   {
     "folke/sidekick.nvim",
-    dependencies = {
-      "coder/claudecode.nvim",
-    },
-    enabled = true,
+    dependencies = { "coder/claudecode.nvim" },
     ---@class sidekick.Config
     opts = {
       nes = { enabled = false },
       cli = {
-        mux = { backend = "tmux", enabled = true },
+        mux = { backend = "tmux", enabled = false },
         win = {
           split = { width = 70 },
         },
         ---@type table<string, sidekick.cli.Config|{}>
         tools = {
           claude = {
-            cmd = { "claude", "--continue" },
+            cmd = { "claude", "--ide", "--continue" },
           },
         },
       },
@@ -82,6 +59,22 @@ return {
         mode = { "n", "x" },
         desc = "Select Prompt",
       },
+    },
+  },
+  -- claudecode.nvim provides diff accept/deny
+  {
+    "coder/claudecode.nvim",
+    opts = {
+      log_level = "error",
+      diff_opts = {
+        vertical_split = true,
+        open_in_current_tab = false,
+      },
+    },
+    keys = {
+      -- Diff management
+      { "<leader>ay", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
     },
   },
 }

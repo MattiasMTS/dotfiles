@@ -14,7 +14,7 @@ return {
         dockerfile = { "hadolint" },
 
         -- go
-        go = { "golangcilint", "gosec" },
+        go = { "golangci-lint", "gosec" },
 
         -- bash
         sh = { "shellcheck" },

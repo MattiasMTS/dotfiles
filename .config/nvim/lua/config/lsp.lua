@@ -90,7 +90,7 @@ vim.diagnostic.config({
   },
   severity_sort = true,
   float = { source = "if_many" },
-  underline = { severity = vim.diagnostic.severity.ERROR },
+  underline = true,
   signs = {
     text = {
       -- requires nerd-fonts
@@ -116,25 +116,25 @@ vim.diagnostic.handlers.virtual_text = {
   hide = hide_handler,
 }
 
--- Override the hover and signature help handlers to limit their size.
-local hover = vim.lsp.buf.hover
----@diagnostic disable-next-line: duplicate-set-field
-vim.lsp.buf.hover = function()
-  return hover({
-    max_height = math.floor(vim.o.lines * 0.5),
-    max_width = math.floor(vim.o.columns * 0.4),
-  })
-end
-
--- Override the signature help handler to limit its size.
-local signature_help = vim.lsp.buf.signature_help
----@diagnostic disable-next-line: duplicate-set-field
-vim.lsp.buf.signature_help = function()
-  return signature_help({
-    max_height = math.floor(vim.o.lines * 0.5),
-    max_width = math.floor(vim.o.columns * 0.4),
-  })
-end
+-- -- Override the hover and signature help handlers to limit their size.
+-- local hover = vim.lsp.buf.hover
+-- ---@diagnostic disable-next-line: duplicate-set-field
+-- vim.lsp.buf.hover = function()
+--   return hover({
+--     max_height = math.floor(vim.o.lines * 0.5),
+--     max_width = math.floor(vim.o.columns * 0.4),
+--   })
+-- end
+--
+-- -- Override the signature help handler to limit its size.
+-- local signature_help = vim.lsp.buf.signature_help
+-- ---@diagnostic disable-next-line: duplicate-set-field
+-- vim.lsp.buf.signature_help = function()
+--   return signature_help({
+--     max_height = math.floor(vim.o.lines * 0.5),
+--     max_width = math.floor(vim.o.columns * 0.4),
+--   })
+-- end
 
 -- Update mappings when registering dynamic capabilities e.g. for code actions.
 local register_capability = vim.lsp.handlers[methods.client_registerCapability]
@@ -188,6 +188,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 local function enable_lsp_servers()
+  -- Extend with blink custom completion capabilities
+  vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities(nil, true) })
+
   local server_configs = vim
     .iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
     :map(function(file)
@@ -228,7 +231,7 @@ vim.api.nvim_create_user_command("LspStart", function(_)
   enable_lsp_servers()
 end, {
   nargs = "?",
-  desc = "Start LSP server(s)",
+  desc = " Start LSP server(s)",
 })
 
 vim.api.nvim_create_user_command("LspStop", function(opts)
@@ -250,7 +253,7 @@ end, {
       end)
       :totable()
   end,
-  desc = "Stop LSP server(s)",
+  desc = " Stop LSP server(s)",
 })
 
 vim.api.nvim_create_user_command("LspRestart", function(opts)
