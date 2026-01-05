@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  terminal = "xterm-256color";
+  terminal = "xterm-ghostty";
 in
 {
   enable = true;

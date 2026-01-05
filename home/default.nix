@@ -57,6 +57,7 @@ in
     gh = import ./programs/gh.nix { inherit pkgs; };
     ssh = import ./programs/ssh.nix { inherit pkgs; };
     aerospace = import ./programs/aerospace.nix { inherit pkgs lib; };
+    claude-code = import ./programs/claude-code.nix { inherit pkgs lib; };
     bat.enable = true;
     k9s.enable = true;
     ripgrep.enable = true;
@@ -80,8 +81,7 @@ in
     nixfmt
     presenterm
     clang
-    claude-code
-    # opencode
+    opencode
     # cue
     parallel
 
@@ -109,6 +109,7 @@ in
     vtsls
     deno
     nodePackages.vscode-json-languageserver
+    prettier
 
     duckdb
     uv
@@ -119,7 +120,6 @@ in
       with pkgs.google-cloud-sdk.components;
       [
         gke-gcloud-auth-plugin
-        package-go-module
       ]
     ))
     google-cloud-sql-proxy
