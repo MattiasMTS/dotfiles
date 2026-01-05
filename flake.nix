@@ -17,7 +17,7 @@
       url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    devenv-nightly.url = "github:cachix/devenv/main";
+    devenv-nightly.url = "github:cachix/devenv/fix/profile-state-isolation";
     devenv-nightly.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
