@@ -14,7 +14,10 @@ return {
         ---@type table<string, sidekick.cli.Config|{}>
         tools = {
           claude = {
-            cmd = { "claude", "--ide", "--continue" },
+            cmd = { "claude", "--ide" },
+          },
+          amp = {
+            cmd = { "amp", "--ide" },
           },
         },
       },
@@ -22,6 +25,14 @@ return {
     keys = {
       {
         "<leader>aa",
+        function()
+          require("sidekick.cli").toggle({ name = "amp" })
+        end,
+        desc = "Toggle Amp",
+        mode = { "n", "t", "x" },
+      },
+      {
+        "<leader>ac",
         function()
           require("sidekick.cli").toggle({ name = "claude" })
         end,
@@ -61,7 +72,6 @@ return {
       },
     },
   },
-  -- claudecode.nvim provides diff accept/deny
   {
     "coder/claudecode.nvim",
     opts = {
@@ -75,6 +85,15 @@ return {
       -- Diff management
       { "<leader>ay", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
       { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+    },
+  },
+  {
+    "sourcegraph/amp.nvim",
+    branch = "main",
+    lazy = false,
+    opts = {
+      auto_start = true,
+      log_level = "info",
     },
   },
 }
