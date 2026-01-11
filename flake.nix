@@ -7,18 +7,30 @@
 
     blink-cmp.url = "github:saghen/blink.cmp";
 
-    nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     determinate = {
       url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    devenv-nightly.url = "github:cachix/devenv/fix/profile-state-isolation";
-    devenv-nightly.inputs.nixpkgs.follows = "nixpkgs";
+
+    devenv-nightly = {
+      url = "github:cachix/devenv/v1.11.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    worktrunk = {
+      url = "github:max-sixty/worktrunk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-core = {
@@ -44,9 +56,9 @@
       homebrew-core,
       homebrew-cask,
       homebrew-bundle,
-      neovim-nightly-overlay,
-      determinate,
-      devenv-nightly,
+      # neovim-nightly-overlay,
+      # determinate,
+      # devenv-nightly,
       ...
     }@inputs:
     let

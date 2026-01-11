@@ -25,6 +25,7 @@ in
   xdg.configFile.nvim.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/nvim";
   xdg.configFile.ghostty.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/ghostty";
   xdg.configFile.sesh.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/sesh";
+  xdg.configFile.worktrunk.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/worktrunk";
 
   # Symlink blink.cmp fuzzy library built via Nix to where lazy.nvim expects it
   home.file.".local/share/nvim/lazy/blink.cmp/target/release/libblink_cmp_fuzzy.dylib".source =
@@ -70,6 +71,7 @@ in
   ]
   ++ (with pkgs; [
     # inputs.devenv-nightly.packages.${pkgs.system}.devenv
+    inputs.worktrunk.packages.${pkgs.system}.worktrunk
     devenv
     tree-sitter
     fzf
@@ -82,6 +84,7 @@ in
     presenterm
     clang
     opencode
+    amp-cli
     # cue
     parallel
 
@@ -113,6 +116,7 @@ in
 
     duckdb
     uv
+    ty
     ruff
     pre-commit
 
