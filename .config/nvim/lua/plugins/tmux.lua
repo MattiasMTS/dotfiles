@@ -1,9 +1,11 @@
 return {
   {
     "mrjones2014/smart-splits.nvim",
-    event = "BufEnter",
+    lazy = false,
     opts = {
       default_amount = 7,
+      ignored_buftypes = { "nofile" },
+      cursor_follows_swapped_bufs = true,
     },
     keys = {
       -- cursor movement
@@ -16,6 +18,11 @@ return {
       { "<M-j>", ":SmartResizeDown<CR>", silent = true },
       { "<M-k>", ":SmartResizeUp<CR>", silent = true },
       { "<M-l>", ":SmartResizeRight<CR>", silent = true },
+      -- swap buffer
+      { "<leader><leader>l", ":SmartSwapRight<CR>", silent = true },
+      { "<leader><leader>h", ":SmartSwapLeft<CR>", silent = true },
+      { "<leader><leader>j", ":SmartSwapDown<CR>", silent = true },
+      { "<leader><leader>k", ":SmartSwapUp<CR>", silent = true },
     },
   },
 }

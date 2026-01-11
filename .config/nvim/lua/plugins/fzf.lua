@@ -6,6 +6,7 @@ return {
     -- misc
     { "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Resume last command" },
     { "<leader>fb", "<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
+    { "<leader>ft", "<cmd>FzfLua tabs<cr>", desc = "Tabs" },
     -- find
     { "<leader>fc", "<cmd>FzfLua highlights<cr>", desc = "Highlights" },
     { "<leader>fd", "<cmd>FzfLua lsp_document_diagnostics<cr>", desc = "Document diagnostics" },
