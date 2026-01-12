@@ -37,10 +37,6 @@ in
       enable = true;
       package = nvim-nightly;
       defaultEditor = true;
-
-      withPython3 = true;
-      withNodeJs = true;
-
       vimdiffAlias = true;
     };
     zsh = import ./programs/zsh.nix { inherit pkgs username; };
@@ -70,7 +66,6 @@ in
     git-worktree-session
   ]
   ++ (with pkgs; [
-    # inputs.devenv-nightly.packages.${pkgs.system}.devenv
     inputs.worktrunk.packages.${pkgs.system}.worktrunk
     devenv
     tree-sitter
@@ -85,28 +80,22 @@ in
     clang
     opencode
     amp-cli
-    # cue
     parallel
+    nixd
 
     kubectl
     kubectx
     kubernetes-helm
     kustomize
-    # k3d
-    # rancher
 
-    terraform
     tflint
     trivy
     opentofu
     spacectl
-    # grafanactl
 
     python313
     python313Packages.ipython
-    # python313Packages.sqlfmt
 
-    # pnpm_9
     nodejs_24
     bun
     vtsls
@@ -133,11 +122,6 @@ in
     docker-compose
     dockerfile-language-server
     docker-compose-language-service
-    # lazydocker
-
-    # protobuf
-    # protolint
-    # buf
 
     # LSP execs, formatter and linters for neovim
     yaml-language-server
@@ -146,26 +130,16 @@ in
     vim-language-server
     lua-language-server
     stylua
-
     bash-language-server
-
-    # pyright
     basedpyright
-
     gopls
     templ
     golines
     gofumpt
     golangci-lint
     gosec
-
-    temporal-cli
-    # terraform-ls
     nil
-    nixd
     helm-ls
     tofu-ls
-    #markdown-oxide # trying this out
-    #steampipe
   ]);
 }

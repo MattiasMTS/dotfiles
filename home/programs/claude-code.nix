@@ -20,8 +20,7 @@
       model = "opus";
       statusLine = {
         type = "command";
-        command = "input=$(cat); echo \"[$(echo \"$input\" | jq -r '.model.display_name')] 📁 $(basename \"$(echo \"$input\" | jq -r '.workspace.current_dir')\")\"";
-        padding = 0;
+        command = "wt list statusline --claude-code";
       };
       alwaysThinkingEnabled = true;
     };
@@ -31,6 +30,7 @@
       "typescript-lsp@claude-plugins-official" = true;
       "pyright-lsp@claude-plugins-official" = true;
       "code-simplifier@claude-plugins-official" = true;
+      "worktrunk@worktrunk" = true;
     };
   };
 }
