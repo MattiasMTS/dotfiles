@@ -59,6 +59,7 @@ vim.opt.termguicolors = true -- True color support
 
 vim.opt.scrolloff = 10
 vim.opt.smoothscroll = true
+vim.opt.updatetime = 250 -- default is 4000ms
 vim.opt.isfname:append("@-@")
 
 vim.opt.wrap = false

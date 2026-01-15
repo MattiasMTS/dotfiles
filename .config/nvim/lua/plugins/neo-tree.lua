@@ -7,7 +7,7 @@ return {
     opts = {
       window = {
         position = "left",
-        width = 40,
+        width = 25,
         mappings = {
           ["l"] = "open",
           ["-"] = "navigate_up",
