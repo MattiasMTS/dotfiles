@@ -18,7 +18,7 @@ return {
       terraform = { "tofu_fmt" },
       tf = { "tofu_fmt" },
       ["terraform-vars"] = { "tofu_fmt" },
-      go = { "gofmt", "goimports" },
+      go = { "gofumpt", "golines" },
       javascript = { "prettier", lsp_format = "fallback" },
       typescript = { "prettier", lsp_format = "fallback" },
       typescriptreact = { "prettier", lsp_format = "fallback" },
@@ -28,8 +28,8 @@ return {
       nix = { "nixfmt" },
     },
     formatters = {
-      goimports = {
-        args = { "-srcdir", "$FILENAME" },
+      golines = {
+        prepend_args = { "--max-len=120", "--base-formatter=gofumpt" },
       },
     },
   },
