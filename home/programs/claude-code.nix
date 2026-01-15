@@ -1,10 +1,12 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
 }:
 {
   enable = true;
+  package = inputs.claude-code-nix.packages.${pkgs.system}.claude-code;
   settings = {
     permissions = {
       allow = [
@@ -25,12 +27,19 @@
       alwaysThinkingEnabled = true;
     };
     enabledPlugins = {
-      "gopls-lsp@claude-plugins-official" = true;
-      "lua-lsp@claude-plugins-official" = true;
-      "typescript-lsp@claude-plugins-official" = true;
-      "pyright-lsp@claude-plugins-official" = true;
       "code-simplifier@claude-plugins-official" = true;
+      "ralph-wiggum@claude-plugins-official" = true;
       "worktrunk@worktrunk" = true;
+    };
+    mcpServers = {
+      "confidence-flags" = {
+        command = "http";
+        url = "https://mcp.confidence.dev/mcp/flags";
+      };
+      "confidence-docs" = {
+        command = "http";
+        url = "https://mcp.confidence.dev/mcp/docs";
+      };
     };
   };
 }

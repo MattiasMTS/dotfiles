@@ -32,6 +32,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    claude-code-nix = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -56,6 +61,7 @@
       homebrew-core,
       homebrew-cask,
       homebrew-bundle,
+      claude-code-nix,
       # neovim-nightly-overlay,
       # determinate,
       # devenv-nightly,

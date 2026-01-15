@@ -54,7 +54,7 @@ in
     gh = import ./programs/gh.nix { inherit pkgs; };
     ssh = import ./programs/ssh.nix { inherit pkgs; };
     aerospace = import ./programs/aerospace.nix { inherit pkgs lib; };
-    claude-code = import ./programs/claude-code.nix { inherit pkgs lib; };
+    claude-code = import ./programs/claude-code.nix { inherit pkgs lib inputs; };
     bat.enable = true;
     k9s.enable = true;
     ripgrep.enable = true;
@@ -78,7 +78,7 @@ in
     nixfmt
     presenterm
     clang
-    opencode
+    # opencode
     amp-cli
     parallel
     nixd
@@ -96,6 +96,7 @@ in
     python313
     python313Packages.ipython
 
+    pnpm
     nodejs_24
     bun
     vtsls
@@ -108,6 +109,7 @@ in
     ty
     ruff
     pre-commit
+    graphite-cli
 
     (google-cloud-sdk.withExtraComponents (
       with pkgs.google-cloud-sdk.components;
