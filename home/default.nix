@@ -92,6 +92,7 @@ in
     trivy
     opentofu
     spacectl
+    clickhouse
 
     python313
     python313Packages.ipython
