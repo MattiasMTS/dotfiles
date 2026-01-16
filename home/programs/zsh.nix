@@ -19,6 +19,7 @@
     k = "kubectl";
     kc = "kubectx";
     tf = "tofu";
+    vim = "nvim";
   };
   initContent = ''
     export PATH=$PATH:/Users/${username}/go/bin
