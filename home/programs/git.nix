@@ -16,6 +16,11 @@
       email = "mattias.sjodin.6764@hotmail.com";
     };
 
+    # blame
+    blame = {
+      ignoreRevsFile = ".git-blame-ignore-revs";
+    };
+
     # difftastic configuration
     diff = {
       tool = "difft";

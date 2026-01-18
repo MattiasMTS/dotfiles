@@ -62,12 +62,15 @@ in
     }
   ];
   extraConfig = ''
-    # pane border look and feel
+    # macos style
     # setw -g pane-border-status top
-    # setw -g pane-border-format ""
-    setw -g pane-active-border-style "bg=#{@thm_bg},fg=#{@thm_overlay_0}"
-    setw -g pane-border-style "bg=#{@thm_bg},fg=#{@thm_surface_0}"
-    setw -g pane-border-lines single
+    set -g status-position top
+
+    setw -g pane-active-border-style "fg=#{@thm_blue}"
+    setw -g pane-border-style "fg=#{@thm_surface_0}"
+    setw -g pane-border-lines double
+    setw -g pane-border-status top
+    setw -g pane-border-format " #{pane_index}: #{pane_current_command} "
 
     # window look and feel
     set -wg automatic-rename on
@@ -76,7 +79,6 @@ in
     set -g window-status-style "bg=#{@thm_bg},fg=#{@thm_rosewater}"
     set -g window-status-last-style "bg=#{@thm_bg},fg=#{@thm_peach}"
     set -g window-status-activity-style "bg=#{@thm_red},fg=#{@thm_bg}"
-    set -g window-status-bell-style "bg=#{@thm_red},fg=#{@thm_bg},bold"
     set -gF window-status-separator "#[bg=#{@thm_bg},fg=#{@thm_overlay_0}]│"
 
     set -g window-status-current-format " #I#{?#{!=:#{window_name},Window},: #W,} "
@@ -98,8 +100,12 @@ in
     set -g mouse on
     unbind -T copy-mode-vi MouseDragEnd1Pane
 
-    # Window activity notification
+    # Activity notification
     set -g monitor-activity off
+    set -g window-status-bell-style "bg=#{@thm_red},fg=#{@thm_bg},bold"
+    set -g monitor-bell on
+    set -g bell-action other
+
 
     # keybindings
     bind-key a last-window

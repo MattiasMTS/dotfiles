@@ -78,10 +78,10 @@ in
     nixfmt
     presenterm
     clang
-    # opencode
     amp-cli
     parallel
     nixd
+    grafanactl
 
     kubectl
     kubectx

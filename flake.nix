@@ -61,10 +61,6 @@
       homebrew-core,
       homebrew-cask,
       homebrew-bundle,
-      claude-code-nix,
-      # neovim-nightly-overlay,
-      # determinate,
-      # devenv-nightly,
       ...
     }@inputs:
     let

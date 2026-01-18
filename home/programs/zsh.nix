@@ -7,8 +7,18 @@
   enable = true;
   history.size = 10000;
   enableCompletion = true;
+  # Cache completions - only regenerate dump once per day
+  completionInit = ''
+    autoload -Uz compinit
+    if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+      compinit
+    else
+      compinit -C
+    fi
+  '';
   syntaxHighlighting.enable = true;
   autosuggestion.enable = true;
+  defaultKeymap = "viins"; # vi-mode
   shellAliases = {
     lg = "lazygit";
     ld = "lazydocker";
@@ -30,35 +40,14 @@
       export GPG_TTY="$TTY"
     fi
 
-    function sesh-sessions() {
-      {
-        exec </dev/tty
-        exec <&1
-        local session
-        session=$(sesh list | fzf --height 40% --reverse \
-          --border-label ' sesh ' \
-          --border --prompt '⚡  '
-          )
-        # zle reset-prompt > /dev/null 3>&1 || true
-        [[ -z "$session" ]] && return
-        sesh connect $session
-      }
-    }
-
-    # keymaps
-    zle -N sesh-sessions
-    bindkey '^f' sesh-sessions
+    # Vi mode settings
+    export KEYTIMEOUT=1  # Reduce escape delay
   '';
   plugins = [
     {
       name = "fzf-tab";
       src = pkgs.zsh-fzf-tab;
       file = "share/fzf-tab/fzf-tab.plugin.zsh";
-    }
-    {
-      name = "vi-mode";
-      src = pkgs.zsh-vi-mode;
-      file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
     }
   ];
 }

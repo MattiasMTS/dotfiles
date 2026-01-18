@@ -1,8 +1,8 @@
 { pkgs, ... }:
 {
   enable = true;
-  enableZshIntegration = true;
-  enableNushellIntegration = true;
+  enableZshIntegration = false; # some weird lg function
+  enableNushellIntegration = false;
 
   settings = {
     notARepository = "quit";
