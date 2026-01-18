@@ -3,17 +3,22 @@
   username,
   ...
 }:
+let
+  dotDir = ".config/zsh";
+  zcompdump = "/Users/${username}/${dotDir}/.zcompdump";
+in
 {
   enable = true;
+  inherit dotDir;
   history.size = 10000;
   enableCompletion = true;
   # Cache completions - only regenerate dump once per day
   completionInit = ''
     autoload -Uz compinit
-    if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-      compinit
+    if [[ -n ${zcompdump}(#qN.mh+24) ]]; then
+      compinit -d "${zcompdump}"
     else
-      compinit -C
+      compinit -C -d "${zcompdump}"
     fi
   '';
   syntaxHighlighting.enable = true;
@@ -42,6 +47,7 @@
 
     # Vi mode settings
     export KEYTIMEOUT=1  # Reduce escape delay
+    export ZSH_AUTOSUGGEST_USE_ASYNC=1
   '';
   plugins = [
     {
