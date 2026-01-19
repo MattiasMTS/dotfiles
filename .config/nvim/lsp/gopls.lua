@@ -2,7 +2,7 @@
 return {
   cmd = { "gopls" },
   filetypes = { "go", "gomod", "gowork", "gosum", "gotmpl" },
-  root_markers = { "go.work", "go.mod" },
+  root_markers = { "go.work", "go.mod", ".git" },
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
   settings = {
     gopls = {
@@ -10,7 +10,6 @@ return {
         gc_details = false,
         generate = true,
         regenerate_cgo = true,
-        run_govulncheck = true,
         test = true,
         tidy = true,
         upgrade_dependency = true,
@@ -22,25 +21,42 @@ return {
         unusedparams = true,
         unusedwrite = true,
         useany = true,
+        modernize = true,
+        yield = true,
+        waitgroup = true,
       },
       gofumpt = false, -- replaced with conform
       usePlaceholders = true,
-      staticcheck = true,
+      staticcheck = false, -- managed by nvim-lint
       completeUnimported = true,
-      vulncheck = "imports",
+      vulncheck = "Imports",
       hints = {
-        assignVariableTypes = true,
-        compositeLiteralFields = true,
-        compositeLiteralTypes = true,
+        -- assignVariableTypes = false, -- Reduced for performance
+        compositeLiteralFields = false,
+        compositeLiteralTypes = false,
         constantValues = true,
         functionTypeParameters = true,
         parameterNames = true,
-        rangeVariableTypes = true,
+        rangeVariableTypes = false,
       },
       semanticTokens = true,
       templateExtensions = { "templ", "tmpl" },
-      analysisProgressReporting = true,
-      directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+      analysisProgressReporting = false, -- Reduced notification spam
+      -- Performance tuning for large codebases
+      diagnosticsDelay = "500ms",
+      diagnosticsTrigger = "Edit",
+      completionBudget = "200ms",
+      symbolMatcher = "FastFuzzy",
+      directoryFilters = {
+        "-.git",
+        "-.vscode",
+        "-.idea",
+        "-.vscode-test",
+        "-node_modules",
+        "-vendor",
+        "-testdata",
+        "-.cache",
+      },
     },
   },
 }

@@ -1,4 +1,7 @@
 local methods = vim.lsp.protocol.Methods
+
+vim.lsp.log.set_level("ERROR")
+
 --- Sets up LSP keymaps and autocommands for the given buffer.
 ---@param client vim.lsp.Client
 ---@param bufnr integer
@@ -136,24 +139,6 @@ vim.diagnostic.handlers.virtual_text = {
 --   })
 -- end
 
--- Update mappings when registering dynamic capabilities e.g. for code actions.
-local register_capability = vim.lsp.handlers[methods.client_registerCapability]
-vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
-  local client = vim.lsp.get_client_by_id(ctx.client_id)
-  if not client then
-    return
-  end
-
-  -- fix: https://github.com/neovim/neovim/issues/28058
-  if client.capabilities.workspace then
-    client.capabilities.workspace.didChangeWatchedFiles = nil
-  end
-
-  on_attach(client, vim.api.nvim_get_current_buf())
-
-  return register_capability(err, res, ctx)
-end
-
 -- enable builtin NES
 vim.lsp.inline_completion.enable()
 
@@ -188,9 +173,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 local function enable_lsp_servers()
-  -- Extend with blink custom completion capabilities
-  vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities(nil, true) })
-
   local server_configs = vim
     .iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
     :map(function(file)
