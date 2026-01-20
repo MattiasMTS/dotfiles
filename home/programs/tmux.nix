@@ -96,7 +96,6 @@ in
 
     # lord forgive me
     set -g mouse on
-    unbind -T copy-mode-vi MouseDragEnd1Pane
 
     # Activity notification
     set -g monitor-activity off
@@ -108,7 +107,7 @@ in
     # keybindings
     bind-key a last-window
     bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
-    bind-key -T copy-mode-vi 'y' send-keys -X copy-selection-and-cancel
+    bind-key -T copy-mode-vi 'y' send-keys -X copy-selection
     bind-key -T copy-mode-vi 'C-v' send-keys -X rectangle-toggle
 
     # Smart pane switching with awareness of Neovim splits.
@@ -134,7 +133,7 @@ in
     bind-key -T copy-mode-vi 'C-\' select-pane -l
 
     # tmux sessionizer
-    bind-key "f" run-shell "sesh-list connect \"$(
+    bind-key "f" run-shell "sesh connect \"$(
       sesh-list | fzf-tmux -p 80%,70% \
         --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
         --delimiter '\t' --with-nth 1 \
