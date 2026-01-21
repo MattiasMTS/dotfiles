@@ -81,3 +81,14 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
     vim.bo.filetype = "helm"
   end,
 })
+
+vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+  group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
+  desc = "Run linters on save/read",
+  callback = function()
+    local ok, lint = pcall(require, "lint")
+    if ok then
+      lint.try_lint()
+    end
+  end,
+})
