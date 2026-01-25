@@ -1,6 +1,6 @@
 { username, ... }:
 {
-  enable = false;
+  enable = true;
 
   settings = {
     user = {
@@ -26,37 +26,10 @@
       default-command = [
         "log"
         "--no-pager"
-        "--limit"
-        "7"
       ];
     };
 
-    # Aliases similar to your git setup
     aliases = {
-      # Daily standup
-      standup = [
-        "log"
-        "-r"
-        "mine() & after(yesterday)"
-        "--no-graph"
-      ];
-
-      # Sprint view (last 14 days)
-      sprint = [
-        "log"
-        "-r"
-        "mine() & after('14 days ago')"
-        "--no-graph"
-      ];
-
-      # Hotspots - frequently modified files (approximation)
-      hotspots = [
-        "log"
-        "-r"
-        "mine() & after('7 days ago')"
-        "--summary"
-      ];
-
       # Common shortcuts
       st = [ "status" ];
       l = [ "log" ];
