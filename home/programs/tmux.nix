@@ -36,7 +36,7 @@ in
       plugin = catppuccin;
       extraConfig = ''
         set -g @catppuccin_flavor "macchiato"
-        set -g @catppuccin_status_background "none"
+        set -g @catppuccin_status_background "none" # default / none
         set -g @catppuccin_window_status_style "none"
         set -g @catppuccin_pane_status_enabled "off"
         set -g @catppuccin_pane_border_status "off"
@@ -132,19 +132,31 @@ in
     bind-key -T copy-mode-vi 'C-l' select-pane -R
     bind-key -T copy-mode-vi 'C-\' select-pane -l
 
+    # better session management
+    bind-key S switch-client -l          # switch to last session
+    bind-key X kill-session              # kill current session
+
+
     # tmux sessionizer
-    bind-key "f" run-shell "sesh connect \"$(
-      sesh-list | fzf-tmux -p 80%,70% \
+    # bind-key "f" run-shell "sesh connect \"$(
+    #   sesh-list | fzf-tmux -p 80%,70% \
+    #     --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
+    #     --header '  ^d kill session' \
+    #     --bind 'ctrl-d:execute-silent(tmux kill-session -t {})+reload(sesh-list)'
+    # )\""
+    bind-key "T" run-shell "sesh connect \"$(
+      sesh list --icons | fzf-tmux -p 80%,70% \
         --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
-        --delimiter '\t' --with-nth 1 \
-        --header '  ^t tmux ^x zoxide ^d kill session ^w worktree' \
+        --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
+        --bind 'tab:down,btab:up' \
+        --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
         --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t --icons)' \
+        --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c --icons)' \
         --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z --icons)' \
-        --bind 'ctrl-d:execute-silent(sesh-list delete {2})+reload(sesh-list)' \
-        --bind 'ctrl-w:change-prompt(󰘬  )+reload(git-worktree-picker)' \
+        --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
+        --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)' \
         --preview-window 'right:55%' \
-        --preview 'sesh preview {2}' \
-      | cut -f2
+        --preview 'sesh preview {}'
     )\""
 
   '';

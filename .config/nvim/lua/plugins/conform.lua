@@ -18,7 +18,7 @@ return {
       terraform = { "tofu_fmt" },
       tf = { "tofu_fmt" },
       ["terraform-vars"] = { "tofu_fmt" },
-      go = { "gofumpt", "golines" },
+      go = { "gofumpt", "goimports", "golines" },
       javascript = { "prettier", lsp_format = "fallback" },
       typescript = { "prettier", lsp_format = "fallback" },
       typescriptreact = { "prettier", lsp_format = "fallback" },

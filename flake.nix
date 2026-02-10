@@ -22,11 +22,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    devenv-nightly = {
-      url = "github:cachix/devenv/v1.11.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     worktrunk = {
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,6 +29,11 @@
 
     claude-code-nix = {
       url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    peon-ping = {
+      url = "github:PeonPing/peon-ping";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -65,15 +65,12 @@
     }@inputs:
     let
       username = "mattiassjodin";
-      system = "aarch64-darwin";
       hostname = "Mattiass-MacBook-Pro";
-      inherit (self) outputs;
     in
     {
       # Build darwin flake using:
       # darwin-rebuild switch --flake ~/nix
       darwinConfigurations."${hostname}" = nix-darwin.lib.darwinSystem {
-        system = system;
         specialArgs = { inherit inputs username; };
         modules = [
           # `nix-darwin` config

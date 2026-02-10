@@ -48,6 +48,18 @@ in
     # Vi mode settings
     export KEYTIMEOUT=1  # Reduce escape delay
     export ZSH_AUTOSUGGEST_USE_ASYNC=1
+
+    # Enable 1Password CLI biometric unlock via desktop app
+    export OP_BIOMETRIC_UNLOCK_ENABLED=true
+
+    _grafana_token_cache="$HOME/.cache/grafana-mcp-token"
+    if [ ! -f "$_grafana_token_cache" ]; then
+      mkdir -p "$(dirname "$_grafana_token_cache")"
+      op read "op://Shared/grafana-mcp-sa/credential" 2>/dev/null > "$_grafana_token_cache"
+    fi
+    export GRAFANA_SERVICE_ACCOUNT_TOKEN=$(cat "$_grafana_token_cache")
+
+    eval "$(wt config shell init zsh)"
   '';
   plugins = [
     {

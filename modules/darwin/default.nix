@@ -73,7 +73,7 @@
 
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_17;
+    package = pkgs.postgresql_18;
   };
 
   # The platform the configuration will be used on.

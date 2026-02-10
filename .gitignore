@@ -1,3 +1,4 @@
 bin/.local/bin
 result # nix output
 copilot/*
+.config/worktrunk/approvals.toml

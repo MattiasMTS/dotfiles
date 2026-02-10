@@ -10,7 +10,7 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
-  git-worktree-session = import ../pkgs/git-worktree-session.nix { inherit pkgs; };
+  # git-worktree-session = import ../pkgs/git-worktree-session.nix { inherit pkgs; };
   blink-fuzzy-lib = inputs.blink-cmp.packages.${pkgs.system}.blink-fuzzy-lib;
 in
 {
@@ -19,6 +19,7 @@ in
 
   home.username = username;
   home.homeDirectory = "/Users/${username}";
+  home.sessionPath = [ "${dotfilesPath}/scripts" ];
   xdg.enable = true;
 
   # packages managed outside of home-manager
@@ -47,6 +48,7 @@ in
     fzf = import ./programs/fzf.nix { inherit pkgs lib; };
     direnv = import ./programs/direnv.nix { inherit pkgs lib; };
     zoxide = import ./programs/zoxide.nix { inherit pkgs; };
+    atuin = import ./programs/atuin.nix { inherit pkgs; };
     nushell = import ./programs/nushell.nix { inherit pkgs username; };
     go = import ./programs/go.nix { inherit pkgs username; };
     java = import ./programs/java.nix { inherit pkgs; };
@@ -55,6 +57,7 @@ in
     ssh = import ./programs/ssh.nix { inherit pkgs; };
     aerospace = import ./programs/aerospace.nix { inherit pkgs lib; };
     claude-code = import ./programs/claude-code.nix { inherit pkgs lib inputs; };
+    smug = import ./programs/smug.nix { inherit pkgs lib inputs; };
     bat.enable = true;
     k9s.enable = true;
     ripgrep.enable = true;
@@ -63,7 +66,7 @@ in
 
   # user specific packages instead of system wide
   home.packages = [
-    git-worktree-session
+    # git-worktree-session
   ]
   ++ (with pkgs; [
     inputs.worktrunk.packages.${pkgs.system}.worktrunk
@@ -91,14 +94,14 @@ in
     tflint
     trivy
     opentofu
-    spacectl
     clickhouse
+    lefthook
 
     python313
     python313Packages.ipython
 
     pnpm
-    nodejs_24
+    nodejs_22
     bun
     vtsls
     deno
@@ -109,8 +112,8 @@ in
     uv
     ty
     ruff
-    pre-commit
     graphite-cli
+    cargo
 
     (google-cloud-sdk.withExtraComponents (
       with pkgs.google-cloud-sdk.components;
@@ -118,17 +121,21 @@ in
         gke-gcloud-auth-plugin
       ]
     ))
-    google-cloud-sql-proxy
+    gofumpt
+    golangci-lint
 
     delve
     docker
     docker-compose
-    dockerfile-language-server
-    docker-compose-language-service
+    yamllint
+    lua51Packages.jsregexp
+    viddy
 
     # LSP execs, formatter and linters for neovim
+    dockerfile-language-server
+    docker-compose-language-service
     yaml-language-server
-    yamllint
+    rust-analyzer
 
     vim-language-server
     lua-language-server
@@ -138,9 +145,6 @@ in
     gopls
     templ
     golines
-    gofumpt
-    golangci-lint
-    gosec
     nil
     helm-ls
     tofu-ls

@@ -1,6 +1,5 @@
 return {
   "ibhagwan/fzf-lua",
-  dependencies = { "nvim-mini/mini.icons" },
   cmd = "FzfLua",
   keys = {
     -- misc
@@ -33,7 +32,6 @@ return {
       end,
       desc = "Grep current buffer",
     },
-
     -- spelling
     { "z=", "<cmd>FzfLua spell_suggest<cr>", desc = "Spelling suggestions" },
   },

@@ -10,34 +10,23 @@ return {
         mux = { backend = "tmux", enabled = false },
         win = {
           split = { width = 70 },
+          layout = "right",
         },
-        ---@type table<string, sidekick.cli.Config|{}>
         tools = {
-          claude = {
-            cmd = { "claude", "--ide" },
-          },
           amp = {
-            cmd = { "amp", "--ide" },
+            cmd = { "amp" },
           },
         },
       },
     },
     keys = {
       {
-        "<leader>aa",
+        "<c-space>",
         function()
-          require("sidekick.cli").toggle({ name = "amp" })
+          require("sidekick.cli").toggle()
         end,
-        desc = "Toggle Amp",
-        mode = { "n", "t", "x" },
-      },
-      {
-        "<leader>ac",
-        function()
-          require("sidekick.cli").toggle({ name = "claude" })
-        end,
-        desc = "Toggle Claude",
-        mode = { "n", "t", "x" },
+        desc = "Sidekick Toggle",
+        mode = { "n", "t", "i", "x" },
       },
       {
         "<leader>at",
@@ -74,21 +63,28 @@ return {
   },
   {
     "coder/claudecode.nvim",
+    dev = true,
+    ---@type ClaudeCodeConfig
     opts = {
-      log_level = "error",
-      diff_opts = {
-        vertical_split = true,
-        open_in_current_tab = false,
-      },
+      auto_start = true,
+      log_level = "info",
+      port_range = { min = 10000, max = 65535 },
+      -- diff_opts = {
+      --   provider = "inline",
+      -- },
     },
     keys = {
       -- Diff management
-      { "<leader>ay", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+      { "<leader>ay", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff hunk" },
+      { "<leader>aY", "<cmd>ClaudeCodeDiffAcceptAll<cr>", desc = "Accept all diffs" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff hunk" },
+      { "<leader>aD", "<cmd>ClaudeCodeDiffDenyAll<cr>", desc = "Deny all diffs" },
     },
   },
   {
     "sourcegraph/amp.nvim",
+    enabled = true,
+    dev = false,
     branch = "main",
     lazy = false,
     opts = {

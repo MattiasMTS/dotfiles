@@ -3,12 +3,19 @@ return {
     "mfussenegger/nvim-lint",
     event = { "BufWritePost", "BufReadPost" },
     config = function()
-      require("lint").linters_by_ft = {
+      local lint = require("lint")
+
+      -- Fix golangci-lint working directory to find go.mod or .golangci.yml
+      -- lint.linters.golangcilint.cwd = function(ctx)
+      --   return vim.fs.root(ctx.filename, { "go.mod", ".golangci.yml" }) or vim.fn.getcwd()
+      -- end
+
+      lint.linters_by_ft = {
         terraform = { "terraform_validate", "trivy", "tflint" },
         tf = { "terraform_validate", "trivy", "tflint" },
         ["terraform-vars"] = { "terraform_validate", "tfsec", "tflint" },
         dockerfile = { "hadolint" },
-        go = { "golangcilint" },
+        -- go = { "golangcilint" },
         sh = { "shellcheck" },
         bash = { "shellcheck" },
         nix = { "nix" },

@@ -10,6 +10,7 @@ return {
         gc_details = false,
         generate = true,
         regenerate_cgo = true,
+        run_govulncheck = true,
         test = true,
         tidy = true,
         upgrade_dependency = true,
