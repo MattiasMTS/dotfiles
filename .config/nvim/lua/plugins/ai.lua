@@ -81,9 +81,9 @@ return {
   },
   {
     "sourcegraph/amp.nvim",
-    enabled = false,
-    branch = "main",
+    enabled = true,
     event = "VeryLazy",
+    branch = "main",
     opts = {
       auto_start = true,
       log_level = "info",

@@ -1,6 +1,3 @@
--- persistance
--- vim.keymap.set("n", "<leader>s", "lua require('persistence').load()", { desc = "Load last session", silent = true })
-
 -- Clear search and stop snippet on escape
 vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
   vim.cmd("noh")

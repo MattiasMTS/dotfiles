@@ -7,7 +7,7 @@ return {
         version = "*",
         lazy = true,
       },
-      { "rafamadriz/friendly-snippets" },
+      { "rafamadriz/friendly-snippets", enabled = false }, -- not using snippets anymore
     },
     -- Rust fuzzy lib is built via Nix and symlinked by home-manager
     event = { "InsertEnter", "CmdlineEnter" },

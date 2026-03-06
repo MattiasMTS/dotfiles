@@ -110,13 +110,4 @@ return {
       },
     },
   },
-  {
-    "baliestri/aura-theme",
-    priority = 1000,
-    lazy = false,
-    enabled = true,
-    config = function(plugin)
-      vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
-    end,
-  },
 }

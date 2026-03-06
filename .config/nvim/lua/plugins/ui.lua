@@ -8,20 +8,43 @@ return {
     "nvim-lualine/lualine.nvim",
     enabled = true,
     event = "BufEnter",
-    opts = function(_, opts)
-      opts.options = opts.options or {}
-      opts.options.component_separators = ""
-      opts.options.section_separators = ""
+    config = function()
+      -- build a transparent theme from catppuccin
+      local theme = require("lualine.themes.catppuccin")
+      for _, mode in pairs(theme) do
+        for _, section in pairs(mode) do
+          section.bg = "NONE"
+        end
+      end
 
-      opts.sections = opts.sections or {}
-      opts.sections.lualine_y = opts.sections.lualine_y or { "lsp_status" }
-      opts.extensions = opts.extensions
-        or {
-          "quickfix",
-          "neo-tree",
-          "fzf",
-          "lazy",
-        }
+      require("lualine").setup({
+        options = {
+          component_separators = "",
+          section_separators = "",
+          theme = theme,
+          globalstatus = true,
+          disabled_filetypes = { statusline = { "dashboard", "lazy" } },
+        },
+        sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = {
+            -- { "filetype", icon_only = true, padding = { left = 1, right = 0 } },
+            -- { "filename", path = 1, padding = { left = 0, right = 1 } },
+          },
+          lualine_x = {
+            "diagnostics",
+            "lsp_status",
+          },
+          lualine_y = {},
+          lualine_z = {},
+        },
+        extensions = { "quickfix", "neo-tree", "fzf", "lazy" },
+      })
+
+      -- force transparent statusline background
+      vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "NONE" })
     end,
   },
   {
@@ -29,6 +52,13 @@ return {
     enabled = true,
     event = "VeryLazy",
     keys = {
+      {
+        "<leader>bd",
+        function()
+          _G.Snacks.bufdelete()
+        end,
+        desc = "Delete Buffer",
+      },
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
       { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete Buffers to the Right" },
@@ -47,7 +77,12 @@ return {
         right_mouse_command = function(n) _G.Snacks.bufdelete(n) end,
         -- stylua: ignore end
         diagnostics = "nvim_lsp",
-        always_show_bufferline = false,
+        always_show_bufferline = true,
+        show_buffer_close_icons = false,
+        show_close_icon = true,
+        show_tab_indicators = false,
+        separator_style = { "", "" },
+        indicator = { style = "none" },
         offsets = {
           {
             filetype = "neo-tree",

@@ -119,26 +119,6 @@ vim.diagnostic.handlers.virtual_text = {
   hide = hide_handler,
 }
 
--- -- Override the hover and signature help handlers to limit their size.
--- local hover = vim.lsp.buf.hover
--- ---@diagnostic disable-next-line: duplicate-set-field
--- vim.lsp.buf.hover = function()
---   return hover({
---     max_height = math.floor(vim.o.lines * 0.5),
---     max_width = math.floor(vim.o.columns * 0.4),
---   })
--- end
---
--- -- Override the signature help handler to limit its size.
--- local signature_help = vim.lsp.buf.signature_help
--- ---@diagnostic disable-next-line: duplicate-set-field
--- vim.lsp.buf.signature_help = function()
---   return signature_help({
---     max_height = math.floor(vim.o.lines * 0.5),
---     max_width = math.floor(vim.o.columns * 0.4),
---   })
--- end
-
 -- enable builtin NES
 vim.lsp.inline_completion.enable()
 
@@ -156,22 +136,23 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- TODO: debug what the callback arg should be later
--- -- create an autocommand to set up codelense
--- vim.api.nvim_create_autocmd("LspAttach", {
---   desc = "Configure LSP codelens",
---   callback = function(args)
---     local client = vim.lsp.get_client_by_id(args.data.client_id)
---
---     if client and client:supports_method("textDocument/codeLens", args.buf) then
---       vim.lsp.codelens.enable(true, { bufnr = args.buf })
---       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
---         buffer = args.buf,
---         callback = vim.lsp.codelens.enable(true, { bufnr = args.buf }),
---       })
---     end
---   end,
--- })
+-- create an autocommand to set up codelense
+vim.api.nvim_create_autocmd("LspAttach", {
+  desc = "Configure LSP codelens",
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+    if client and client:supports_method("textDocument/codeLens", args.buf) then
+      vim.lsp.codelens.enable(true, { bufnr = args.buf })
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+        buffer = args.buf,
+        callback = function()
+          vim.lsp.codelens.enable(true, { bufnr = args.buf })
+        end,
+      })
+    end
+  end,
+})
 
 local function enable_lsp_servers()
   local server_configs = vim

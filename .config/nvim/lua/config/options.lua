@@ -45,11 +45,6 @@ vim.opt.completeopt = "menu,menuone,noinsert" -- no insert until I command so
 vim.opt.wildmode = "longest:full,full" -- Command-line completion mode
 vim.opt.clipboard = "unnamedplus" -- share clipboard
 
--- Winbar - filename top left per window
-vim.opt.winbar = " %t%m"
-vim.api.nvim_set_hl(0, "WinBar", { bold = true, bg = "#1e1e2e" }) -- active buffer
-vim.api.nvim_set_hl(0, "WinBarNC", { bg = "#1e1e2e" }) -- not active
-
 -- Completion.
 vim.opt.wildignore:append({ ".DS_Store" })
 
@@ -70,6 +65,8 @@ vim.opt.linebreak = true -- wrap lines at convenient points
 
 vim.opt.more = false
 vim.opt.foldmethod = "manual"
+vim.opt.showtabline = 2
+vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 
 -- language
 vim.opt.spelllang = { "en" }
