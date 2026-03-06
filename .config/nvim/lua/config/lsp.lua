@@ -156,21 +156,22 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- create an autocommand to set up codelense
-vim.api.nvim_create_autocmd("LspAttach", {
-  desc = "Configure LSP codelens",
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-    if client and client:supports_method("textDocument/codeLens", args.buf) then
-      vim.lsp.codelens.refresh()
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-        buffer = args.buf,
-        callback = vim.lsp.codelens.refresh,
-      })
-    end
-  end,
-})
+-- TODO: debug what the callback arg should be later
+-- -- create an autocommand to set up codelense
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   desc = "Configure LSP codelens",
+--   callback = function(args)
+--     local client = vim.lsp.get_client_by_id(args.data.client_id)
+--
+--     if client and client:supports_method("textDocument/codeLens", args.buf) then
+--       vim.lsp.codelens.enable(true, { bufnr = args.buf })
+--       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+--         buffer = args.buf,
+--         callback = vim.lsp.codelens.enable(true, { bufnr = args.buf }),
+--       })
+--     end
+--   end,
+-- })
 
 local function enable_lsp_servers()
   local server_configs = vim

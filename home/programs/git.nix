@@ -10,6 +10,15 @@
 
   lfs.enable = true;
 
+  includes = [
+    {
+      condition = "gitdir:~/src/github.com/lovablelabs/";
+      contents = {
+        user.email = "msjodin@lovable.dev";
+      };
+    }
+  ];
+
   settings = {
     user = {
       name = "MattiasMTS";
@@ -48,10 +57,6 @@
       prune = true;
       pruneTags = true;
       all = true;
-    };
-
-    "includeIf \"gitdir:~/lovablelabs/\"" = {
-      email = "msjodin@lovable.dev";
     };
 
     alias = {

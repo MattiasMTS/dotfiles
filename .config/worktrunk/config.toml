@@ -1,0 +1,34 @@
+[post-start]
+copy = "wt step copy-ignored"
+
+[post-create]
+fetch = "git fetch --all --prune --quiet || true"
+
+[post-switch]
+session = """
+S="{{ branch | sanitize }}"
+W="{{ worktree_path }}"
+if tmux has-session -t "$S" 2>/dev/null; then
+  tmux switch-client -t "$S" 2>/dev/null || tmux attach-session -t "$S"
+else
+  tmux new-session -d -s "$S" -c "$W"
+  tmux send-keys -t "$S:1" 'nvim' Enter
+  tmux new-window -t "$S" -c "$W"
+  tmux new-window -t "$S" -c "$W"
+  tmux send-keys -t "$S:3" 'claude' Enter
+  tmux select-window -t "$S:1"
+  tmux switch-client -t "$S" 2>/dev/null || tmux attach-session -t "$S"
+fi
+"""
+
+[pre-remove]
+session = """
+S="{{ branch | sanitize }}"
+if [ -n "$TMUX" ]; then
+  CURRENT=$(tmux display-message -p '#S')
+  if [ "$CURRENT" = "$S" ]; then
+    tmux switch-client -p 2>/dev/null || tmux switch-client -n 2>/dev/null || true
+  fi
+fi
+tmux kill-session -t "$S" 2>/dev/null || true
+"""

@@ -41,8 +41,8 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<CR>", { desc = "Open Lazy" })
 
 -- stylua: ignore start
-vim.keymap.set("n", "<leader>lg", function() Snacks.terminal({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end, { desc = "Lazygit current file history" })
-vim.keymap.set("n", "<leader>gg", function() Snacks.lazygit() end, { desc = "Lazygit (cwd)" })
+-- vim.keymap.set("n", "<leader>lg", function() Snacks.terminal({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end, { desc = "Lazygit current file history" })
+vim.keymap.set("n", "<leader>lg", function() Snacks.lazygit() end, { desc = "Lazygit (cwd)" })
 vim.keymap.set("n", "<leader>gf", function() Snacks.picker.git_log_file() end, { desc = "Git Current File History" })
 vim.keymap.set("n", "<leader>gl", function() Snacks.picker.git_log() end, { desc = "Git Log (cwd)" })
 vim.keymap.set("n", "<leader>wm", function() Snacks.zen.zoom() end, { desc = "Maximize buffer" })

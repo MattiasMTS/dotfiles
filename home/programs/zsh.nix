@@ -4,7 +4,7 @@
   ...
 }:
 let
-  dotDir = ".config/zsh";
+  dotDir = "/Users/${username}/.config/zsh";
   zcompdump = "/Users/${username}/${dotDir}/.zcompdump";
 in
 {
@@ -35,6 +35,9 @@ in
     kc = "kubectx";
     tf = "tofu";
     vim = "nvim";
+    ws = "wt switch ";
+    wsc = "wt switch -c ";
+    wr = "wt remove ";
   };
   initContent = ''
     export PATH=$PATH:/Users/${username}/go/bin
@@ -52,6 +55,7 @@ in
     # Enable 1Password CLI biometric unlock via desktop app
     export OP_BIOMETRIC_UNLOCK_ENABLED=true
 
+    # Grafana MCP service account token (static, cached to file)
     _grafana_token_cache="$HOME/.cache/grafana-mcp-token"
     if [ ! -f "$_grafana_token_cache" ]; then
       mkdir -p "$(dirname "$_grafana_token_cache")"

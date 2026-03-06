@@ -49,6 +49,10 @@
         KeyRepeat = 2; # normal minimum is 2 (30 ms), maximum is 120 (1800 ms)
       };
 
+      universalaccess = {
+        reduceTransparency = true;
+      };
+
       CustomUserPreferences = {
         NSGlobalDomain = {
           # Add a context menu item for showing the Web Inspector in web views

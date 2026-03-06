@@ -10,10 +10,16 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
   nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
-  # git-worktree-session = import ../pkgs/git-worktree-session.nix { inherit pkgs; };
   blink-fuzzy-lib = inputs.blink-cmp.packages.${pkgs.system}.blink-fuzzy-lib;
+  peon-ping-pkg = inputs.peon-ping.packages.${pkgs.system}.peon-ping;
+  treesitter-grammars = pkgs.symlinkJoin {
+    name = "nvim-treesitter-grammars";
+    paths = pkgs.vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
+  };
 in
 {
+  imports = [ inputs.peon-ping.homeManagerModules.default ];
+
   programs.home-manager.enable = true;
   home.stateVersion = "25.05";
 
@@ -25,12 +31,12 @@ in
   # packages managed outside of home-manager
   xdg.configFile.nvim.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/nvim";
   xdg.configFile.ghostty.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/ghostty";
-  xdg.configFile.sesh.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/sesh";
   xdg.configFile.worktrunk.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/worktrunk";
-
   # Symlink blink.cmp fuzzy library built via Nix to where lazy.nvim expects it
   home.file.".local/share/nvim/lazy/blink.cmp/target/release/libblink_cmp_fuzzy.dylib".source =
     "${blink-fuzzy-lib}/lib/libblink_cmp_fuzzy.dylib";
+  # Symlink Nix-built tree-sitter grammars (pre-compiled and code-signed for macOS)
+  home.file.".local/share/nvim/nix-treesitter-grammars".source = treesitter-grammars;
 
   # applications/programs
   programs = {
@@ -44,7 +50,7 @@ in
     starship = import ./programs/starship.nix { inherit pkgs; };
     git = import ./programs/git.nix { inherit username lib; };
     jujutsu = import ./programs/jujutsu.nix { inherit username lib; };
-    tmux = import ./programs/tmux.nix { inherit pkgs; };
+    tmux = import ./programs/tmux.nix { inherit pkgs dotfilesPath; };
     fzf = import ./programs/fzf.nix { inherit pkgs lib; };
     direnv = import ./programs/direnv.nix { inherit pkgs lib; };
     zoxide = import ./programs/zoxide.nix { inherit pkgs; };
@@ -56,27 +62,30 @@ in
     gh = import ./programs/gh.nix { inherit pkgs; };
     ssh = import ./programs/ssh.nix { inherit pkgs; };
     aerospace = import ./programs/aerospace.nix { inherit pkgs lib; };
-    claude-code = import ./programs/claude-code.nix { inherit pkgs lib inputs; };
-    smug = import ./programs/smug.nix { inherit pkgs lib inputs; };
+    claude-code = import ./programs/claude-code.nix {
+      inherit
+        pkgs
+        lib
+        inputs
+        username
+        ;
+      peon-ping = peon-ping-pkg;
+    };
+    peon-ping = import ./programs/peon-ping.nix { inherit pkgs inputs lib; };
     bat.enable = true;
-    k9s.enable = true;
+    k9s = import ./programs/k9s.nix { inherit pkgs; };
     ripgrep.enable = true;
     jq.enable = true;
   };
 
   # user specific packages instead of system wide
-  home.packages = [
-    # git-worktree-session
-  ]
-  ++ (with pkgs; [
+  home.packages = with pkgs; [
     inputs.worktrunk.packages.${pkgs.system}.worktrunk
-    devenv
     tree-sitter
     fzf
     fd
     delta
     difftastic
-    sesh
     tree
     nixfmt
     presenterm
@@ -84,7 +93,6 @@ in
     amp-cli
     parallel
     nixd
-    grafanactl
 
     kubectl
     kubectx
@@ -112,6 +120,8 @@ in
     uv
     ty
     ruff
+    pyright
+    nodePackages.typescript-language-server
     graphite-cli
     cargo
 
@@ -121,6 +131,7 @@ in
         gke-gcloud-auth-plugin
       ]
     ))
+    google-cloud-sql-proxy
     gofumpt
     golangci-lint
 
@@ -141,12 +152,12 @@ in
     lua-language-server
     stylua
     bash-language-server
-    basedpyright
     gopls
     templ
     golines
     nil
     helm-ls
     tofu-ls
-  ]);
+    buf
+  ];
 }

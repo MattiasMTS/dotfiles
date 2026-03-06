@@ -25,6 +25,7 @@ require("lazy").setup({
 
   checker = { enabled = false }, -- check for updates
   change_detection = { notify = false },
+  rocks = { enabled = false },
   performance = {
     cache = { enabled = true },
     rtp = {

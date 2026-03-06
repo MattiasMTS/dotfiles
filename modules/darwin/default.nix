@@ -46,14 +46,12 @@
   nix.enable = false;
 
   # ingest to custom conf.nix
-  determinate-nix.customSettings = {
+  determinateNix.customSettings = {
     eval-cores = 1;
     extra-experimental-features = [
       "build-time-fetch-tree" # Enables build-time flake inputs
       "parallel-eval" # Enables parallel evaluation
-      "external-builders" # Enables linux-builder
     ];
-    external-builders = ''[{"systems":["aarch64-linux","x86_64-linux"],"program":"/usr/local/bin/determinate-nixd","args":["builder"]}]'';
     extra-trusted-users = [
       username
     ];
@@ -75,6 +73,15 @@
     enable = true;
     package = pkgs.postgresql_18;
   };
+
+  system.defaults.screencapture = {
+    location = "~/Downloads";
+    show-thumbnail = true;
+  };
+
+  system.activationScripts.postActivation.text = ''
+    osascript -e 'tell application "System Events" to tell every desktop to set picture to "/System/Library/Desktop Pictures/Solid Colors/Black.png"'
+  '';
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";

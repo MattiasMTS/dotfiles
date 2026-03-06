@@ -2,7 +2,7 @@ return {
   -- sidekick.nvim for main workflow
   {
     "folke/sidekick.nvim",
-    dependencies = { "coder/claudecode.nvim" },
+    enabled = false,
     ---@class sidekick.Config
     opts = {
       nes = { enabled = false },
@@ -63,15 +63,13 @@ return {
   },
   {
     "coder/claudecode.nvim",
-    dev = true,
+    dev = false,
+    event = "VeryLazy",
     ---@type ClaudeCodeConfig
     opts = {
       auto_start = true,
       log_level = "info",
       port_range = { min = 10000, max = 65535 },
-      -- diff_opts = {
-      --   provider = "inline",
-      -- },
     },
     keys = {
       -- Diff management
@@ -83,10 +81,9 @@ return {
   },
   {
     "sourcegraph/amp.nvim",
-    enabled = true,
-    dev = false,
+    enabled = false,
     branch = "main",
-    lazy = false,
+    event = "VeryLazy",
     opts = {
       auto_start = true,
       log_level = "info",

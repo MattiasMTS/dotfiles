@@ -48,7 +48,7 @@ return {
     enabled = true,
     opts = {
       flavour = "mocha",
-      transparent_background = true,
+      transparent_background = false,
       compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
       show_end_of_buffer = true,
       lsp_styles = {
@@ -109,5 +109,14 @@ return {
         end,
       },
     },
+  },
+  {
+    "baliestri/aura-theme",
+    priority = 1000,
+    lazy = false,
+    enabled = true,
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
+    end,
   },
 }

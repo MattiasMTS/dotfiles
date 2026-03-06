@@ -15,19 +15,6 @@ return {
 
       opts.sections = opts.sections or {}
       opts.sections.lualine_y = opts.sections.lualine_y or { "lsp_status" }
-      table.insert(opts.sections.lualine_x or {}, 2, {
-        function()
-          local status = require("sidekick.status").cli()
-          return " " .. (#status > 1 and #status or "")
-        end,
-        cond = function()
-          return #require("sidekick.status").cli() > 0
-        end,
-        color = function()
-          return "Special"
-        end,
-      })
-
       opts.extensions = opts.extensions
         or {
           "quickfix",
@@ -39,7 +26,7 @@ return {
   },
   {
     "akinsho/bufferline.nvim",
-    enabled = false,
+    enabled = true,
     event = "VeryLazy",
     keys = {
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
