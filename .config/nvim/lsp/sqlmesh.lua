@@ -7,8 +7,6 @@ return {
     "config.yml",
     "config.yaml",
     ".sqlmesh",
-    "pyproject.toml",
-    ".git",
   },
   settings = {},
 }

@@ -32,7 +32,7 @@ return {
       completeUnimported = true,
       vulncheck = "Imports",
       hints = {
-        -- assignVariableTypes = false, -- Reduced for performance
+        assignVariableTypes = false,
         compositeLiteralFields = false,
         compositeLiteralTypes = false,
         constantValues = true,

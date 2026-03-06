@@ -1,7 +1,8 @@
 return {
   {
     "mrjones2014/smart-splits.nvim",
-    lazy = false,
+    -- lazy = false,
+    event = "VeryLazy", -- loads after UI
     opts = {
       default_amount = 7,
       ignored_buftypes = { "nofile" },

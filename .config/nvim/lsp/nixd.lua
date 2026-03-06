@@ -16,10 +16,10 @@ return {
       },
       options = {
         home_manager = {
-          expr = 'let flake = builtins.getFlake(toString ./.); in flake.homeConfigurations."mattiassjodin".options',
+          expr = 'let flake = builtins.getFlake(toString ./.); in flake.darwinConfigurations."Mattiass-MacBook-Pro".options.home-manager.users.type.getSubOptions []',
         },
         darwin = {
-          expr = "let flake = builtins.getFlake(toString ./.); in flake.darwinConfigurations.mattiassjodin.options",
+          expr = 'let flake = builtins.getFlake(toString ./.); in flake.darwinConfigurations."Mattiass-MacBook-Pro".options',
         },
       },
     },
