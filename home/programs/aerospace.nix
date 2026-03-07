@@ -4,5 +4,7 @@
   ...
 }:
 {
-  enable = false;
+  programs.aerospace = {
+    enable = false;
+  };
 }

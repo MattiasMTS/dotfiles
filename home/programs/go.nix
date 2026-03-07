@@ -7,11 +7,13 @@ let
   GOPATH = "/Users/${username}/go";
 in
 {
-  enable = true;
+  programs.go = {
+    enable = true;
 
-  package = pkgs.go_1_26;
-  env = {
-    GOPATH = GOPATH;
-    GOBIN = "${GOPATH}/bin";
+    package = pkgs.go_1_26;
+    env = {
+      GOPATH = GOPATH;
+      GOBIN = "${GOPATH}/bin";
+    };
   };
 }

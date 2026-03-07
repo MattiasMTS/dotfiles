@@ -42,6 +42,9 @@ return {
         -- prefer vertical splits
         actions = { ["enter"] = actions.help_vert },
       },
+      grep = {
+        rg_opts = "--column --line-number --no-heading --color=always --smart-case --hidden --glob=!.git",
+      },
       winopts = { preview = { hidden = true } },
     }
   end,

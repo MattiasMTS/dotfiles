@@ -85,7 +85,10 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.${username} = import ./home;
-            home-manager.extraSpecialArgs = { inherit inputs username; };
+            home-manager.extraSpecialArgs = {
+              inherit inputs username;
+              dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
+            };
           }
           # `nix-homebrew` config
           nix-homebrew.darwinModules.nix-homebrew

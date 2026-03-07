@@ -4,21 +4,44 @@
   lib,
   inputs,
   username,
+  dotfilesPath,
   ...
 }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  dotfilesPath = "/Users/${username}/src/github.com/projects/dotfiles";
-  nvim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
   blink-fuzzy-lib = inputs.blink-cmp.packages.${pkgs.system}.blink-fuzzy-lib;
-  peon-ping-pkg = inputs.peon-ping.packages.${pkgs.system}.peon-ping;
   treesitter-grammars = pkgs.symlinkJoin {
     name = "nvim-treesitter-grammars";
     paths = pkgs.vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
   };
 in
 {
-  imports = [ inputs.peon-ping.homeManagerModules.default ];
+  imports = [
+    inputs.peon-ping.homeManagerModules.default
+    ./programs/zsh.nix
+    ./programs/starship.nix
+    ./programs/git.nix
+    ./programs/jujutsu.nix
+    ./programs/tmux.nix
+    ./programs/fzf.nix
+    ./programs/direnv.nix
+    ./programs/zoxide.nix
+    ./programs/atuin.nix
+    ./programs/nushell.nix
+    ./programs/go.nix
+    ./programs/java.nix
+    ./programs/lazygit.nix
+    ./programs/gh.nix
+    ./programs/ssh.nix
+    ./programs/aerospace.nix
+    ./programs/claude-code.nix
+    ./programs/peon-ping.nix
+    ./programs/k9s.nix
+    ./programs/neovim.nix
+    ./programs/bat.nix
+    ./programs/ripgrep.nix
+    ./programs/jq.nix
+  ];
 
   programs.home-manager.enable = true;
   home.stateVersion = "25.05";
@@ -37,46 +60,6 @@ in
     "${blink-fuzzy-lib}/lib/libblink_cmp_fuzzy.dylib";
   # Symlink Nix-built tree-sitter grammars (pre-compiled and code-signed for macOS)
   home.file.".local/share/nvim/nix-treesitter-grammars".source = treesitter-grammars;
-
-  # applications/programs
-  programs = {
-    neovim = {
-      enable = true;
-      package = nvim-nightly;
-      defaultEditor = true;
-      vimdiffAlias = true;
-    };
-    zsh = import ./programs/zsh.nix { inherit pkgs username; };
-    starship = import ./programs/starship.nix { inherit pkgs; };
-    git = import ./programs/git.nix { inherit username lib; };
-    jujutsu = import ./programs/jujutsu.nix { inherit username lib; };
-    tmux = import ./programs/tmux.nix { inherit pkgs dotfilesPath; };
-    fzf = import ./programs/fzf.nix { inherit pkgs lib; };
-    direnv = import ./programs/direnv.nix { inherit pkgs lib; };
-    zoxide = import ./programs/zoxide.nix { inherit pkgs; };
-    atuin = import ./programs/atuin.nix { inherit pkgs; };
-    nushell = import ./programs/nushell.nix { inherit pkgs username; };
-    go = import ./programs/go.nix { inherit pkgs username; };
-    java = import ./programs/java.nix { inherit pkgs; };
-    lazygit = import ./programs/lazygit.nix { inherit pkgs; };
-    gh = import ./programs/gh.nix { inherit pkgs; };
-    ssh = import ./programs/ssh.nix { inherit pkgs; };
-    aerospace = import ./programs/aerospace.nix { inherit pkgs lib; };
-    claude-code = import ./programs/claude-code.nix {
-      inherit
-        pkgs
-        lib
-        inputs
-        username
-        ;
-      peon-ping = peon-ping-pkg;
-    };
-    peon-ping = import ./programs/peon-ping.nix { inherit pkgs inputs lib; };
-    bat.enable = true;
-    k9s = import ./programs/k9s.nix { inherit pkgs; };
-    ripgrep.enable = true;
-    jq.enable = true;
-  };
 
   # user specific packages instead of system wide
   home.packages = with pkgs; [

@@ -1,12 +1,14 @@
 { pkgs, ... }:
 {
-  enable = true;
-  enableDefaultConfig = false;
-  matchBlocks."*" = {
-    extraOptions = {
-      UseKeychain = "yes";
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    matchBlocks."*" = {
+      extraOptions = {
+        UseKeychain = "yes";
+      };
+      identityFile = "~/.ssh/id_ed25519";
     };
-    identityFile = "~/.ssh/id_ed25519";
+    matchBlocks."*".addKeysToAgent = "yes";
   };
-  matchBlocks."*".addKeysToAgent = "yes";
 }
