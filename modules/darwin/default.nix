@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  inputs,
   username,
   ...
 }:
@@ -85,8 +86,8 @@
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.overlays = import ../../overlays { inherit inputs; };
 
-  # TODO: use overlays instead
   # whitelist unfree packages
   nixpkgs.config.allowUnfree = true;
 }

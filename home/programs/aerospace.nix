@@ -5,6 +5,6 @@
 }:
 {
   programs.aerospace = {
-    enable = false;
+    enable = true;
   };
 }

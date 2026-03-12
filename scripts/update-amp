@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OVERLAY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../overlays" && pwd)"
+OVERLAY_FILE="$OVERLAY_DIR/amp-cli.nix"
+
+# Get latest version from npm
+echo "Checking latest @sourcegraph/amp version..."
+LATEST_VERSION=$(npm view @sourcegraph/amp version)
+CURRENT_VERSION=$(grep 'version = ' "$OVERLAY_FILE" | head -1 | sed 's/.*"\(.*\)".*/\1/')
+
+if [ "$LATEST_VERSION" = "$CURRENT_VERSION" ]; then
+  echo "Already up to date: $CURRENT_VERSION"
+  exit 0
+fi
+
+echo "Updating amp-cli: $CURRENT_VERSION -> $LATEST_VERSION"
+
+# Generate new package-lock.json
+WORK_DIR=$(mktemp -d)
+cd "$WORK_DIR"
+npm i --package-lock-only "@sourcegraph/amp@$LATEST_VERSION"
+cp package-lock.json "$OVERLAY_DIR/amp-cli-lock.json"
+cd -
+rm -rf "$WORK_DIR"
+
+# Get new source hash
+echo "Fetching source hash..."
+SRC_HASH=$(nix-prefetch-url --unpack "https://registry.npmjs.org/@sourcegraph/amp/-/amp-${LATEST_VERSION}.tgz" 2>/dev/null)
+SRC_HASH_SRI=$(nix hash convert --hash-algo sha256 --to sri "$SRC_HASH")
+
+# Update version (both in version attr and URL), source hash, and reset npmDepsHash
+sed -i '' "s|$CURRENT_VERSION|$LATEST_VERSION|g" "$OVERLAY_FILE"
+sed -i '' "s|hash = \"sha256-.*\";|hash = \"${SRC_HASH_SRI}\";|" "$OVERLAY_FILE"
+DUMMY_HASH="sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+sed -i '' "s|npmDepsHash = \"sha256-.*\";|npmDepsHash = \"${DUMMY_HASH}\";|" "$OVERLAY_FILE"
+
+# Build to extract correct npmDepsHash from error
+echo "Computing npmDepsHash..."
+NPM_HASH=$(nix build --impure .#darwinConfigurations.Mattiass-MacBook-Pro.system --no-link 2>&1 \
+  | grep "got:" | head -1 | awk '{print $2}') || true
+
+if [ -n "$NPM_HASH" ]; then
+  sed -i '' "s|npmDepsHash = \"${DUMMY_HASH}\";|npmDepsHash = \"${NPM_HASH}\";|" "$OVERLAY_FILE"
+  echo "Updated amp-cli to $LATEST_VERSION"
+  echo "Run 'darwin-rebuild switch --flake ~/src/github.com/projects/dotfiles' to apply."
+else
+  echo "Could not auto-detect npmDepsHash. Update npmDepsHash in $OVERLAY_FILE manually."
+fi

@@ -7,11 +7,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1772729266,
-        "narHash": "sha256-EhKpt+L6Qw9NpUsms11tsNnV4IQ/divhiipCcQSV4VI=",
+        "lastModified": 1773264376,
+        "narHash": "sha256-UFWsh3U47zqaKyyUg9ScMqm/vCK4lOiwMuhTiKGGmBc=",
         "owner": "saghen",
         "repo": "blink.cmp",
-        "rev": "e9556f9b981f395e22a6bfd69fd5f3008a2a6cd9",
+        "rev": "816052a3a9676d85cd881e2b8021513422b65289",
         "type": "github"
       },
       "original": {
@@ -45,11 +45,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772841898,
-        "narHash": "sha256-+5WdD9bo2XZIajeO5JPXCUyPotE9DFY9DL38OHYEy1s=",
+        "lastModified": 1773256539,
+        "narHash": "sha256-Z3GjCSny8jLLVHUj+6MN7ARu06XLglmDsnnNJg559Mw=",
         "owner": "sadjow",
         "repo": "claude-code-nix",
-        "rev": "635219a8ebb214a37e92220a0f292568cfb01da8",
+        "rev": "dbe46e72d474a4b1c8b3a34b7246f9bbce86b1b9",
         "type": "github"
       },
       "original": {
@@ -317,11 +317,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772845525,
-        "narHash": "sha256-Dp5Ir2u4jJDGCgeMRviHvEQDe+U37hMxp6RSNOoMMPc=",
+        "lastModified": 1773179137,
+        "narHash": "sha256-EdW2bwzlfme0vbMOcStnNmKlOAA05Bp6su2O8VLGT0k=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "27b93804fbef1544cb07718d3f0a451f4c4cd6c0",
+        "rev": "3f98e2bbc661ec0aaf558d8a283d6955f05f1d09",
         "type": "github"
       },
       "original": {
@@ -569,11 +569,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1772624091,
-        "narHash": "sha256-QKyJ0QGWBn6r0invrMAK8dmJoBYWoOWy7lN+UHzW1jc=",
+        "lastModified": 1772963539,
+        "narHash": "sha256-9jVDGZnvCckTGdYT53d/EfznygLskyLQXYwJLKMPsZs=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "80bdc1e5ce51f56b19791b52b2901187931f5353",
+        "rev": "9dcb002ca1690658be4a04645215baea8b95f31d",
         "type": "github"
       },
       "original": {
@@ -591,11 +591,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772853251,
-        "narHash": "sha256-7/WQrCtvo97PdR87+y3gCa8Dby+vKm2GrXtVGqy1hUM=",
+        "lastModified": 1773233496,
+        "narHash": "sha256-yTFztYwNMp3tZf/iYJsxBiETTH6Gf3K4wweO5TWkxB8=",
         "owner": "PeonPing",
         "repo": "peon-ping",
-        "rev": "1e7c236af98fa3998976b207a474241770ef7a6c",
+        "rev": "35da304ec1d7386834df97211903b2775a6a03cc",
         "type": "github"
       },
       "original": {

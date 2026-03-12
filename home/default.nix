@@ -41,6 +41,7 @@ in
     ./programs/bat.nix
     ./programs/ripgrep.nix
     ./programs/jq.nix
+    ./programs/btop.nix
   ];
 
   programs.home-manager.enable = true;
@@ -74,6 +75,7 @@ in
     presenterm
     clang
     amp-cli
+    codex
     parallel
     nixd
 
