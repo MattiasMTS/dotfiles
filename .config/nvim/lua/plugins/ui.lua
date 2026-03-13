@@ -10,7 +10,7 @@ return {
     event = "BufEnter",
     config = function()
       -- build a transparent theme from catppuccin
-      local theme = require("lualine.themes.catppuccin")
+      local theme = require("lualine.themes.catppuccin-nvim")
       for _, mode in pairs(theme) do
         for _, section in pairs(mode) do
           section.bg = "NONE"
