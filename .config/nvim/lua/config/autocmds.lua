@@ -92,3 +92,14 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
     end
   end,
 })
+
+-- Snacks rename integration
+vim.api.nvim_create_autocmd("User", {
+  pattern = "MiniFilesActionRename",
+  callback = function(args)
+    local ok, snacks = pcall(require, "snacks")
+    if ok and snacks.rename then
+      snacks.rename.on_rename_file(args.data.from, args.data.to)
+    end
+  end,
+})

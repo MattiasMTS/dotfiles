@@ -14,10 +14,12 @@ return {
   {
     "iamcco/markdown-preview.nvim",
     enabled = false,
-    cmd = { "MarkdownPreview", "MarkdownPreviewToggle" },
-    opts = {},
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    config = function()
+      vim.cmd([[do FileType]])
+    end,
     keys = {
-      { "<leader>md", "<cmd>MarkdownPreviewToggle<CR>" },
+      { "<leader>md", "<cmd>MarkdownPreviewToggle<CR>", ft = "markdown" },
     },
   },
 }

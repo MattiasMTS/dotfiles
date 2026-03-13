@@ -1,5 +1,30 @@
 return {
   {
+    "nvim-mini/mini.files",
+    version = false,
+    keys = {
+      {
+        "<leader>e",
+        function()
+          local mf = require("mini.files")
+          if not mf.close() then
+            mf.open(vim.api.nvim_buf_get_name(0), true)
+          end
+        end,
+        desc = "Open MiniFiles (current file)",
+      },
+    },
+    config = function(_, opts)
+      opts = vim.tbl_deep_extend("force", opts or {}, {
+        mappings = {
+          go_in_plus = "l",
+          synchronize = ":w",
+        },
+      })
+      require("mini.files").setup(opts)
+    end,
+  },
+  {
     "nvim-mini/mini.icons",
     lazy = true,
     version = false,
@@ -30,20 +55,6 @@ return {
         dotenv = { glyph = "", hl = "MiniIconsYellow" },
       },
     },
-  },
-  -- better diff (e.g. git, codecompanion, diff buffers, etc)
-  {
-    "nvim-mini/mini.diff",
-    enabled = false,
-    version = false,
-    event = "VeryLazy",
-    config = function()
-      local diff = require("mini.diff")
-      diff.setup({
-        -- Disabled by default
-        source = diff.gen_source.none(),
-      })
-    end,
   },
   -- auto pairs
   {

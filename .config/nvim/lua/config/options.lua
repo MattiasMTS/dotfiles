@@ -38,7 +38,7 @@ vim.opt.smartindent = true
 vim.opt.expandtab = true -- spaces rather than tbas
 
 -- extras
-vim.o.winborder = "rounded" -- default border style where applicable 0.11 nvim
+vim.o.winborder = "" -- default border style where applicable 0.11 nvim
 vim.opt.backspace = "start,eol,indent"
 vim.opt.path:append({ "**" }) -- finding files, search down into subfolders
 vim.opt.completeopt = "menu,menuone,noinsert" -- no insert until I command so

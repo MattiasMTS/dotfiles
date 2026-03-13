@@ -39,7 +39,7 @@ return {
     },
     keys = {
       {
-        "<leader>e",
+        "<leader>E",
         function()
           require("neo-tree.command").execute({ toggle = true, cwd = vim.fs.root(0, { ".git" }) })
         end,
