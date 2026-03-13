@@ -1,4 +1,4 @@
-{ username, ... }:
+{ config, username, ... }:
 {
   programs.jujutsu = {
     enable = true;
@@ -6,7 +6,7 @@
     settings = {
       user = {
         name = "Mattias Sjödin";
-        email = "mattias.sjodin.6764@hotmail.com";
+        email = config.programs.git.settings.user.email;
       };
 
       # SSH signing configuration
@@ -24,10 +24,9 @@
 
       # UI configuration - use delta for diffs
       ui = {
-        default-command = [
-          "log"
-          "--no-pager"
-        ];
+        default-command = "status";
+        merge-editor = "nvim";
+        paginate = "auto";
       };
 
       aliases = {
@@ -35,11 +34,6 @@
         st = [ "status" ];
         l = [ "log" ];
         d = [ "diff" ];
-      };
-
-      # Revset aliases
-      revset-aliases = {
-        "mine()" = "author(exact:'mattias.sjodin.6764@hotmail.com')";
       };
 
       # Conditional configuration for work repositories
@@ -54,5 +48,6 @@
         }
       ];
     };
+
   };
 }

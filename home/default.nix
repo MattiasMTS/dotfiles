@@ -18,6 +18,7 @@ in
 {
   imports = [
     inputs.peon-ping.homeManagerModules.default
+    ../modules/amp-cli.nix
     ./programs/zsh.nix
     ./programs/starship.nix
     ./programs/git.nix
@@ -35,6 +36,7 @@ in
     ./programs/ssh.nix
     ./programs/aerospace.nix
     ./programs/claude-code.nix
+    ./programs/amp-cli.nix
     ./programs/peon-ping.nix
     ./programs/k9s.nix
     ./programs/neovim.nix
@@ -74,7 +76,6 @@ in
     nixfmt
     presenterm
     clang
-    amp-cli
     codex
     parallel
     nixd

@@ -2,7 +2,7 @@
 {
   programs.lazygit = {
     enable = true;
-    enableZshIntegration = false; # some weird lg function
+    enableZshIntegration = false;
     enableNushellIntegration = false;
 
     settings = {
