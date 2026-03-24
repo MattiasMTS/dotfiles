@@ -2,10 +2,11 @@
 return {
   cmd = { "gopls" },
   filetypes = { "go", "gomod", "gowork", "gosum", "gotmpl" },
-  root_markers = { "go.work", "go.mod", ".git" },
+  root_markers = { "go.mod", ".git" },
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
   settings = {
     gopls = {
+      -- VS Code defaults: mostly let gopls use its own defaults
       codelenses = {
         gc_details = false,
         generate = true,
@@ -26,11 +27,12 @@ return {
         yield = true,
         waitgroup = true,
       },
+      env = { GOWORK = "off" }, -- disable go.work to avoid loading all modules in monorepos
       gofumpt = false, -- replaced with conform
-      usePlaceholders = true,
+      usePlaceholders = false, -- VS Code default
       staticcheck = false, -- managed by nvim-lint
-      completeUnimported = true,
-      vulncheck = "Imports",
+      completeUnimported = true, -- gopls default
+      vulncheck = "Off", -- VS Code default is "Prompt", but "Off" is lighter
       hints = {
         assignVariableTypes = false,
         compositeLiteralFields = false,
@@ -42,21 +44,15 @@ return {
       },
       semanticTokens = true,
       templateExtensions = { "templ", "tmpl" },
-      analysisProgressReporting = false, -- Reduced notification spam
-      -- Performance tuning for large codebases
-      diagnosticsDelay = "500ms",
-      diagnosticsTrigger = "Edit",
-      completionBudget = "200ms",
+      analysisProgressReporting = true, -- VS Code default
+      diagnosticsDelay = "1s", -- VS Code default
+      diagnosticsTrigger = "Edit", -- VS Code default
       symbolMatcher = "FastFuzzy",
       directoryFilters = {
-        "-.git",
-        "-.vscode",
-        "-.idea",
-        "-.vscode-test",
-        "-node_modules",
-        "-vendor",
-        "-testdata",
-        "-.cache",
+        "-**/node_modules",
+        "-**/vendor",
+        "-**/.git",
+        "-**/.direnv",
       },
     },
   },

@@ -1,11 +1,11 @@
 final: prev: {
   amp-cli = final.buildNpmPackage {
     pname = "amp-cli";
-    version = "0.0.1773432280-gcd86a7";
+    version = "0.0.1774240952-g432b79";
 
     src = final.fetchzip {
-      url = "https://registry.npmjs.org/@sourcegraph/amp/-/amp-0.0.1773432280-gcd86a7.tgz";
-      hash = "sha256-7VB2T48wBFIZ7lwzY9kv/9SuaGUtZIyILGiyMOROaDY=";
+      url = "https://registry.npmjs.org/@sourcegraph/amp/-/amp-0.0.1774240952-g432b79.tgz";
+      hash = "sha256-GHwRHQHn8ZkxQorueO9MBBdbbGMg3Ouw9mGj2tvUdVw=";
     };
 
     postPatch = ''
@@ -17,7 +17,7 @@ final: prev: {
         "version": "0.0.0",
         "license": "UNLICENSED",
         "dependencies": {
-          "@sourcegraph/amp": "0.0.1773432280-gcd86a7"
+          "@sourcegraph/amp": "0.0.1774240952-g432b79"
         },
         "bin": {
           "amp": "./bin/amp-wrapper.js"
@@ -34,7 +34,7 @@ final: prev: {
       chmod +x bin/amp-wrapper.js
     '';
 
-    npmDepsHash = "sha256-klQCBZu9gZuYAtvq/0ywDp3n57YWkoZH48VUURntsfI=";
+    npmDepsHash = "sha256-qp9FA8zLQF3aMQLbXBm91Fy4insRjmbI055L6nF55OQ=";
 
     propagatedBuildInputs = [ final.ripgrep ];
     nativeBuildInputs = [ final.makeWrapper ];

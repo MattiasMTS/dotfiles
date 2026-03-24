@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DIRS=(
+  ~/src/github.com/projects
+  ~/src/github.com/lovablelabs
+)
+
+is_worktree() {
+  [[ -f "$1/.git" ]]
+}
+
+has_worktrees() {
+  local parent base
+  parent=$(dirname "$1")
+  base=$(basename "$1")
+  find "$parent" -mindepth 1 -maxdepth 1 -type d -name "${base}.*" 2>/dev/null | head -1 | grep -q .
+}
+
+switch_tmux() {
+  local name="$1" dir="$2"
+  if tmux has-session -t "$name" 2>/dev/null; then
+    tmux switch-client -t "$name" 2>/dev/null || tmux attach-session -t "$name"
+  else
+    tmux new-session -d -s "$name" -c "$dir"
+    tmux switch-client -t "$name" 2>/dev/null || tmux attach-session -t "$name"
+  fi
+}
+
+# Collect repos (excluding worktree dirs)
+repos=$(
+  find "${DIRS[@]}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null \
+    | while read -r d; do
+        is_worktree "$d" || echo "$d"
+      done \
+    | sed "s|$HOME/||" \
+    | sort
+)
+
+# Collect existing tmux sessions as direct-switch targets
+sessions=$(tmux list-sessions -F '#S' 2>/dev/null | sort)
+
+# Combine: sessions first (prefixed for identification), then repos
+selected=$(
+  {
+    echo "$sessions" | while read -r s; do
+      [[ -n "$s" ]] && echo "tmux:$s"
+    done
+    echo "$repos"
+  } \
+    | fzf --delimiter='[/:]' --with-nth=-1 --prompt="session> "
+)
+
+[[ -z "$selected" ]] && exit 0
+
+# Direct tmux session switch
+if [[ "$selected" == tmux:* ]]; then
+  session="${selected#tmux:}"
+  tmux switch-client -t "$session" 2>/dev/null || tmux attach-session -t "$session"
+  exit 0
+fi
+
+dir="$HOME/$selected"
+name=$(basename "$selected")
+
+if has_worktrees "$dir"; then
+  # Repo with worktrees — show branches (fast via git)
+  cd "$dir"
+
+  # Get default branch name
+  default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
+  if [[ -z "$default_branch" ]]; then
+    for candidate in main master; do
+      if git show-ref --verify --quiet "refs/remotes/origin/$candidate" 2>/dev/null; then
+        default_branch="$candidate"
+        break
+      fi
+    done
+  fi
+
+  # Collect worktree branches and prepend default if missing
+  wt_branches=$(git worktree list --porcelain 2>/dev/null \
+    | grep "^branch " \
+    | sed 's|branch refs/heads/||')
+
+  if [[ -n "$default_branch" ]] && ! echo "$wt_branches" | grep -qx "$default_branch"; then
+    wt_branches=$(printf '%s\n%s' "$default_branch" "$wt_branches")
+  fi
+
+  branch=$(echo "$wt_branches" \
+    | fzf --prompt="worktree ($name)> " --print-query \
+    | tail -1)
+
+  [[ -z "$branch" ]] && exit 0
+
+  # Default branch lives in the base dir — set up tmux session directly
+  if [[ "$branch" == "$default_branch" ]]; then
+    session="${name}.${default_branch}"
+    if tmux has-session -t "$session" 2>/dev/null; then
+      tmux switch-client -t "$session" 2>/dev/null || tmux attach-session -t "$session"
+    else
+      tmux new-session -d -s "$session" -c "$dir"
+      tmux send-keys -t "$session:1" 'nvim' Enter
+      tmux new-window -t "$session" -c "$dir"
+      tmux new-window -t "$session" -c "$dir"
+      tmux send-keys -t "$session:3" 'claude' Enter
+      tmux select-window -t "$session:1"
+      tmux switch-client -t "$session" 2>/dev/null || tmux attach-session -t "$session"
+    fi
+  else
+    exec wt switch "$branch"
+  fi
+else
+  # Plain repo without worktrees — switch tmux session named after repo
+  switch_tmux "$name" "$dir"
+fi

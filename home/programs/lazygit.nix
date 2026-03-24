@@ -18,10 +18,13 @@
         splitDiff = "auto";
         commandLogSize = 6;
         sidePanelWidth = 0.20;
+        expandFocusedSidePanel = true;
+        expandedSidePanelWeight = 3;
       };
       os.editPreset = "nvim-remote";
       git = {
         overrideGpg = true;
+        pushForce = "always";
         pagers = [
           {
             pager = "delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format=\"lazygit-edit://{path}:{line}\"";

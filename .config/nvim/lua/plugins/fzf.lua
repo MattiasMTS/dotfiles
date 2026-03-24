@@ -45,7 +45,7 @@ return {
       grep = {
         rg_opts = "--column --line-number --no-heading --color=always --smart-case --hidden --glob=!.git",
       },
-      winopts = { preview = { hidden = true } },
+      winopts = { preview = { hidden = false } },
     }
   end,
 }

@@ -44,3 +44,19 @@ vim.keymap.set("n", "<leader>gf", function() Snacks.picker.git_log_file() end, {
 vim.keymap.set("n", "<leader>gl", function() Snacks.picker.git_log() end, { desc = "Git Log (cwd)" })
 vim.keymap.set("n", "<leader>wm", function() Snacks.zen.zoom() end, { desc = "Maximize buffer" })
 vim.keymap.set("n", "<leader>wz", function() Snacks.zen() end, { desc = "Zen mode" })
+vim.keymap.set("n", "<leader>xl", function ()
+  local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
+  if not success and err then
+    vim.notify(err, vim.log.levels.ERROR)
+  end
+end,
+{ desc = "Location List" })
+vim.keymap.set("n", "<leader>xq", function ()
+  local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
+  if not success and err then
+    vim.notify(err, vim.log.levels.ERROR)
+  end
+end,
+{ desc = "Quickfix List" })
+vim.keymap.set("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
+vim.keymap.set("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })

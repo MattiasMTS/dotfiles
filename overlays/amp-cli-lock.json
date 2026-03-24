@@ -1,11 +1,11 @@
 {
-  "name": "tmp.obNvnRMCmc",
+  "name": "tmp.hPhixPnTCd",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "dependencies": {
-        "@sourcegraph/amp": "^0.0.1773432280-gcd86a7"
+        "@sourcegraph/amp": "^0.0.1774240952-g432b79"
       }
     },
     "node_modules/@napi-rs/keyring": {
@@ -228,9 +228,9 @@
       }
     },
     "node_modules/@sourcegraph/amp": {
-      "version": "0.0.1773432280-gcd86a7",
-      "resolved": "https://registry.npmjs.org/@sourcegraph/amp/-/amp-0.0.1773432280-gcd86a7.tgz",
-      "integrity": "sha512-A4MqqL7IQm5T/AmbIvpjvahpAcMkxW7wm5UV2ZfvS6rkgKR9TkpjLUhZ2rpKYi18GzevvRs0P9sTNHsJ0LaFgQ==",
+      "version": "0.0.1774240952-g432b79",
+      "resolved": "https://registry.npmjs.org/@sourcegraph/amp/-/amp-0.0.1774240952-g432b79.tgz",
+      "integrity": "sha512-KtOr7bIEu27uRWFPNAkFbmQ327WaRcirlLZBmkmDtmlWhCu++ky1j18C3sWHgjCeui5TB17IqFfZp68Kbn1lHQ==",
       "license": "Amp Commercial License",
       "dependencies": {
         "@napi-rs/keyring": "1.1.9"

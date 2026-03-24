@@ -10,6 +10,12 @@ let
     rev = "main";
     hash = "sha256-5QwMvgOlqVZwCNwNNNt2CwtM6dk+Fww1EjagA9fezVQ=";
   };
+  duckdb-skills = pkgs.fetchFromGitHub {
+    owner = "duckdb";
+    repo = "duckdb-skills";
+    rev = "main";
+    hash = "sha256-cqkEfFSSa5BlwJyzp3ngNgHSS4w8pLZw8NpY9+Lk2RM=";
+  };
 in
 {
   programs.amp-cli = {
@@ -19,6 +25,12 @@ in
 
     skills = {
       clickhouse-best-practices = clickhouse-agent-skills + "/skills/clickhouse-best-practices";
+      duckdb-attach-db = duckdb-skills + "/skills/attach-db";
+      duckdb-docs = duckdb-skills + "/skills/duckdb-docs";
+      duckdb-install = duckdb-skills + "/skills/install-duckdb";
+      duckdb-query = duckdb-skills + "/skills/query";
+      duckdb-read-file = duckdb-skills + "/skills/read-file";
+      duckdb-read-memories = duckdb-skills + "/skills/read-memories";
     };
 
     mcpServers = {
@@ -27,6 +39,10 @@ in
       };
       "confidence-docs" = {
         url = "https://mcp.confidence.dev/mcp/docs";
+      };
+      "confidence-experiments" = {
+        type = "http";
+        url = "https://mcp.confidence.dev/mcp/experiments";
       };
       grafana = {
         command = "uvx";
@@ -47,7 +63,6 @@ in
       "amp.git.commit.ampThread.enabled" = false;
       "amp.notifications.enabled" = true;
       "amp.notifications.system.enabled" = true;
-      "amp.terminal.theme" = "catppuccin-mocha";
     };
   };
 }

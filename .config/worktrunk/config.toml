@@ -16,7 +16,7 @@ else
   tmux send-keys -t "$S:1" 'nvim' Enter
   tmux new-window -t "$S" -c "$W"
   tmux new-window -t "$S" -c "$W"
-  tmux send-keys -t "$S:3" 'amp' Enter
+  tmux send-keys -t "$S:3" 'claude' Enter
   tmux select-window -t "$S:1"
   tmux switch-client -t "$S" 2>/dev/null || tmux attach-session -t "$S"
 fi

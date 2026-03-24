@@ -67,6 +67,7 @@ return {
       diff = {
         disable_inlay_hints = true,
         max_computation_time_ms = 5000,
+        layout = "inline",
       },
       keymaps = {
         view = {
@@ -88,6 +89,7 @@ return {
           editor_mode = "insert",
           submit_keys = { "<CR>" },
           cancel_keys = { "q" },
+          opacity = 0,
         },
       },
     },

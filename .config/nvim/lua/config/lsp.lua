@@ -78,19 +78,20 @@ end
 
 -- Diagnostic configuration.
 vim.diagnostic.config({
-  virtual_text = {
-    spacing = 2,
-    source = "if_many",
-    format = function(diagnostic)
-      local diagnostic_message = {
-        [vim.diagnostic.severity.ERROR] = diagnostic.message,
-        [vim.diagnostic.severity.WARN] = diagnostic.message,
-        [vim.diagnostic.severity.INFO] = diagnostic.message,
-        [vim.diagnostic.severity.HINT] = diagnostic.message,
-      }
-      return diagnostic_message[diagnostic.severity]
-    end,
-  },
+  -- NOTE: replaced by tiny-inline-diagnsotic plugin
+  -- virtual_text = {
+  --   spacing = 2,
+  --   source = "if_many",
+  --   format = function(diagnostic)
+  --     local diagnostic_message = {
+  --       [vim.diagnostic.severity.ERROR] = diagnostic.message,
+  --       [vim.diagnostic.severity.WARN] = diagnostic.message,
+  --       [vim.diagnostic.severity.INFO] = diagnostic.message,
+  --       [vim.diagnostic.severity.HINT] = diagnostic.message,
+  --     }
+  --     return diagnostic_message[diagnostic.severity]
+  --   end,
+  -- },
   severity_sort = true,
   float = { source = "if_many" },
   underline = true,

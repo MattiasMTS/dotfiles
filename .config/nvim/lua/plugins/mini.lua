@@ -17,7 +17,7 @@ return {
     config = function(_, opts)
       opts = vim.tbl_deep_extend("force", opts or {}, {
         mappings = {
-          go_in_plus = "l",
+          go_in_plus = "<CR>",
           synchronize = ":w",
         },
       })

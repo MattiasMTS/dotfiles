@@ -86,7 +86,6 @@ in
     kustomize
 
     tflint
-    trivy
     opentofu
     clickhouse
     lefthook
@@ -100,7 +99,6 @@ in
     vtsls
     deno
     nodePackages.vscode-json-languageserver
-    prettier
 
     duckdb
     uv

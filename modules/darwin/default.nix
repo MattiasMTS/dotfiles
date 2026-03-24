@@ -23,6 +23,7 @@
     gnumake
     _1password-cli
     _1password-gui
+    tailscale
   ];
 
   homebrew = {
@@ -32,6 +33,7 @@
       "spotify"
       "brave-browser"
       "datagrip"
+      "cmux"
     ];
     brews = [ ];
     taps = [ ];
@@ -56,8 +58,8 @@
     extra-trusted-users = [
       username
     ];
-    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
-    extra-substituters = "https://devenv.cachix.org";
+    # extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
+    # extra-substituters = "https://devenv.cachix.org";
   };
 
   # Create /etc/zshrc that loads the nix-darwin environment.
@@ -75,6 +77,11 @@
     package = pkgs.postgresql_18;
   };
 
+  services.tailscale = {
+    enable = true;
+    package = pkgs.tailscale;
+  };
+
   system.defaults.screencapture = {
     location = "~/Downloads";
     show-thumbnail = true;
@@ -82,6 +89,7 @@
 
   system.activationScripts.postActivation.text = ''
     osascript -e 'tell application "System Events" to tell every desktop to set picture to "/System/Library/Desktop Pictures/Solid Colors/Black.png"'
+    /run/current-system/sw/bin/tailscale up --accept-routes
   '';
 
   # The platform the configuration will be used on.
