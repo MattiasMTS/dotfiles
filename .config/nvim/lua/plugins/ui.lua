@@ -1,10 +1,5 @@
 return {
   {
-    "Bekaboo/dropbar.nvim",
-    event = "BufEnter",
-    enabled = false,
-  },
-  {
     "nvim-lualine/lualine.nvim",
     enabled = true,
     event = "BufEnter",

@@ -30,27 +30,6 @@ local function send_via_tmux(text, pane_id)
   return true
 end
 
---- Send comments to the active AI agent session.
---- Tries amp.nvim first, then claude via tmux.
-local function codediff_submit_hook(payload)
-  -- 1. amp.nvim: direct message API
-  local ok, amp_msg = pcall(require, "amp.message")
-  if ok then
-    if require("amp").state.connected then
-      return amp_msg.send_message(payload)
-    end
-  end
-
-  -- 2. claudecode: tmux send-keys to Claude pane
-  local pane_id = find_claude_tmux_pane()
-  if pane_id and send_via_tmux(payload, pane_id) then
-    return true
-  end
-
-  vim.notify("no agent connected via /ide bro", vim.log.levels.WARN)
-  return false
-end
-
 return {
   {
     "esmuellert/codediff.nvim",
@@ -95,7 +74,40 @@ return {
     },
     config = function(_, opts)
       require("codediff").setup(opts)
-      require("codediff.ui.comments").set_submit_hook(codediff_submit_hook)
+      local cd_comments = require("codediff.ui.comments")
+
+      cd_comments.add_sink({
+        name = "agent",
+        enabled = function()
+          -- amp.nvim connected?
+          local ok, amp = pcall(require, "amp")
+          if ok and amp.state.connected then
+            return true
+          end
+          -- claude CLI in a tmux pane?
+          return find_claude_tmux_pane() ~= nil
+        end,
+        handler = function(comments, context, done)
+          local payload = cd_comments.format(comments, context)
+
+          -- 1. amp.nvim: direct message API
+          local ok, amp_msg = pcall(require, "amp.message")
+          if ok and require("amp").state.connected then
+            local sent = amp_msg.send_message(payload)
+            done(sent, sent and nil or "amp.nvim send failed")
+            return
+          end
+
+          -- 2. claudecode: tmux send-keys to Claude pane
+          local pane_id = find_claude_tmux_pane()
+          if pane_id and send_via_tmux(payload, pane_id) then
+            done(true)
+            return
+          end
+
+          done(false, "no agent connected")
+        end,
+      })
     end,
     keys = {
       { "<leader>do", ":CodeDiff main...<CR>", desc = "Toggle CodeDiff against main", silent = true },
