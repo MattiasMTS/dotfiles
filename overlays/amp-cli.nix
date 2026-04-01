@@ -1,52 +1,86 @@
-final: prev: {
-  amp-cli = final.buildNpmPackage {
-    pname = "amp-cli";
-    version = "0.0.1774240952-g432b79";
+final: prev:
+let
+  version = "0.0.1775019248-g482f31";
+  tarballHash = "sha256-xEW+Y4GPqIdqVsk63AoH7fqW8s/f1UADeSKUxKmNNOY=";
+  nodeModulesHash = "sha256-NhuQLvS9LcxIpd/YS3KFxBRgNP1bS52ZY4zS+5Eu0tA=";
 
-    src = final.fetchzip {
-      url = "https://registry.npmjs.org/@sourcegraph/amp/-/amp-0.0.1774240952-g432b79.tgz";
-      hash = "sha256-GHwRHQHn8ZkxQorueO9MBBdbbGMg3Ouw9mGj2tvUdVw=";
-    };
+  src = final.fetchurl {
+    url = "https://registry.npmjs.org/@sourcegraph/amp/-/amp-${version}.tgz";
+    hash = tarballHash;
+  };
 
-    postPatch = ''
-      cp ${./amp-cli-lock.json} package-lock.json
+  nodeModules = final.stdenvNoCC.mkDerivation {
+    pname = "amp-cli-node-modules";
+    inherit version src;
 
-      cat > package.json <<EOF
-      {
-        "name": "amp-cli",
-        "version": "0.0.0",
-        "license": "UNLICENSED",
-        "dependencies": {
-          "@sourcegraph/amp": "0.0.1774240952-g432b79"
-        },
-        "bin": {
-          "amp": "./bin/amp-wrapper.js"
-        }
-      }
-      EOF
+    dontConfigure = true;
+    dontFixup = true;
+    dontUnpack = true;
 
-      mkdir -p bin
+    nativeBuildInputs = [
+      final.bun
+      final.writableTmpDirAsHomeHook
+    ];
 
-      cat > bin/amp-wrapper.js << EOF
-      #!/usr/bin/env node
-      import('@sourcegraph/amp/dist/main.js')
-      EOF
-      chmod +x bin/amp-wrapper.js
+    buildPhase = ''
+      runHook preBuild
+
+      mkdir source
+      tar -xzf $src -C source --strip-components=1
+      cd source
+
+      export BUN_INSTALL_CACHE_DIR=$(mktemp -d)
+      bun install \
+        --cpu="*" \
+        --ignore-scripts \
+        --no-progress \
+        --os="*" \
+        --production
+
+      runHook postBuild
     '';
 
-    npmDepsHash = "sha256-qp9FA8zLQF3aMQLbXBm91Fy4insRjmbI055L6nF55OQ=";
+    installPhase = ''
+      runHook preInstall
 
-    propagatedBuildInputs = [ final.ripgrep ];
+      rm -rf node_modules/.bin
+      mkdir -p $out
+      cp -R . $out
+
+      runHook postInstall
+    '';
+
+    outputHash = nodeModulesHash;
+    outputHashAlgo = "sha256";
+    outputHashMode = "recursive";
+  };
+in
+{
+  amp-cli = final.stdenvNoCC.mkDerivation {
+    pname = "amp-cli";
+    inherit version;
+    src = nodeModules;
+
+    dontUnpack = true;
     nativeBuildInputs = [ final.makeWrapper ];
 
-    npmFlags = [ "--no-audit" "--no-fund" "--ignore-scripts" ];
-    dontNpmBuild = true;
+    installPhase = ''
+      runHook preInstall
 
-    postInstall = ''
-      wrapProgram $out/bin/amp \
+      mkdir -p $out/bin $out/lib/node_modules/@sourcegraph
+      cp -R $src $out/lib/node_modules/@sourcegraph/amp
+
+      makeWrapper ${final.bun}/bin/bun $out/bin/amp \
+        --add-flags "$out/lib/node_modules/@sourcegraph/amp/dist/main.js" \
         --prefix PATH : ${final.lib.makeBinPath [ final.ripgrep ]} \
         --set AMP_SKIP_UPDATE_CHECK 1
+
+      runHook postInstall
     '';
+
+    passthru = {
+      inherit nodeModules;
+    };
 
     meta = {
       description = "CLI for Amp, an agentic coding agent from Sourcegraph";

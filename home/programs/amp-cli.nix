@@ -14,7 +14,13 @@ let
     owner = "duckdb";
     repo = "duckdb-skills";
     rev = "main";
-    hash = "sha256-cqkEfFSSa5BlwJyzp3ngNgHSS4w8pLZw8NpY9+Lk2RM=";
+    hash = "sha256-13dPimt/Gf7coSQe6q1vF7yQwSUoTJSucP9URAxf9VA=";
+  };
+  temporal-developer-skill = pkgs.fetchFromGitHub {
+    owner = "temporalio";
+    repo = "skill-temporal-developer";
+    rev = "main";
+    hash = "sha256-fB3sn8X3GL1sCWy3HrejLHf+tIbFAC9M5WYBM5gPTsA=";
   };
 in
 {
@@ -31,6 +37,7 @@ in
       duckdb-query = duckdb-skills + "/skills/query";
       duckdb-read-file = duckdb-skills + "/skills/read-file";
       duckdb-read-memories = duckdb-skills + "/skills/read-memories";
+      temporal-developer = temporal-developer-skill;
     };
 
     mcpServers = {
@@ -58,11 +65,12 @@ in
 
     settings = {
       "amp.dangerouslyAllowAll" = true;
-      "amp.agent.deepReasoningEffort" = "high";
       "amp.git.commit.coauthor.enabled" = false;
       "amp.git.commit.ampThread.enabled" = false;
       "amp.notifications.enabled" = true;
       "amp.notifications.system.enabled" = true;
+      "amp.experimental.modes" = "deep";
+      "amp.agent.deepReasoningEffort" = "xhigh";
     };
   };
 }
