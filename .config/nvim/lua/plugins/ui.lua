@@ -4,19 +4,10 @@ return {
     enabled = true,
     event = "BufEnter",
     config = function()
-      -- build a transparent theme from catppuccin
-      local theme = require("lualine.themes.catppuccin-nvim")
-      for _, mode in pairs(theme) do
-        for _, section in pairs(mode) do
-          section.bg = "NONE"
-        end
-      end
-
       require("lualine").setup({
         options = {
           component_separators = "",
           section_separators = "",
-          theme = theme,
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "lazy" } },
         },

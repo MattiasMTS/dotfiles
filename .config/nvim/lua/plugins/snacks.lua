@@ -40,22 +40,8 @@ return {
       },
       lazygit = { enabled = true },
       quickfile = { enabled = true },
-      statuscolumn = { enabled = true },
-      gh = { enabled = true },
-      picker = {
-        actions = {
-          sidekick_send = function(...)
-            return require("sidekick.cli.picker.snacks").send(...)
-          end,
-        },
-        win = {
-          input = {
-            keys = {
-              ["<a-a>"] = { "sidekick_send", mode = { "n", "i" } },
-            },
-          },
-        },
-      },
+      statuscolumn = { enabled = false },
+      gh = { enabled = false },
       zen = {
         dim = true,
         toggles = {
@@ -73,7 +59,7 @@ return {
         trash = true,
       },
       notifier = {
-        enabled = true,
+        enabled = false,
         margin = { top = 2, right = 1, bottom = 1 },
         style = "fancy",
         filter = function(notif)
@@ -91,21 +77,5 @@ return {
         end,
       },
     },
-    -- keys = {
-    --   {
-    --     "<leader>e",
-    --     function()
-    --       Snacks.explorer({ cwd = vim.fs.root(0, { ".git" }) })
-    --     end,
-    --     desc = "Explorer Snacks (root dir)",
-    --   },
-    --   {
-    --     "<leader>E",
-    --     function()
-    --       Snacks.explorer()
-    --     end,
-    --     desc = "Explorer Snacks (cwd)",
-    --   },
-    -- },
   },
 }

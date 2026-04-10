@@ -2,7 +2,6 @@ return {
   {
     "coder/claudecode.nvim",
     event = "VeryLazy",
-    ---@type ClaudeCodeConfig
     opts = {
       auto_start = true,
       log_level = "info",
@@ -18,7 +17,7 @@ return {
   },
   {
     "sourcegraph/amp.nvim",
-    enabled = true,
+    -- lazy = false,
     event = "VeryLazy",
     branch = "main",
     opts = {

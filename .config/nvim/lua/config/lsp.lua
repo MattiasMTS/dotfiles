@@ -74,6 +74,12 @@ local function on_attach(client, bufnr)
       callback = vim.lsp.buf.clear_references,
     })
   end
+
+  if client:supports_method("textDocument/documentColor") then
+    map("grc", function()
+      vim.lsp.document_color.color_presentation()
+    end, "vim.lsp.document_color.color_presentation()", { "n", "x" })
+  end
 end
 
 -- Diagnostic configuration.
@@ -93,7 +99,7 @@ vim.diagnostic.config({
   --   end,
   -- },
   severity_sort = true,
-  float = { source = "if_many" },
+  float = { header = "" },
   underline = true,
   signs = {
     text = {
@@ -105,23 +111,6 @@ vim.diagnostic.config({
     },
   },
 })
-
--- Override the virtual text diagnostic handler so that the most severe diagnostic is shown first.
-local show_handler = vim.diagnostic.handlers.virtual_text.show
-assert(show_handler)
-local hide_handler = vim.diagnostic.handlers.virtual_text.hide
-vim.diagnostic.handlers.virtual_text = {
-  show = function(ns, bufnr, diagnostics, opts)
-    table.sort(diagnostics, function(diag1, diag2)
-      return diag1.severity > diag2.severity
-    end)
-    return show_handler(ns, bufnr, diagnostics, opts)
-  end,
-  hide = hide_handler,
-}
-
--- enable builtin NES
-vim.lsp.inline_completion.enable()
 
 -- Create an autocommand to set up LSP keymaps when an LSP client attaches to a buffer.
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -163,86 +152,11 @@ local function enable_lsp_servers()
     end)
     :totable()
   vim.lsp.enable(server_configs)
+  vim.lsp.inline_completion.enable()
 end
 
 -- Set up LSP servers (load before the first buffer is read).
 vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
   once = true,
   callback = enable_lsp_servers,
-})
-
--- Useful LSP commands.
-
-vim.api.nvim_create_user_command("LspInfo", function()
-  local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
-  if #clients == 0 then
-    vim.notify("No LSP clients attached to this buffer.", vim.log.levels.INFO)
-    return
-  end
-
-  local client_names = vim
-    .iter(clients)
-    :map(function(client)
-      return client.name
-    end)
-    :totable()
-
-  vim.notify(("LSP clients attached to this buffer: %s"):format(table.concat(client_names, ", ")), vim.log.levels.INFO)
-end, {
-  desc = "Show LSP information for the current buffer",
-})
-
-vim.api.nvim_create_user_command("LspStart", function(_)
-  enable_lsp_servers()
-end, {
-  nargs = "?",
-  desc = " Start LSP server(s)",
-})
-
-vim.api.nvim_create_user_command("LspStop", function(opts)
-  local clients = vim.lsp.get_clients({
-    bufnr = #opts.fargs == 0 and vim.api.nvim_get_current_buf() or nil,
-    name = opts.fargs[1],
-  })
-
-  for _, client in ipairs(clients) do
-    client:stop()
-  end
-end, {
-  nargs = "?",
-  complete = function()
-    return vim
-      .iter(vim.lsp.get_clients())
-      :map(function(c)
-        return c.name
-      end)
-      :totable()
-  end,
-  desc = " Stop LSP server(s)",
-})
-
-vim.api.nvim_create_user_command("LspRestart", function(opts)
-  local clients = vim.lsp.get_clients({
-    bufnr = #opts.fargs == 0 and vim.api.nvim_get_current_buf() or nil,
-    name = opts.fargs[1],
-  })
-
-  for _, client in ipairs(clients) do
-    local name = client.name
-    client:stop()
-    vim.defer_fn(function()
-      vim.lsp.enable(name)
-    end, 100)
-  end
-end, {
-  nargs = "?",
-  complete = function()
-    return vim
-      .iter(vim.lsp.get_clients())
-      :map(function(c)
-        return c.name
-      end)
-      :totable()
-  end,
-  desc = "Restart LSP server(s)",
 })

@@ -182,7 +182,7 @@ return {
     name = "catppuccin",
     priority = 1000,
     lazy = false,
-    enabled = true,
+    enabled = false,
     opts = {
       flavour = "macchiato",
       transparent_background = true,
