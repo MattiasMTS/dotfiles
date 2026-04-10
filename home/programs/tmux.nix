@@ -22,7 +22,6 @@ in
     plugins = with pkgs.tmuxPlugins; [
       resurrect
       yank
-      catppuccin
     ];
     extraConfig = ''
       set -g default-terminal "${terminal}"
