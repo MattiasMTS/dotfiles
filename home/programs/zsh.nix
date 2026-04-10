@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   username,
   ...
@@ -12,6 +13,10 @@ in
   programs.zsh = {
     enable = true;
     inherit dotDir;
+    envExtra = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
+      export CC=${lib.escapeShellArg config.home.sessionVariables.CC}
+      export CXX=${lib.escapeShellArg config.home.sessionVariables.CXX}
+    '';
     history.size = 10000;
     enableCompletion = true;
     # Cache completions - only regenerate dump once per day
@@ -66,6 +71,17 @@ in
       export GRAFANA_SERVICE_ACCOUNT_TOKEN=$(cat "$_grafana_token_cache")
 
       eval "$(wt config shell init zsh)"
+
+      # Auto-rename cmux workspace/tab to short path on cd
+      if [[ -n "$CMUX_WORKSPACE_ID" ]]; then
+        _cmux_rename() {
+          local short="''${(%):-%1~}"
+          cmux rename-workspace "$short" &>/dev/null
+        }
+        autoload -Uz add-zsh-hook
+        add-zsh-hook chpwd _cmux_rename
+        _cmux_rename  # rename on shell start too
+      fi
     '';
     plugins = [
       {

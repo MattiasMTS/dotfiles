@@ -14,10 +14,17 @@ let
     name = "nvim-treesitter-grammars";
     paths = pkgs.vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
   };
+  nixClangWithAppleSdk = pkgs.writeShellScriptBin "nix-clang-with-apple-sdk" ''
+    sdk_root="$(/usr/bin/xcrun --sdk macosx --show-sdk-path)"
+    exec ${lib.getExe pkgs.clang} "$@" -isysroot "$sdk_root"
+  '';
+  nixClangxxWithAppleSdk = pkgs.writeShellScriptBin "nix-clangxx-with-apple-sdk" ''
+    sdk_root="$(/usr/bin/xcrun --sdk macosx --show-sdk-path)"
+    exec ${lib.getExe' pkgs.clang "clang++"} "$@" -isysroot "$sdk_root"
+  '';
 in
 {
   imports = [
-    inputs.peon-ping.homeManagerModules.default
     ../modules/amp-cli.nix
     ./programs/zsh.nix
     ./programs/starship.nix
@@ -37,7 +44,6 @@ in
     ./programs/aerospace.nix
     ./programs/claude-code.nix
     ./programs/amp-cli.nix
-    ./programs/peon-ping.nix
     ./programs/k9s.nix
     ./programs/neovim.nix
     ./programs/bat.nix
@@ -52,12 +58,20 @@ in
   home.username = username;
   home.homeDirectory = "/Users/${username}";
   home.sessionPath = [ "${dotfilesPath}/scripts" ];
+  home.sessionVariables = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+    # Nix's default Darwin SDK currently misses libresolv, which breaks CGO's
+    # darwin link step. Keep using the Nix clang toolchain, but force the active
+    # Apple SDK sysroot so Go can resolve -lresolv.
+    CC = "${nixClangWithAppleSdk}/bin/nix-clang-with-apple-sdk";
+    CXX = "${nixClangxxWithAppleSdk}/bin/nix-clangxx-with-apple-sdk";
+  };
   xdg.enable = true;
 
   # packages managed outside of home-manager
   xdg.configFile.nvim.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/nvim";
   xdg.configFile.ghostty.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/ghostty";
   xdg.configFile.worktrunk.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/worktrunk";
+  xdg.configFile.cmux.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/cmux";
   # Symlink blink.cmp fuzzy library built via Nix to where lazy.nvim expects it
   home.file.".local/share/nvim/lazy/blink.cmp/target/release/libblink_cmp_fuzzy.dylib".source =
     "${blink-fuzzy-lib}/lib/libblink_cmp_fuzzy.dylib";
@@ -79,6 +93,8 @@ in
     codex
     parallel
     nixd
+    cmake
+    maven
 
     kubectl
     kubectx
@@ -98,14 +114,14 @@ in
     bun
     vtsls
     deno
-    nodePackages.vscode-json-languageserver
+    vscode-json-languageserver
 
     duckdb
     uv
     ty
     ruff
     pyright
-    nodePackages.typescript-language-server
+    typescript-language-server
     graphite-cli
     cargo
 
