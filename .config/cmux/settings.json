@@ -1,0 +1,53 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux-settings.schema.json",
+  "app": {
+    "sendAnonymousTelemetry": false
+  },
+  "customCommands": {
+    "trustedDirectories": [
+      "~/.config/cmux",
+      "~/src/github.com/projects",
+      "~/src/github.com/lovablelabs"
+    ]
+  },
+  "browser": {
+    "openTerminalLinksInCmuxBrowser": false,
+    "interceptTerminalOpenCommandInCmuxBrowser": false
+  },
+  "sidebar": {
+    "openPullRequestLinksInCmuxBrowser": false,
+    "openPortLinksInCmuxBrowser": false
+  },
+  "sidebarAppearance": {
+    "matchTerminalBackground": false,
+    "tintColor": "#1e2127",
+    "tintOpacity": 0.85
+  },
+  "shortcuts": {
+    "bindings": {
+      "newSurface": ["ctrl+a", "c"],
+      "splitDown": ["ctrl+a", "shift+quote"],
+      "splitRight": ["ctrl+a", "shift+5"],
+      "prevSurface": ["ctrl+a", "a"],
+      "nextSurface": ["ctrl+a", "n"],
+      "toggleSplitZoom": ["ctrl+a", "z"],
+      "closeTab": ["ctrl+a", "x"],
+      "closeWorkspace": ["ctrl+a", "shift+x"],
+      "toggleTerminalCopyMode": ["ctrl+a", "v"],
+      "nextSidebarTab": ["ctrl+a", "tab"],
+      "prevSidebarTab": ["ctrl+a", "shift+tab"],
+      "goToWorkspace": ["ctrl+a", "f"],
+      "toggleSidebar": ["ctrl+a", "b"],
+      "reloadConfiguration": ["ctrl+a", "shift+r"],
+      "newTab": ["ctrl+a", "w"],
+      "commandPalette": ["ctrl+a", "p"],
+      "focusLeft": "ctrl+h",
+      "focusDown": "ctrl+j",
+      "focusUp": "ctrl+k",
+      "focusRight": "ctrl+l",
+      "renameTab": ["ctrl+a", "comma"],
+      "renameWorkspace": ["ctrl+a", "shift+4"],
+      "selectSurfaceByNumber": ["ctrl+a", "1"]
+    }
+  }
+}

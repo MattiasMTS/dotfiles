@@ -5,7 +5,6 @@
   ...
 }:
 let
-  # peon-ping = inputs.peon-ping.packages.${pkgs.system}.peon-ping;
   clickhouse-agent-skills = pkgs.fetchFromGitHub {
     owner = "ClickHouse";
     repo = "agent-skills";
@@ -65,6 +64,14 @@ in
           GRAFANA_URL = "https://lovable.grafana.net";
         };
       };
+      "slack" = {
+        type = "http";
+        url = "https://mcp.slack.com/mcp";
+        oauth = {
+          clientId = "1601185624273.8899143856786";
+          callbackPort = 3118;
+        };
+      };
     };
 
     # schema: https://json.schemastore.org/claude-code-settings.json
@@ -85,8 +92,9 @@ in
           "Bash(gh:pr:merge)"
           "Bash(gh:run:delete)"
         ];
-        defaultMode = "bypassPermissions";
+        defaultMode = "auto";
       };
+      skipAutoPermissionPrompt = true;
       sandbox = {
         allowUnsandboxedCommands = true;
       };
@@ -96,6 +104,7 @@ in
         command = "wt list statusline --claude-code";
       };
       alwaysThinkingEnabled = true;
+      reasoningEffort = "highest";
       teammateMode = "auto";
       extraKnownMarketplaces = {
         "astral-sh" = {
