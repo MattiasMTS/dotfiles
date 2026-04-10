@@ -32,11 +32,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    peon-ping = {
-      url = "github:PeonPing/peon-ping";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-core = {
       url = "github:homebrew/homebrew-core";

@@ -35,7 +35,9 @@
       "datagrip"
       "cmux"
     ];
-    brews = [ ];
+    brews = [
+      "dagger"
+    ];
     taps = [ ];
   };
 
