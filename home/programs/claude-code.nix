@@ -28,9 +28,7 @@ in
   programs.claude-code = {
     enable = true;
     package = inputs.claude-code-nix.packages.${pkgs.system}.claude-code;
-    memory = {
-      text = builtins.readFile (config.xdg.configHome + "/claude-code/memory.md");
-    };
+    context = builtins.readFile (config.xdg.configHome + "/claude-code/memory.md");
 
     skills = {
       clickhouse-best-practices = "${clickhouse-agent-skills}/skills/clickhouse-best-practices";

@@ -8,22 +8,22 @@ theme = Hybrid
 # fonts
 font-family = Iosevka Nerd Font
 font-size = 14
-custom-shader = cursor_smear.glsl
+# custom-shader = cursor_smear.glsl
 
 # mouse
 mouse-hide-while-typing = true
 
 # appearance
-background-opacity = 0.96
-background-blur-radius = 50
+# background-opacity = 0.96
+# background-blur-radius = 50
 confirm-close-surface = false
 
 # behavior
 quit-after-last-window-closed = true
 
 # macos
-macos-option-as-alt = left
-macos-non-native-fullscreen = visible-menu
-macos-titlebar-style = hidden
+# macos-option-as-alt = left
+# macos-non-native-fullscreen = visible-menu
+# macos-titlebar-style = hidden
 keybind = shift+enter=text:\x1b\r
 bell-features = system,audio,attention,title

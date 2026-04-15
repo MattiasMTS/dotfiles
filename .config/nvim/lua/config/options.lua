@@ -38,7 +38,7 @@ vim.opt.smartindent = true
 vim.opt.expandtab = true -- spaces rather than tabs
 
 -- builtin ui2 (experimental)
-vim.o.cmdheight = 1
+vim.o.cmdheight = 0
 require("vim._core.ui2").enable({
   enable = true,
   msg = {

@@ -159,5 +159,7 @@ in
     helm-ls
     tofu-ls
     buf
+    shellcheck
+    hadolint
   ];
 }
