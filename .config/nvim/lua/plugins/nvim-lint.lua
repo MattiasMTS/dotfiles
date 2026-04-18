@@ -6,9 +6,9 @@ return {
       local lint = require("lint")
 
       lint.linters_by_ft = {
-        terraform = { "tofu_validate", "tflint" },
-        tf = { "tofu_validate", "tflint" },
-        ["terraform-vars"] = { "tofu_validate", "tflint" },
+        terraform = { "tofu", "tflint" },
+        tf = { "tofu", "tflint" },
+        ["terraform-vars"] = { "tofu", "tflint" },
         dockerfile = { "hadolint" },
         sh = { "shellcheck" },
         bash = { "shellcheck" },

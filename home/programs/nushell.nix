@@ -5,7 +5,7 @@
 }:
 {
   programs.nushell = {
-    enable = true;
+    enable = false;
 
     shellAliases = {
       lg = "lazygit";

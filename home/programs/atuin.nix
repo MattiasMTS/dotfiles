@@ -6,7 +6,7 @@
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;
-    enableNushellIntegration = true;
+    enableNushellIntegration = false;
 
     settings = {
       # Disable sync - keep history local only
