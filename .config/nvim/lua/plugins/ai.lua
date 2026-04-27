@@ -25,4 +25,41 @@ return {
       log_level = "info",
     },
   },
+  {
+    "milanglacier/minuet-ai.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      -- Use Minuet's LSP inline-completion frontend for Copilot-style virtual text.
+      lsp = {
+        enabled_ft = { "*" },
+        completion = { enable = false },
+        inline_completion = {
+          enable = true,
+          enabled_auto_trigger_ft = { "*" },
+        },
+      },
+      provider = "openai_fim_compatible",
+      n_completions = 1,
+      context_window = 512,
+      debounce = 60,
+      throttle = 0,
+      request_timeout = 4,
+      provider_options = {
+        openai_fim_compatible = {
+          api_key = function()
+            return "ollama"
+          end,
+          name = "ollama",
+          end_point = "http://127.0.0.1:11434/v1/completions",
+          model = "qwen2.5-coder:7b",
+          optional = {
+            max_tokens = 32,
+          },
+        },
+      },
+    },
+    config = function(_, opts)
+      require("minuet").setup(opts)
+    end,
+  },
 }

@@ -20,10 +20,10 @@ return {
 
         -- enable snippet jumping
         ["<Tab>"] = {
-          "snippet_forward",
           function()
             return vim.lsp.inline_completion.get()
           end,
+          "snippet_forward",
           "fallback",
         },
         ["<S-Tab>"] = { "snippet_backward", "fallback" },
@@ -36,15 +36,16 @@ return {
         ["<C-e>"] = { "hide" },
       },
       completion = {
+        trigger = { prefetch_on_insert = true },
         menu = {
           scrollbar = false,
           draw = {
             treesitter = { "lsp" },
-            -- gap = 2,
-            -- columns = {
-            --   { "kind_icon", "kind", gap = 1 },
-            --   { "label", "label_description", gap = 1 },
-            -- },
+            gap = 2,
+            columns = {
+              { "label", "label_description", gap = 1 },
+              { "kind_icon", "kind", gap = 1 },
+            },
           },
         },
         list = {
@@ -62,7 +63,6 @@ return {
         trigger = {
           show_on_keyword = true,
           enabled = true,
-          show_on_insert = true,
           show_on_trigger_character = true,
         },
         window = {
@@ -92,7 +92,7 @@ return {
               return vim.fn.getcmdtype() == ":"
             end,
           },
-          ghost_text = { enabled = true },
+          ghost_text = { enabled = false },
         },
       },
 
