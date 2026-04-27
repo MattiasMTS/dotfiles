@@ -84,26 +84,11 @@ end
 
 -- Diagnostic configuration.
 vim.diagnostic.config({
-  -- NOTE: replaced by tiny-inline-diagnsotic plugin
-  -- virtual_text = {
-  --   spacing = 2,
-  --   source = "if_many",
-  --   format = function(diagnostic)
-  --     local diagnostic_message = {
-  --       [vim.diagnostic.severity.ERROR] = diagnostic.message,
-  --       [vim.diagnostic.severity.WARN] = diagnostic.message,
-  --       [vim.diagnostic.severity.INFO] = diagnostic.message,
-  --       [vim.diagnostic.severity.HINT] = diagnostic.message,
-  --     }
-  --     return diagnostic_message[diagnostic.severity]
-  --   end,
-  -- },
   severity_sort = true,
   float = { header = "" },
   underline = true,
   signs = {
     text = {
-      -- requires nerd-fonts
       [vim.diagnostic.severity.ERROR] = "󰅚 ",
       [vim.diagnostic.severity.WARN] = "󰀪 ",
       [vim.diagnostic.severity.INFO] = "󰋽 ",
@@ -152,7 +137,7 @@ local function enable_lsp_servers()
     end)
     :totable()
   vim.lsp.enable(server_configs)
-  vim.lsp.inline_completion.enable()
+  -- vim.lsp.inline_completion.enable()
 end
 
 -- Set up LSP servers (load before the first buffer is read).

@@ -45,7 +45,6 @@ in
     ./programs/claude-code.nix
     ./programs/amp-cli.nix
     ./programs/k9s.nix
-    ./programs/neovim.nix
     ./programs/bat.nix
     ./programs/ripgrep.nix
     ./programs/jq.nix
@@ -58,13 +57,16 @@ in
   home.username = username;
   home.homeDirectory = "/Users/${username}";
   home.sessionPath = [ "${dotfilesPath}/scripts" ];
-  home.sessionVariables = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-    # Nix's default Darwin SDK currently misses libresolv, which breaks CGO's
-    # darwin link step. Keep using the Nix clang toolchain, but force the active
-    # Apple SDK sysroot so Go can resolve -lresolv.
-    CC = "${nixClangWithAppleSdk}/bin/nix-clang-with-apple-sdk";
-    CXX = "${nixClangxxWithAppleSdk}/bin/nix-clangxx-with-apple-sdk";
-  };
+  home.sessionVariables = lib.mkMerge [
+    (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+      # Nix's default Darwin SDK currently misses libresolv, which breaks CGO's
+      # darwin link step. Keep using the Nix clang toolchain, but force the active
+      # Apple SDK sysroot so Go can resolve -lresolv.
+      CC = "${nixClangWithAppleSdk}/bin/nix-clang-with-apple-sdk";
+      CXX = "${nixClangxxWithAppleSdk}/bin/nix-clangxx-with-apple-sdk";
+    })
+    { EDITOR = "nvim"; }
+  ];
   xdg.enable = true;
 
   # packages managed outside of home-manager
@@ -81,6 +83,7 @@ in
   # user specific packages instead of system wide
   home.packages = with pkgs; [
     inputs.worktrunk.packages.${pkgs.system}.worktrunk
+    inputs.neovim-nightly-overlay.packages.${pkgs.system}.default
     tree-sitter
     fzf
     fd

@@ -16,6 +16,18 @@ return {
         hl.ColorColumn = { bg = c.bg_soft }
         hl.LineNr = { fg = c.fg_soft }
 
+        -- Diff
+        local hybrid_utils = require("hybrid.utils")
+        hl.DiffAdd = { bg = hybrid_utils.darken(c.diff.add, 0.3, c.bg) }
+        hl.DiffChange = { bg = hybrid_utils.darken(c.diff.change, 0.3, c.bg) }
+        hl.DiffDelete = { bg = hybrid_utils.darken(c.diff.delete, 0.3, c.bg) }
+        hl.DiffText =
+          { bg = hybrid_utils.darken(c.diff.text, 0.5, hybrid_utils.darken(c.diff.change, 0.3, c.bg)), bold = true }
+        hl.DiffToolDelLine = { bg = hybrid_utils.darken(c.diff.delete, 0.2, c.bg) }
+        hl.DiffToolDelText = { bg = hybrid_utils.darken(c.diff.delete, 0.45, c.bg), bold = true }
+        hl.DiffToolAddLine = { bg = hybrid_utils.darken(c.diff.add, 0.2, c.bg) }
+        hl.DiffToolAddText = { bg = hybrid_utils.darken(c.diff.add, 0.45, c.bg), bold = true }
+
         -- LSP inlay hints
         hl.LspInlayHint = { fg = c.comment, bg = "NONE", italic = true }
 
@@ -32,28 +44,6 @@ return {
         hl.BlinkCmpGhostText = { fg = c.comment }
         hl.BlinkCmpSignatureHelp = { bg = c.bg_hard }
         hl.BlinkCmpSignatureHelpBorder = { fg = c.dull_blue, bg = c.bg_hard }
-
-        -- Neo-tree
-        hl.NeoTreeNormal = { fg = c.fg, bg = c.bg_hard }
-        hl.NeoTreeNormalNC = { fg = c.fg, bg = c.bg_hard }
-        hl.NeoTreeEndOfBuffer = { fg = c.bg_hard, bg = c.bg_hard }
-        hl.NeoTreeRootName = { fg = c.primary, bold = true }
-        hl.NeoTreeDirectoryName = { fg = c.blue }
-        hl.NeoTreeDirectoryIcon = { fg = c.blue }
-        hl.NeoTreeFileName = { fg = c.fg }
-        hl.NeoTreeFileIcon = { fg = c.fg }
-        hl.NeoTreeGitAdded = { fg = c.diff.add }
-        hl.NeoTreeGitConflict = { fg = c.dull_yellow }
-        hl.NeoTreeGitDeleted = { fg = c.diff.delete }
-        hl.NeoTreeGitIgnored = { fg = c.comment }
-        hl.NeoTreeGitModified = { fg = c.diff.change }
-        hl.NeoTreeGitUnstaged = { fg = c.diff.change }
-        hl.NeoTreeGitUntracked = { fg = c.dull_yellow }
-        hl.NeoTreeGitStaged = { fg = c.diff.add }
-        hl.NeoTreeIndentMarker = { fg = c.fg_soft }
-        hl.NeoTreeExpander = { fg = c.fg_soft }
-        hl.NeoTreeWinSeparator = { fg = c.bg_hard, bg = c.bg_hard }
-        hl.NeoTreeCursorLine = { bg = c.line }
 
         -- FzfLua
         hl.FzfLuaNormal = { fg = c.fg, bg = c.bg_hard }
@@ -99,30 +89,6 @@ return {
         hl.MiniIconsPurple = { fg = c.magenta }
         hl.MiniIconsRed = { fg = c.red }
         hl.MiniIconsYellow = { fg = c.yellow }
-
-        -- Snacks.nvim
-        hl.SnacksNormal = { fg = c.fg, bg = c.bg_hard }
-        hl.SnacksBorder = { fg = c.dull_blue, bg = c.bg_hard }
-        hl.SnacksTitle = { fg = c.primary, bold = true }
-        hl.SnacksBackdrop = { bg = c.bg_hard }
-        hl.SnacksNotifierInfo = { fg = c.diag.info }
-        hl.SnacksNotifierWarn = { fg = c.diag.warning }
-        hl.SnacksNotifierError = { fg = c.diag.error }
-        hl.SnacksNotifierDebug = { fg = c.comment }
-        hl.SnacksNotifierTrace = { fg = c.magenta }
-        hl.SnacksNotifierIconInfo = { fg = c.diag.info }
-        hl.SnacksNotifierIconWarn = { fg = c.diag.warning }
-        hl.SnacksNotifierIconError = { fg = c.diag.error }
-        hl.SnacksNotifierIconDebug = { fg = c.comment }
-        hl.SnacksNotifierIconTrace = { fg = c.magenta }
-        hl.SnacksDashboardNormal = { fg = c.fg, bg = "NONE" }
-        hl.SnacksDashboardHeader = { fg = c.primary }
-        hl.SnacksDashboardFooter = { fg = c.comment }
-        hl.SnacksDashboardKey = { fg = c.yellow }
-        hl.SnacksDashboardIcon = { fg = c.blue }
-        hl.SnacksDashboardDesc = { fg = c.fg }
-        hl.SnacksIndent = { fg = c.bg_soft }
-        hl.SnacksIndentScope = { fg = c.dull_blue }
 
         -- Grug-far
         hl.GrugFarHelpHeader = { fg = c.primary, bold = true }

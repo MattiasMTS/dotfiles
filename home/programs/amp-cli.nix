@@ -71,6 +71,9 @@ in
       "amp.notifications.system.enabled" = true;
       "amp.experimental.modes" = "deep";
       "amp.agent.deepReasoningEffort" = "xhigh";
+      "amp.internal.model" = {
+        deep = "openai:gpt-5.5";
+      };
     };
   };
 }

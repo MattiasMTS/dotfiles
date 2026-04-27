@@ -96,7 +96,7 @@ in
       sandbox = {
         allowUnsandboxedCommands = true;
       };
-      model = "claude-opus-4-6[1m]";
+      model = "claude-opus-4-7[1m]";
       statusLine = {
         type = "command";
         command = "wt list statusline --claude-code";
@@ -123,6 +123,12 @@ in
             repo = "temporalio/agent-skills";
           };
         };
+        "openai-codex" = {
+          source = {
+            source = "github";
+            repo = "openai/codex-plugin-cc";
+          };
+        };
       };
       enabledPlugins = {
         "code-simplifier@claude-plugins-official" = true;
@@ -131,6 +137,7 @@ in
         "astral@astral-sh" = true;
         "duckdb-skills@duckdb" = true;
         "temporal-developer@temporalio-agent-skills" = true;
+        "codex@openai-codex" = true;
       };
       notifications = {
         "sound" = true;
