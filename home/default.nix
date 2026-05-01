@@ -43,6 +43,7 @@ in
     ./programs/ssh.nix
     ./programs/aerospace.nix
     ./programs/claude-code.nix
+    ./programs/codex.nix
     ./programs/amp-cli.nix
     ./programs/k9s.nix
     ./programs/bat.nix
