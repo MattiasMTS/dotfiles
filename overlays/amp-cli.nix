@@ -1,8 +1,8 @@
 final: prev:
 let
-  version = "0.0.1777266064-g47b6f7";
-  tarballHash = "sha256-7mxItqJ9MqVAslSLDw8N9BwOzC/JoPCD2re0ufOOLHk=";
-  nodeModulesHash = "sha256-9pxt4HiI2d8kmYCqYqbPt1BwC/53fYXpleS+QMzM0Co=";
+  version = "0.0.1778476494-g8a21dc";
+  tarballHash = "sha256-Zmri3jga7bwqVsD1i1Pa67ITSdXIvB+9Rke2PMa/KEE=";
+  nodeModulesHash = "sha256-QGqeUX+134Yi4/q+3M50WkfmkOXoSWEKxOHdNJ2jl10=";
 
   src = final.fetchurl {
     url = "https://registry.npmjs.org/@sourcegraph/amp/-/amp-${version}.tgz";

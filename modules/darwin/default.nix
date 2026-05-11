@@ -23,7 +23,6 @@
     gnumake
     _1password-cli
     _1password-gui
-    tailscale
   ];
 
   homebrew = {
@@ -37,6 +36,7 @@
     ];
     brews = [
       "dagger"
+      "dagu"
     ];
     taps = [ ];
   };
@@ -80,7 +80,7 @@
   };
 
   services.tailscale = {
-    enable = true;
+    enable = false; # managed globally
     package = pkgs.tailscale;
   };
 

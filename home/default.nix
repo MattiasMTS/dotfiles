@@ -26,6 +26,7 @@ in
 {
   imports = [
     ../modules/amp-cli.nix
+    ../modules/rust.nix
     ./programs/zsh.nix
     ./programs/starship.nix
     ./programs/git.nix
@@ -50,6 +51,7 @@ in
     ./programs/ripgrep.nix
     ./programs/jq.nix
     ./programs/btop.nix
+    ./programs/rust.nix
   ];
 
   programs.home-manager.enable = true;
@@ -75,11 +77,19 @@ in
   xdg.configFile.ghostty.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/ghostty";
   xdg.configFile.worktrunk.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/worktrunk";
   xdg.configFile.cmux.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/cmux";
-  # Symlink blink.cmp fuzzy library built via Nix to where lazy.nvim expects it
-  home.file.".local/share/nvim/lazy/blink.cmp/target/release/libblink_cmp_fuzzy.dylib".source =
+  # Symlink blink.cmp fuzzy library built via Nix to where blink.lib v2 resolves it
+  home.file.".local/share/nvim/lazy/blink.cmp/lib/libblink_cmp_fuzzy.dylib".source =
     "${blink-fuzzy-lib}/lib/libblink_cmp_fuzzy.dylib";
-  # Symlink Nix-built tree-sitter grammars (pre-compiled and code-signed for macOS)
-  home.file.".local/share/nvim/nix-treesitter-grammars".source = treesitter-grammars;
+  # Symlink Nix-built tree-sitter parsers and queries under Neovim's data site,
+  # which lazy.nvim keeps on runtimepath even when it resets packpath.
+  home.file.".local/share/nvim/site/parser" = {
+    source = "${treesitter-grammars}/parser";
+    recursive = true;
+  };
+  home.file.".local/share/nvim/site/queries" = {
+    source = "${treesitter-grammars}/queries";
+    recursive = true;
+  };
 
   # user specific packages instead of system wide
   home.packages = with pkgs; [
@@ -94,7 +104,6 @@ in
     nixfmt
     presenterm
     clang
-    codex
     parallel
     nixd
     cmake
@@ -127,7 +136,6 @@ in
     pyright
     typescript-language-server
     graphite-cli
-    cargo
 
     (google-cloud-sdk.withExtraComponents (
       with pkgs.google-cloud-sdk.components;
@@ -150,7 +158,6 @@ in
     dockerfile-language-server
     docker-compose-language-service
     yaml-language-server
-    rust-analyzer
 
     vim-language-server
     lua-language-server
