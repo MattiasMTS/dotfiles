@@ -40,9 +40,10 @@ return {
       },
       provider = "openai_fim_compatible",
       n_completions = 1,
-      context_window = 512,
-      debounce = 60,
-      throttle = 0,
+      context_window = 2048,
+      context_ratio = 0.75,
+      debounce = 400,
+      throttle = 1000,
       request_timeout = 4,
       provider_options = {
         openai_fim_compatible = {
@@ -53,7 +54,10 @@ return {
           end_point = "http://127.0.0.1:11434/v1/completions",
           model = "qwen2.5-coder:7b",
           optional = {
-            max_tokens = 32,
+            max_tokens = 56,
+            stop = { "\n\n" },
+            temperature = 0.2,
+            top_p = 0.9,
           },
         },
       },

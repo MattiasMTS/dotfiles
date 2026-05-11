@@ -1,4 +1,10 @@
 local methods = vim.lsp.protocol.Methods
+local codelens_disabled_clients = {
+  gopls = true,
+  tflint = true,
+  tofu_ls = true,
+  ["tofu-ls"] = true,
+}
 
 vim.lsp.log.set_level("ERROR")
 
@@ -111,13 +117,17 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- create an autocommand to set up codelense
+-- create an autocommand to set up codelens
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "Configure LSP codelens",
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-    if client and client:supports_method("textDocument/codeLens", args.buf) then
+    if
+      client
+      and not codelens_disabled_clients[client.name]
+      and client:supports_method("textDocument/codeLens", args.buf)
+    then
       vim.lsp.codelens.enable(true, { bufnr = args.buf })
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
         buffer = args.buf,

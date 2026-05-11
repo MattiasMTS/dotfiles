@@ -19,6 +19,7 @@ return {
       tf = { "tofu_fmt" },
       ["terraform-vars"] = { "tofu_fmt" },
       go = { "gofumpt", "goimports", "golines" },
+      rust = { "rustfmt" },
       javascript = { "oxfmt", lsp_format = "fallback" },
       typescript = { "oxfmt", lsp_format = "fallback" },
       typescriptreact = { "oxfmt", lsp_format = "fallback" },

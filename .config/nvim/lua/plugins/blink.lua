@@ -2,6 +2,7 @@ return {
   {
     "saghen/blink.cmp",
     dependencies = {
+      { "saghen/blink.lib" },
       {
         "saghen/blink.compat",
         version = "*",
@@ -92,7 +93,7 @@ return {
               return vim.fn.getcmdtype() == ":"
             end,
           },
-          ghost_text = { enabled = false },
+          ghost_text = { enabled = true },
         },
       },
 
@@ -103,27 +104,5 @@ return {
         },
       },
     },
-    config = function(_, opts)
-      require("blink.cmp").setup(opts)
-    end,
   },
-  -- add cmp-dbee separate to not clutter the main config
-  -- {
-  --   "saghen/blink.cmp",
-  --   dependencies = {
-  --     "MattiasMTS/cmp-dbee",
-  --     enabled = true,
-  --     ft = { "sql" },
-  --     dev = true,
-  --     dependencies = { "kndndrj/nvim-dbee" },
-  --   },
-  --   opts = {
-  --     sources = {
-  --       compat = { "dbee" },
-  --       providers = {
-  --         dbee = { name = "dbee", module = "blink.compat.source" },
-  --       },
-  --     },
-  --   },
-  -- },
 }

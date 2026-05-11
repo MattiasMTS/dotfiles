@@ -2,36 +2,33 @@
 return {
   cmd = { "gopls" },
   filetypes = { "go", "gomod", "gowork", "gosum", "gotmpl" },
-  root_markers = { "go.mod", ".git" },
+  root_markers = { "go.work", "go.mod", ".git" },
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
   settings = {
     gopls = {
-      -- VS Code defaults: mostly let gopls use its own defaults
+      buildFlags = { "-tags=unit,emulator,integration" },
       codelenses = {
         gc_details = false,
-        generate = true,
-        regenerate_cgo = true,
-        run_govulncheck = true,
-        test = true,
-        tidy = true,
-        upgrade_dependency = true,
-        vendor = true,
+        generate = false,
+        regenerate_cgo = false,
+        run_govulncheck = false,
+        test = false,
+        tidy = false,
+        upgrade_dependency = false,
+        vendor = false,
       },
       analyses = {
         ST1000 = false, -- ignore "docs required in pkg"
         nilness = true,
         unusedparams = true,
         unusedwrite = true,
-        useany = true,
-        modernize = true,
         yield = true,
         waitgroup = true,
       },
-      env = { GOWORK = "off" }, -- disable go.work to avoid loading all modules in monorepos
       gofumpt = false, -- replaced with conform
       usePlaceholders = false, -- VS Code default
+      matcher = "CaseInsensitive",
       staticcheck = false, -- managed by nvim-lint
-      completeUnimported = true, -- gopls default
       vulncheck = "Off", -- VS Code default is "Prompt", but "Off" is lighter
       hints = {
         assignVariableTypes = false,
@@ -42,13 +39,16 @@ return {
         parameterNames = true,
         rangeVariableTypes = false,
       },
-      semanticTokens = true,
+      -- Tree-sitter handles Go highlighting; keep semantic token work out of gopls.
+      semanticTokens = false,
       templateExtensions = { "templ", "tmpl" },
       analysisProgressReporting = true, -- VS Code default
       diagnosticsDelay = "1s", -- VS Code default
-      diagnosticsTrigger = "Edit", -- VS Code default
+      diagnosticsTrigger = "Edit", -- gopls default; keeps diagnostics fresh after generated files change.
       symbolMatcher = "FastFuzzy",
       directoryFilters = {
+        "-**/.agents",
+        "-**/.gotmp",
         "-**/node_modules",
         "-**/vendor",
         "-**/.git",

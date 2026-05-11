@@ -12,6 +12,11 @@ return {
         -- Git blame
         hl.GitSignsCurrentLineBlame = { fg = c.comment }
 
+        -- Inline completion virtual text
+        hl.ComplHint = { fg = c.comment }
+        hl.ComplHintMore = { fg = c.comment }
+        hl.MinuetVirtualText = { fg = c.comment }
+
         -- UI
         hl.ColorColumn = { bg = c.bg_soft }
         hl.LineNr = { fg = c.fg_soft }
