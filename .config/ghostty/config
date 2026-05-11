@@ -8,7 +8,7 @@ theme = Hybrid
 # fonts
 font-family = Iosevka Nerd Font
 font-size = 14
-# custom-shader = cursor_smear.glsl
+custom-shader = cursor_smear.glsl
 
 # mouse
 mouse-hide-while-typing = true
@@ -26,4 +26,9 @@ quit-after-last-window-closed = true
 # macos-non-native-fullscreen = visible-menu
 # macos-titlebar-style = hidden
 keybind = shift+enter=text:\x1b\r
+# Resize cmux/Ghostty splits with Vim-style Alt bindings.
+keybind = alt+h=resize_split:left,10
+keybind = alt+j=resize_split:down,10
+keybind = alt+k=resize_split:up,10
+keybind = alt+l=resize_split:right,10
 bell-features = system,audio,attention,title
