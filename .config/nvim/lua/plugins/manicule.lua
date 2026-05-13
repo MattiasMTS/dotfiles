@@ -13,7 +13,7 @@ return {
     opts = {
       sinks = {
         cmux = {
-          enabled = "auto",
+          enabled = true,
           clear_on_success = true,
         },
       },
