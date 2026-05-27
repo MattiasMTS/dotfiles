@@ -16,6 +16,9 @@
         condition = "gitdir:~/src/github.com/lovablelabs/";
         contents = {
           user.email = "msjodin@lovable.dev";
+
+          core.untrackedCache = true;
+          feature.manyFiles = true;
         };
       }
     ];
