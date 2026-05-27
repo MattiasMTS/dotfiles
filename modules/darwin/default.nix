@@ -22,7 +22,6 @@
     tmux
     gnumake
     _1password-cli
-    _1password-gui
   ];
 
   homebrew = {
@@ -32,6 +31,7 @@
       "spotify"
       "brave-browser"
       "datagrip"
+      "1password"
       "cmux"
     ];
     brews = [
@@ -63,6 +63,10 @@
     extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
     extra-substituters = "https://devenv.cachix.org";
   };
+
+  determinateNix.determinateNixd.authentication.additionalNetrcSources = [
+    "/etc/determinate/github-nix.netrc"
+  ];
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;

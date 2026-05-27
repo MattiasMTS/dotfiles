@@ -17,7 +17,7 @@
         commitLength.show = true;
         splitDiff = "auto";
         commandLogSize = 6;
-        sidePanelWidth = 0.20;
+        sidePanelWidth = 0.40;
         expandFocusedSidePanel = true;
         expandedSidePanelWeight = 3;
       };

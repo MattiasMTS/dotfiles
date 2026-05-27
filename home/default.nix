@@ -9,10 +9,13 @@
 }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  blink-fuzzy-lib = inputs.blink-cmp.packages.${pkgs.system}.blink-fuzzy-lib;
+  blink-cmp-plugin = inputs.blink-cmp.packages.${pkgs.system}.blink-cmp;
   treesitter-grammars = pkgs.symlinkJoin {
     name = "nvim-treesitter-grammars";
-    paths = pkgs.vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
+    paths = [
+      "${pkgs.vimPlugins.nvim-treesitter}/runtime"
+    ]
+    ++ pkgs.vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
   };
   nixClangWithAppleSdk = pkgs.writeShellScriptBin "nix-clang-with-apple-sdk" ''
     sdk_root="$(/usr/bin/xcrun --sdk macosx --show-sdk-path)"
@@ -26,7 +29,6 @@ in
 {
   imports = [
     ../modules/amp-cli.nix
-    ../modules/rust.nix
     ./programs/zsh.nix
     ./programs/starship.nix
     ./programs/git.nix
@@ -51,7 +53,6 @@ in
     ./programs/ripgrep.nix
     ./programs/jq.nix
     ./programs/btop.nix
-    ./programs/rust.nix
   ];
 
   programs.home-manager.enable = true;
@@ -79,17 +80,26 @@ in
   xdg.configFile.cmux.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/cmux";
   # Symlink blink.cmp fuzzy library built via Nix to where blink.lib v2 resolves it
   home.file.".local/share/nvim/lazy/blink.cmp/lib/libblink_cmp_fuzzy.dylib".source =
-    "${blink-fuzzy-lib}/lib/libblink_cmp_fuzzy.dylib";
+    "${blink-cmp-plugin}/lib/libblink_cmp_fuzzy.dylib";
   # Symlink Nix-built tree-sitter parsers and queries under Neovim's data site,
   # which lazy.nvim keeps on runtimepath even when it resets packpath.
   home.file.".local/share/nvim/site/parser" = {
     source = "${treesitter-grammars}/parser";
-    recursive = true;
+    force = true;
   };
   home.file.".local/share/nvim/site/queries" = {
     source = "${treesitter-grammars}/queries";
-    recursive = true;
+    force = true;
   };
+  home.activation.removeExpandedNvimTreesitterSite =
+    config.lib.dag.entryBefore [ "linkGeneration" ]
+      ''
+        for path in "$HOME/.local/share/nvim/site/parser" "$HOME/.local/share/nvim/site/queries"; do
+          if [[ -d "$path" && ! -L "$path" ]]; then
+            rm -rf "$path"
+          fi
+        done
+      '';
 
   # user specific packages instead of system wide
   home.packages = with pkgs; [
@@ -125,7 +135,7 @@ in
     pnpm
     nodejs_22
     bun
-    vtsls
+    typescript-go
     deno
     vscode-json-languageserver
 
@@ -134,7 +144,6 @@ in
     ty
     ruff
     pyright
-    typescript-language-server
     graphite-cli
 
     (google-cloud-sdk.withExtraComponents (

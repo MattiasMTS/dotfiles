@@ -17,6 +17,9 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   command = "CsvViewEnable",
 })
 
+vim.treesitter.language.register("tsx", "typescriptreact")
+vim.treesitter.language.register("javascript", "javascriptreact")
+
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("treesitter_highlight", { clear = true }),
   desc = "Enable treesitter highlighting when a parser is available",
@@ -66,14 +69,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("yank_highlight", { clear = true }),
   desc = "Highlight on yank",
   callback = function()
-    vim.hl.on_yank({ higroup = "IncSearch" })
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = "*.ghostty",
-  callback = function()
-    vim.bo.filetype = "ghostty"
+    vim.hl.hl_op({ higroup = "IncSearch" })
   end,
 })
 

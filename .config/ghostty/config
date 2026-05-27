@@ -14,8 +14,8 @@ custom-shader = cursor_smear.glsl
 mouse-hide-while-typing = true
 
 # appearance
-# background-opacity = 0.96
-# background-blur-radius = 50
+background-opacity = 0.98
+background-blur-radius = 30
 confirm-close-surface = false
 
 # behavior

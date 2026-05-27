@@ -1,6 +1,6 @@
 ---@type vim.lsp.Config
 return {
-  cmd = { "vtsls", "--stdio" },
+  cmd = { "tsgo", "--lsp", "--stdio" },
   filetypes = {
     "javascript",
     "javascriptreact",
@@ -9,19 +9,9 @@ return {
     "typescriptreact",
     "typescript.tsx",
   },
-  root_markers = { "tsconfig.json", "package.json", "jsconfig.json" },
+  root_markers = { "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lock" },
   settings = {
     complete_function_calls = true,
-    vtsls = {
-      enableMoveToFileCodeAction = true,
-      autoUseWorkspaceTsdk = true,
-      experimental = {
-        maxInlayHintLength = 30,
-        completion = {
-          enableServerSideFuzzyMatch = true,
-        },
-      },
-    },
     typescript = {
       updateImportsOnFileMove = { enabled = "always" },
       suggest = {

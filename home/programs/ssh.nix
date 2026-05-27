@@ -3,12 +3,10 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks."*" = {
-      extraOptions = {
-        UseKeychain = "yes";
-      };
-      identityFile = "~/.ssh/id_ed25519";
+    settings."*" = {
+      UseKeychain = "yes";
+      IdentityFile = "~/.ssh/id_ed25519";
+      AddKeysToAgent = "yes";
     };
-    matchBlocks."*".addKeysToAgent = "yes";
   };
 }
