@@ -33,7 +33,6 @@ in
     defaultKeymap = "viins"; # vi-mode
     shellAliases = {
       lg = "lazygit";
-      ld = "lazydocker";
       z = "zoxide";
       ls = "ls --color=auto";
       cat = "bat";

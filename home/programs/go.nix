@@ -12,7 +12,7 @@ in
 
     package = pkgs.go_1_26;
     env = {
-      GOPATH = GOPATH;
+      inherit GOPATH;
       GOBIN = "${GOPATH}/bin";
     };
   };

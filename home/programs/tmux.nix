@@ -14,7 +14,7 @@ in
     keyMode = "vi";
     shell = "${pkgs.zsh}/bin/zsh";
     shortcut = "a";
-    terminal = terminal;
+    inherit terminal;
     newSession = false;
     secureSocket = false;
     sensibleOnTop = false;

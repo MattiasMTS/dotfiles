@@ -38,7 +38,6 @@ in
     ./programs/direnv.nix
     ./programs/zoxide.nix
     ./programs/atuin.nix
-    ./programs/nushell.nix
     ./programs/go.nix
     ./programs/java.nix
     ./programs/lazygit.nix

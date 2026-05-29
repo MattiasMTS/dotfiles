@@ -56,7 +56,7 @@ sync:
 	git push
 
 .PHONY: init
-CONFIGS := nvim ghostty sesh
+CONFIGS := nvim ghostty
 init:
 	@echo "Initializing dotfile symlinks.. ${CONFIGS}"
 	@for c in $(CONFIGS); do \
@@ -65,6 +65,6 @@ init:
 	done
 
 .PHONY: all
-all: deps check rebuild
+all: deps check switch
 
 .DEFAULT_GOAL := help
