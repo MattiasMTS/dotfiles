@@ -4,29 +4,48 @@
     "sendAnonymousTelemetry": false,
     "warnBeforeQuit": false
   },
+  "customSidebars": {
+    "beta": {
+      "enabled": true
+    }
+  },
   "browser": {
     "openTerminalLinksInCmuxBrowser": false,
-    "interceptTerminalOpenCommandInCmuxBrowser": false
+    "interceptTerminalOpenCommandInCmuxBrowser": false,
+    "urlsToAlwaysOpenExternally": ["github.com"]
   },
   "sidebar": {
+    "hideAllDetails": false,
+    "wrapWorkspaceTitles": true,
+    "showWorkspaceDescription": true,
     "branchLayout": "vertical",
+    "stackBranchDirectory": true,
     "showNotificationMessage": false,
+    "showBranchDirectory": true,
+    "showPullRequests": true,
+    "watchGitStatus": true,
+    "makePullRequestsClickable": true,
+    "openPullRequestLinksInCmuxBrowser": false,
+    "openPortLinksInCmuxBrowser": false,
     "showLog": true,
     "showProgress": true,
-    "showCustomMetadata": true,
-    "openPullRequestLinksInCmuxBrowser": false,
-    "openPortLinksInCmuxBrowser": false
+    "showCustomMetadata": true
   },
   "workspaceColors": {
-    "indicatorStyle": "wash",
-    "selectionColor": "#3A3734"
+    "indicatorStyle": "leftRail",
+    "selectionColor": "#4A4540"
+  },
+  "workspaceGroups": {
+    "byCwd": {
+      "/Users/mattiassjodin/src/github.com/lovablelabs/lovable": {
+        "icon": "ladybug.fill",
+        "color": "#7A4FD8"
+      }
+    }
   },
   "sidebarAppearance": {
     "matchTerminalBackground": false,
-    "tintColor": "#2B2928",
-    "lightModeTintColor": "#2B2928",
-    "darkModeTintColor": "#2B2928",
-    "tintOpacity": 0.9
+    "tintOpacity": 0.4
   },
   "automation": {
     "claudeCodeIntegration": true
