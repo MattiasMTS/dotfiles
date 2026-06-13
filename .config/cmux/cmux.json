@@ -40,6 +40,14 @@
       "/Users/mattiassjodin/src/github.com/lovablelabs/lovable": {
         "icon": "ladybug.fill",
         "color": "#7A4FD8"
+      },
+      "/Users/mattiassjodin/src/github.com/projects/dotfiles": {
+        "icon": "gearshape.fill",
+        "color": "#8E8E93"
+      },
+      "/Users/mattiassjodin/src/github.com/projects/manicule.nvim": {
+        "icon": "hand.point.up.left.fill",
+        "color": "#D87A4F"
       }
     }
   },
