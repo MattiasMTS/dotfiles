@@ -42,6 +42,7 @@ in
     ./programs/java.nix
     ./programs/lazygit.nix
     ./programs/gh.nix
+    ./programs/cmux.nix
     ./programs/ssh.nix
     ./programs/aerospace.nix
     ./programs/claude-code.nix
@@ -107,7 +108,6 @@ in
     tree-sitter
     fzf
     fd
-    delta
     difftastic
     tree
     nixfmt
@@ -116,12 +116,19 @@ in
     parallel
     nixd
     cmake
+    vcpkg
     maven
 
     kubectl
     kubectx
-    kubernetes-helm
+    # helm 4.2.0 checkPhase is broken in nixpkgs: preCheck runs
+    # `substituteInPlace cmd/helm/*_test.go --replace-fail` against test files
+    # that moved to pkg/cmd/ in helm 4.x. Skip tests until upstream fixes it.
+    (kubernetes-helm.overrideAttrs (_: { doCheck = false; }))
     kustomize
+    sqld
+    turso
+    turso-cli
 
     tflint
     opentofu
@@ -149,9 +156,14 @@ in
       with pkgs.google-cloud-sdk.components;
       [
         gke-gcloud-auth-plugin
+        cloud-sql-proxy
+        spanner-cli
+        cloud-datastore-emulator
+        cloud-firestore-emulator
+        pubsub-emulator
+        cloud-run-proxy
       ]
     ))
-    google-cloud-sql-proxy
     gofumpt
     golangci-lint
 

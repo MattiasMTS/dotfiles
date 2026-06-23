@@ -10,6 +10,7 @@ return {
       history = {
         initial_focus = "modified",
       },
+      diff = { layout = "inline" },
       keymaps = {
         view = {
           next_hunk = "]c",

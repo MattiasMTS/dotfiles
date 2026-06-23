@@ -33,6 +33,7 @@ return {
         },
       },
       bigfile = { enabled = true, size = 1.5 * 1024 * 1024 },
+      input = { enabled = true },
       image = {
         enabled = true,
         math = { enabled = true },

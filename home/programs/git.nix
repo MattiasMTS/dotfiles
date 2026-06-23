@@ -39,8 +39,6 @@
         difftastic.cmd = ''difft "$LOCAL" "$REMOTE"'';
       };
       pager.difftool = true;
-      interactive.diffFilter = "delta --color-only";
-      delta.navigate = true;
 
       merge.conflictstyle = "diff3";
       init.defaultBranch = "main";
@@ -66,6 +64,17 @@
         standup-summary = "!git standup | claude -p 'Summarize this git activity for a standup. Be concise, use bullet points.'";
         weekly-summary = "!git weekly | claude -p 'Summarize this week of git activity. Group by theme/feature. Be concise.'";
       };
+    };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      navigate = true;
+      line-numbers = true;
+      side-by-side = true;
+      hyperlinks = true;
     };
   };
 }

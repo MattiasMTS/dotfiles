@@ -33,6 +33,14 @@ func repoTint(_ k: String) -> String {
     return "#8E8E93"
 }
 
+func prColor(_ status: String, _ stale: Bool) -> String {
+    if stale { return "#6E7681" }
+    if status == "open" { return "#3FB950" }
+    if status == "merged" { return "#A371F7" }
+    if status == "closed" { return "#F85149" }
+    return "#8E8E93"
+}
+
 func branchShort(_ b: String, _ title: String) -> String {
     if b == "" { return title }
     if b.hasPrefix("ms/") { return "\(b.split(separator: "/")[1])" }
@@ -110,6 +118,12 @@ VStack(alignment: .leading, spacing: 4) {
                         Text(branchShort(w.branch, w.title)).font(.title3).lineLimit(1)
                     }
                     Spacer()
+                    if w.portCount > 0 {
+                        Text(":\(w.ports[0])").font(.body).foregroundColor("#39C5CF")
+                    }
+                    if w.dirty {
+                        Text("±").font(.body).foregroundColor("#D29922")
+                    }
                     if (w.tabs.contains { isSpinner($0.title) }) {
                         Text(spin(clock.second)).font(.title3).foregroundColor("#3FB950")
                     } else {
@@ -121,7 +135,7 @@ VStack(alignment: .leading, spacing: 4) {
                     }
                     if w.pr.number > 0 {
                         Button(action: { openURL(w.pr.url) }) {
-                            Text("#\(w.pr.number)").font(.body).foregroundColor("#8E8E93")
+                            Text("#\(w.pr.number)").font(.body).foregroundColor(prColor(w.pr.status, w.pr.stale))
                         }
                     }
                 }
