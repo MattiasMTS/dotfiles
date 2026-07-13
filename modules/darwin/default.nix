@@ -1,7 +1,5 @@
 {
   pkgs,
-  lib,
-  inputs,
   username,
   ...
 }:
@@ -35,7 +33,6 @@
       "cmux"
     ];
     brews = [
-      "dagger"
       "dagu"
     ];
     taps = [ ];
@@ -71,10 +68,20 @@
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;
 
+  # works around darwin-manual-html failing on nixos-render-docs' --toc-depth
+  # -> --sidebar-depth rename (nixpkgs unstable ahead of nix-darwin master),
+  # and speeds up rebuilds
+  documentation.enable = false;
+  # darwin-uninstaller evals its own default darwin system (docs enabled),
+  # which hits the same --toc-depth failure; still available via
+  # `nix run nix-darwin#darwin-uninstaller` if ever needed
+  system.tools.darwin-uninstaller.enable = false;
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
     nerd-fonts.iosevka
+    nerd-fonts.departure-mono
     maple-mono.NF
   ];
 
@@ -99,7 +106,7 @@
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";
-  nixpkgs.overlays = import ../../overlays { inherit inputs; };
+  nixpkgs.overlays = import ../../overlays { };
 
   # whitelist unfree packages
   nixpkgs.config.allowUnfree = true;

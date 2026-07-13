@@ -28,7 +28,6 @@ let
 in
 {
   imports = [
-    ../modules/amp-cli.nix
     ./programs/zsh.nix
     ./programs/starship.nix
     ./programs/git.nix
@@ -47,7 +46,7 @@ in
     ./programs/aerospace.nix
     ./programs/claude-code.nix
     ./programs/codex.nix
-    ./programs/amp-cli.nix
+    ./programs/ollama.nix
     ./programs/k9s.nix
     ./programs/bat.nix
     ./programs/ripgrep.nix
