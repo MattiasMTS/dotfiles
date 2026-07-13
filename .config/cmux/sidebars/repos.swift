@@ -29,7 +29,6 @@ func repoIcon(_ k: String) -> String {
 
 func repoTint(_ k: String) -> String {
     if k.contains("lovable") { return "#FF4D6D" }
-    if k.contains("dotfiles") { return "#8E8E93" }
     return "#8E8E93"
 }
 
@@ -121,9 +120,6 @@ VStack(alignment: .leading, spacing: 4) {
                     if w.portCount > 0 {
                         Text(":\(w.ports[0])").font(.body).foregroundColor("#39C5CF")
                     }
-                    if w.dirty {
-                        Text("±").font(.body).foregroundColor("#D29922")
-                    }
                     if (w.tabs.contains { isSpinner($0.title) }) {
                         Text(spin(clock.second)).font(.title3).foregroundColor("#3FB950")
                     } else {
@@ -138,6 +134,21 @@ VStack(alignment: .leading, spacing: 4) {
                             Text("#\(w.pr.number)").font(.body).foregroundColor(prColor(w.pr.status, w.pr.stale))
                         }
                     }
+                }
+                let descriptionParts = w.description.split(separator: " ")
+                let behindParts = w.description.split(separator: "↓")
+                if descriptionParts.count >= 2 {
+                    HStack(spacing: 4) {
+                        Text("\(descriptionParts[0])").font(.body).foregroundColor("#3FB950")
+                        Text("\(descriptionParts[1])").font(.body).foregroundColor("#F85149")
+                        if w.description.contains("↑") && descriptionParts.count > 2 {
+                            Text("\(descriptionParts[2])").font(.body).foregroundColor("#58A6FF")
+                        }
+                        if behindParts.count > 1 {
+                            Text("↓\(behindParts[1])").font(.body).foregroundColor("#D29922")
+                        }
+                    }
+                    .padding(.leading, 18)
                 }
             }
             .padding(4)
