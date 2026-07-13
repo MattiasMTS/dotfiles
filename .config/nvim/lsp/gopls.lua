@@ -1,6 +1,21 @@
+local gopls_cmd = vim.env.GOPLS_TRACE == "1" and { "gopls", "-rpc.trace", "-logfile=/tmp/gopls.log" } or { "gopls" }
+
+local function disable_semantic_tokens(client)
+  client.server_capabilities.semanticTokensProvider = nil
+end
+
+local function gopls_capabilities()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.textDocument.semanticTokens = nil
+  capabilities.workspace.semanticTokens = nil
+  return capabilities
+end
+
 ---@type vim.lsp.Config
 return {
-  cmd = { "gopls" },
+  cmd = gopls_cmd,
+  capabilities = gopls_capabilities(),
+  on_init = disable_semantic_tokens,
   filetypes = { "go", "gomod", "gowork", "gosum", "gotmpl" },
   root_markers = { "go.work", "go.mod", ".git" },
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
