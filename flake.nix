@@ -37,6 +37,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    pi-nix = {
+      url = "github:MattiasMTS/pi-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -53,8 +58,6 @@
   };
   outputs =
     {
-      self,
-      nixpkgs,
       nix-darwin,
       home-manager,
       nix-homebrew,

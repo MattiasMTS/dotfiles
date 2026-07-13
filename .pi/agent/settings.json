@@ -1,0 +1,26 @@
+{
+	"lastChangelogVersion": "0.80.6",
+	"theme": "dark/dark",
+	"defaultProvider": "openai-codex",
+	"defaultModel": "gpt-5.6-sol",
+	"defaultThinkingLevel": "xhigh",
+	"defaultProjectTrust": "always",
+	"quietStartup": true,
+	"collapseChangelog": true,
+	"retry": {
+		"enabled": true,
+		"maxRetries": 10
+	},
+	"editorPaddingX": 1,
+	"enabledModels": ["claude-fable-*", "claude-opus-*", "claude-sonnet-*", "gpt-5*"],
+	"packages": [
+		"npm:pi-web-access",
+		"npm:pi-mcp-adapter",
+		"npm:pi-subagents",
+		"npm:pi-lens",
+		"npm:pi-simplify",
+		"npm:pi-x-ide",
+		"npm:pi-mermaid",
+		"git:github.com/tmustier/pi-nes"
+	]
+}

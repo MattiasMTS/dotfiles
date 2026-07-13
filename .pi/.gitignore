@@ -1,0 +1,24 @@
+# Local pi runtime state
+/agent/sessions/
+/agent/auth.json
+/agent/trust.json
+/agent/npm/
+/agent/git/
+/agent/logs/
+
+# Dependencies
+node_modules/
+/agent/extensions/gameboy/native/gameboy-core/node_modules/
+/agent/extensions/gameboy/native/gameboy-core/target/
+/agent/extensions/gameboy/native/gameboy-core/*.node
+/agent/extensions/gameboy/native/gameboy-core/*.d.ts
+
+# Local Game Boy ROMs/saves under repo
+/agent/extensions/gameboy/roms/
+/agent/extensions/gameboy/**/*.gb
+/agent/extensions/gameboy/**/*.gbc
+/agent/extensions/gameboy/**/*.sav
+/agent/extensions/gameboy/**/*.gbsave
+
+# OS/editor noise
+.DS_Store

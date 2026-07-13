@@ -1,0 +1,14 @@
+{
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"fmt": "oxfmt .",
+		"fmt:check": "oxfmt --check ."
+	},
+	"dependencies": {
+		"@pierre/diffs": "1.2.12"
+	},
+	"devDependencies": {
+		"oxfmt": "0.58.0"
+	}
+}

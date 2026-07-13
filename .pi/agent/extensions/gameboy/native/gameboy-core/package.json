@@ -1,0 +1,12 @@
+{
+	"name": "pi-gameboy-core",
+	"version": "0.1.0",
+	"private": true,
+	"main": "index.js",
+	"scripts": {
+		"build": "napi build --release --dts native.d.ts"
+	},
+	"devDependencies": {
+		"@napi-rs/cli": "^2.18.4"
+	}
+}
