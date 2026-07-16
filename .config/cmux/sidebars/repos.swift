@@ -1,35 +1,23 @@
-// repos.swift — custom cmux sidebar: workspaces GROUPED BY REPO. Each repo gets
-// a header row (chevron + SF Symbol icon + repo name + member count); under it,
-// its workspaces as 2-line rows. A dim 1–9 index shows the cmd+N number (the
-// TRUE sidebar position via w.index+1). Right-side = agent state: green braille
-// spinner = working (surface-title glyph), green ● = output/unread, grey ○ =
-// idle. Line 2 = branch (ms/ prefix stripped). Selection = row highlight.
-// #PR opens in the DEFAULT browser via openURL(url). ACCORDION auto-fold:
-// multi-workspace repos collapse to a header-only row (▸ + count) unless they
-// contain the active workspace (▾, expanded); selection IS the state, no @State.
-// Solo repos always stay expanded. Active repo = repoKey("", selectedTitle).
+// repos.swift — herdr-inspired cmux sidebar.
+//
+// Two levels of navigation:
+//   1. "spaces" lists workspaces in true cmd+N order, with repository name,
+//      PR badge, agent count, aggregate state, and git branch.
+//   2. "agents" lists recognized agent surfaces/tabs. Selecting a row focuses
+//      that surface. Its second line preserves cmux's live progress
+//      label, latest agent output, failure, cancellation, or git diff summary.
+//
+// cmux currently exposes progress/latestMessage per workspace rather than per
+// surface. Spinner-prefixed tab titles are therefore the strongest per-agent
+// working signal; otherwise workspace state is assigned to its focused tab.
+// Selected workspace + selected surface use the purple rail.
 
-// repoKey: groups workspaces by their underlying repo. Lovable worktrees are
-// sibling dirs `lovable` / `lovable.ms-<branch>` under .../lovablelabs/ — all
-// collapse to "lovable". Standalone repos live under .../projects/ and their
-// directory basename == title (e.g. dotfiles, manicule.nvim,
-// terraform-provider-clickhouse), so the title is the key. Uses only
-// render-proven primitives (contains, split("/")[..], hasPrefix).
+// repoKey groups Lovable worktrees together. Standalone repositories keep the
+// workspace title as their key.
 func repoKey(_ dir: String, _ title: String) -> String {
     if dir.contains("/lovablelabs/") { return "lovable" }
     if title.hasPrefix("lovable") { return "lovable" }
     return title
-}
-
-func repoIcon(_ k: String) -> String {
-    if k.contains("lovable") { return "heart.fill" }
-    if k.contains("dotfiles") { return "gearshape.fill" }
-    return "folder.fill"
-}
-
-func repoTint(_ k: String) -> String {
-    if k.contains("lovable") { return "#FF4D6D" }
-    return "#8E8E93"
 }
 
 func prColor(_ status: String, _ stale: Bool) -> String {
@@ -40,120 +28,221 @@ func prColor(_ status: String, _ stale: Bool) -> String {
     return "#8E8E93"
 }
 
-func branchShort(_ b: String, _ title: String) -> String {
-    if b == "" { return title }
-    if b.hasPrefix("ms/") { return "\(b.split(separator: "/")[1])" }
-    return b
+func isSpinner(_ title: String) -> Bool {
+    return title.hasPrefix("⠁") || title.hasPrefix("⠂") || title.hasPrefix("⠄") || title.hasPrefix("⡀") || title.hasPrefix("⢀") || title.hasPrefix("⠠") || title.hasPrefix("⠐") || title.hasPrefix("⠈") || title.hasPrefix("⠋") || title.hasPrefix("⠙") || title.hasPrefix("⠹") || title.hasPrefix("⠸") || title.hasPrefix("⠼") || title.hasPrefix("⠴") || title.hasPrefix("⠦") || title.hasPrefix("⠧")
 }
 
-func isSpinner(_ t: String) -> Bool {
-    return t.hasPrefix("⠁") || t.hasPrefix("⠂") || t.hasPrefix("⠄") || t.hasPrefix("⡀") || t.hasPrefix("⢀") || t.hasPrefix("⠠") || t.hasPrefix("⠐") || t.hasPrefix("⠈")
-}
-
-func spin(_ sec: Int) -> String {
-    let f = sec % 8
-    if f == 0 { return "⠋" }
-    if f == 1 { return "⠙" }
-    if f == 2 { return "⠹" }
-    if f == 3 { return "⠸" }
-    if f == 4 { return "⠼" }
-    if f == 5 { return "⠴" }
-    if f == 6 { return "⠦" }
+func spin(_ second: Int) -> String {
+    let frame = second % 8
+    if frame == 0 { return "⠋" }
+    if frame == 1 { return "⠙" }
+    if frame == 2 { return "⠹" }
+    if frame == 3 { return "⠸" }
+    if frame == 4 { return "⠼" }
+    if frame == 5 { return "⠴" }
+    if frame == 6 { return "⠦" }
     return "⠧"
 }
 
-VStack(alignment: .leading, spacing: 4) {
+func hasProgress(_ workspace) -> Bool {
+    return workspace.progress.value >= 0.0
+}
+
+func isWorking(_ workspace) -> Bool {
+    return (hasProgress(workspace) && workspace.progress.value < 1.0) || (workspace.tabs.contains { isSpinner($0.title) })
+}
+
+func hasLatestMessage(_ workspace) -> Bool {
+    return workspace.latestMessage != ""
+}
+
+func hasDescription(_ workspace) -> Bool {
+    return workspace.description != ""
+}
+
+func hasFailed(_ workspace) -> Bool {
+    return hasProgress(workspace) && workspace.progress.label.lowercased().contains("error")
+}
+
+func hasCancelled(_ workspace) -> Bool {
+    return hasProgress(workspace) && workspace.progress.label.lowercased().contains("cancelled")
+}
+
+func workspaceGlyph(_ workspace, _ second: Int) -> String {
+    if isWorking(workspace) { return spin(second) }
+    if hasFailed(workspace) || hasCancelled(workspace) { return "!" }
+    if hasProgress(workspace) || workspace.unread > 0 { return "●" }
+    return "○"
+}
+
+func workspaceTint(_ workspace) -> String {
+    if isWorking(workspace) { return "#58A6FF" }
+    if hasFailed(workspace) { return "#F85149" }
+    if hasCancelled(workspace) { return "#D29922" }
+    if hasProgress(workspace) || workspace.unread > 0 { return "#D29922" }
+    return "#5A5A5E"
+}
+
+// A spinner title identifies a background working agent. For progress-only
+// integrations, attribute the workspace signal to the focused surface.
+func tabIsWorking(_ workspace, _ tab) -> Bool {
+    return isSpinner(tab.title) || (isWorking(workspace) && tab.focused)
+}
+
+func tabHasFailed(_ workspace, _ tab) -> Bool {
+    return hasFailed(workspace) && tab.focused
+}
+
+func tabHasCancelled(_ workspace, _ tab) -> Bool {
+    return hasCancelled(workspace) && tab.focused
+}
+
+func tabIsReady(_ workspace, _ tab) -> Bool {
+    return !tabIsWorking(workspace, tab) && !tabHasFailed(workspace, tab) && !tabHasCancelled(workspace, tab) && tab.focused && (hasProgress(workspace) || workspace.unread > 0)
+}
+
+func tabGlyph(_ workspace, _ tab, _ second: Int) -> String {
+    if tabIsWorking(workspace, tab) { return spin(second) }
+    if tabHasFailed(workspace, tab) || tabHasCancelled(workspace, tab) { return "!" }
+    if tabIsReady(workspace, tab) { return "●" }
+    return "○"
+}
+
+func tabTint(_ workspace, _ tab) -> String {
+    if tabIsWorking(workspace, tab) { return "#58A6FF" }
+    if tabHasFailed(workspace, tab) { return "#F85149" }
+    if tabHasCancelled(workspace, tab) { return "#D29922" }
+    if tabIsReady(workspace, tab) { return "#D29922" }
+    return "#5A5A5E"
+}
+
+func agentKind(_ title: String) -> String {
+    let lower = title.lowercased()
+    if title.contains("π") || lower.contains(" pi") || lower.hasPrefix("pi") { return "pi" }
+    if lower.contains("codex") { return "codex" }
+    if lower.contains("claude") { return "claude" }
+    if lower.contains("opencode") { return "opencode" }
+    if lower.contains("gemini") { return "gemini" }
+    if lower.contains("agent") { return "agent" }
+    return "shell"
+}
+
+func isAgentTab(_ tab) -> Bool {
+    return isSpinner(tab.title) || agentKind(tab.title) != "shell"
+}
+
+func agentCount(_ workspace) -> Int {
+    return workspace.tabs.count { isAgentTab($0) }
+}
+
+func tabShowsDiff(_ workspace, _ tab) -> Bool {
+    if !tab.focused || !hasDescription(workspace) { return false }
+    if tabIsWorking(workspace, tab) && hasProgress(workspace) { return false }
+    if (tabHasFailed(workspace, tab) || tabHasCancelled(workspace, tab)) && hasProgress(workspace) { return false }
+    if tabIsReady(workspace, tab) && hasLatestMessage(workspace) { return false }
+    return true
+}
+
+func diffTokenTint(_ token: String) -> String {
+    if token.hasPrefix("+") { return "#3FB950" }
+    if token.hasPrefix("-") { return "#F85149" }
+    if token.hasPrefix("↑") { return "#58A6FF" }
+    if token.hasPrefix("↓") { return "#D29922" }
+    return "#8E8E93"
+}
+
+func tabDetail(_ workspace, _ tab) -> String {
+    if tabIsWorking(workspace, tab) && hasProgress(workspace) { return workspace.progress.label }
+    if (tabHasFailed(workspace, tab) || tabHasCancelled(workspace, tab)) && hasProgress(workspace) { return workspace.progress.label }
+    if tabIsReady(workspace, tab) && hasLatestMessage(workspace) { return workspace.latestMessage }
+    if tab.focused && hasDescription(workspace) { return workspace.description }
+    return "Idle · \(agentKind(tab.title))"
+}
+
+VStack(alignment: .leading, spacing: 2) {
+    // Compact repository/workspace navigator.
     HStack {
-        Text("Workspaces").font(.title2).bold()
+        Text("spaces").font(.headline).bold()
         Spacer()
         if (workspaces.count { $0.unread > 0 }) > 0 {
-            Text("● \(workspaces.count { $0.unread > 0 }) need you")
-                .font(.body).foregroundColor("#3FB950")
+            Text("● \(workspaces.count { $0.unread > 0 }) ready")
+                .font(.caption).foregroundColor("#D29922")
         }
     }
+    .frame(height: 24)
     Divider()
-    for j in 0..<workspaces.count {
-        let w = workspaces[j]
-        let key = repoKey(w.directory, w.title)
-        let cnt = workspaces.count { repoKey($0.directory, $0.title) == key }
-        let activeKey = repoKey("", selectedTitle)
-        let expanded = cnt == 1 || key == activeKey
-        let collapsed = cnt > 1 && key != activeKey
-        if j == 0 || repoKey(workspaces[j - 1].directory, workspaces[j - 1].title) != key {
-            Button(action: { cmux("workspace.select", workspace_id: w.id) }) {
-                HStack(spacing: 6) {
-                    if cnt > 1 {
-                        if expanded {
-                            Text("▾").font(.title3).foregroundColor("#5A5A5E")
-                        } else {
-                            Text("▸").font(.title3).foregroundColor("#5A5A5E")
-                        }
+
+    // Flat list: visual order exactly matches cmd+1, cmd+2, cmd+3, …
+    for workspace in workspaces {
+        let key = repoKey(workspace.directory, workspace.title)
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 6) {
+                Text(workspace.selected ? "▌" : " ")
+                    .font(.caption).foregroundColor("#7A4FD8")
+                Text("\(workspace.index + 1)").font(.caption).foregroundColor("#5A5A5E")
+                Text(key).font(.body).bold().lineLimit(1).truncationMode(.tail)
+                Spacer()
+                if workspace.pr.number > 0 {
+                    Text("#\(workspace.pr.number)")
+                        .font(.caption).foregroundColor(prColor(workspace.pr.status, workspace.pr.stale))
+                        .onTapGesture { openURL(workspace.pr.url) }
+                }
+                Text("×\(agentCount(workspace))").font(.caption).foregroundColor("#8E8E93")
+                Text(workspaceGlyph(workspace, clock.second))
+                    .font(.body).foregroundColor(workspaceTint(workspace))
+            }
+            Text(workspace.branch != "" ? workspace.branch : workspace.title)
+                .font(.system(size: 12)).foregroundColor("#8E8E93")
+                .lineLimit(1).truncationMode(.tail)
+                .padding(.leading, 29)
+        }
+        .frame(height: 38)
+        .padding(.horizontal, 3)
+        .background(workspace.selected ? "#30283D" : "#00000000")
+        .cornerRadius(4)
+        .onTapGesture { cmux("workspace.select", workspace_id: workspace.id) }
+    }
+
+    Divider().padding(.top, 2)
+
+    // Compact agent list. Shell/editor/browser surfaces stay in cmux's tab bar;
+    // this section only shows recognized agent tabs and spinner-titled work.
+    Text("agents").font(.headline).bold().frame(height: 24)
+    Divider()
+
+    for workspace in workspaces {
+        for tab in workspace.tabs {
+            if isAgentTab(tab) {
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(spacing: 6) {
+                        Text(workspace.selected && tab.focused ? "▌" : " ")
+                            .font(.caption).foregroundColor("#7A4FD8")
+                        Text(tabGlyph(workspace, tab, clock.second))
+                            .font(.body).foregroundColor(tabTint(workspace, tab))
+                        Text(tab.title).font(.body).bold().lineLimit(1).truncationMode(.tail)
+                        Spacer()
                     }
-                    Image(systemName: repoIcon(key)).foregroundColor(repoTint(key))
-                    Text(key).font(.headline).bold().lineLimit(1)
-                    Spacer()
-                    if collapsed {
-                        if (workspaces.count { repoKey($0.directory, $0.title) == key && ($0.tabs.contains { isSpinner($0.title) }) }) > 0 {
-                            Text(spin(clock.second)).font(.title3).foregroundColor("#3FB950")
-                        } else {
-                            if (workspaces.count { repoKey($0.directory, $0.title) == key && $0.unread > 0 }) > 0 {
-                                Text("●").font(.body).foregroundColor("#3FB950")
-                            } else {
-                                Text("○").font(.body).foregroundColor("#5A5A5E")
+                    if tabShowsDiff(workspace, tab) {
+                        HStack(spacing: 4) {
+                            for token in workspace.description.split(separator: " ") {
+                                Text("\(token)").font(.caption).foregroundColor(diffTokenTint(token))
                             }
                         }
-                    }
-                    Text("\(cnt)").font(.body).foregroundColor("#8E8E93")
-                }
-            }
-            .padding(.top, 4)
-        }
-        if expanded {
-            VStack(alignment: .leading, spacing: 1) {
-                HStack(spacing: 6) {
-                    Text("  \(w.index + 1)").font(.body).foregroundColor("#5A5A5E")
-                    Text("·").font(.body).foregroundColor("#5A5A5E")
-                    Button(action: { cmux("workspace.select", workspace_id: w.id) }) {
-                        Text(branchShort(w.branch, w.title)).font(.title3).lineLimit(1)
-                    }
-                    Spacer()
-                    if w.portCount > 0 {
-                        Text(":\(w.ports[0])").font(.body).foregroundColor("#39C5CF")
-                    }
-                    if (w.tabs.contains { isSpinner($0.title) }) {
-                        Text(spin(clock.second)).font(.title3).foregroundColor("#3FB950")
+                        .padding(.leading, 28)
                     } else {
-                        if w.unread > 0 {
-                            Text("●").font(.body).foregroundColor("#3FB950")
-                        } else {
-                            Text("○").font(.body).foregroundColor("#5A5A5E")
-                        }
-                    }
-                    if w.pr.number > 0 {
-                        Button(action: { openURL(w.pr.url) }) {
-                            Text("#\(w.pr.number)").font(.body).foregroundColor(prColor(w.pr.status, w.pr.stale))
-                        }
+                        Text(tabDetail(workspace, tab))
+                            .font(.caption)
+                            .foregroundColor(tabTint(workspace, tab))
+                            .lineLimit(1).truncationMode(.tail)
+                            .padding(.leading, 28)
                     }
                 }
-                let descriptionParts = w.description.split(separator: " ")
-                let behindParts = w.description.split(separator: "↓")
-                if descriptionParts.count >= 2 {
-                    HStack(spacing: 4) {
-                        Text("\(descriptionParts[0])").font(.body).foregroundColor("#3FB950")
-                        Text("\(descriptionParts[1])").font(.body).foregroundColor("#F85149")
-                        if w.description.contains("↑") && descriptionParts.count > 2 {
-                            Text("\(descriptionParts[2])").font(.body).foregroundColor("#58A6FF")
-                        }
-                        if behindParts.count > 1 {
-                            Text("↓\(behindParts[1])").font(.body).foregroundColor("#D29922")
-                        }
-                    }
-                    .padding(.leading, 18)
-                }
+                .frame(height: 38)
+                .padding(.horizontal, 3)
+                .background(workspace.selected && tab.focused ? "#30283D" : "#00000000")
+                .cornerRadius(4)
+                .onTapGesture { cmux("surface.focus", surface_id: tab.id) }
             }
-            .padding(4)
-            .background(w.selected ? "#2C2C2E" : "#00000000")
-            .cornerRadius(6)
         }
     }
 }

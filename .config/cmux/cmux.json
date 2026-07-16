@@ -1,8 +1,14 @@
 {
   "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "paneBorderColor": "#4A4540",
+  "activePaneBorderColor": "#7A4FD8",
   "app": {
     "sendAnonymousTelemetry": false,
-    "warnBeforeQuit": false
+    "confirmQuit": "never",
+    "commandPaletteSearchesAllSurfaces": true
+  },
+  "notifications": {
+    "suppressOnlyFocusedSurface": true
   },
   "customSidebars": {
     "beta": {
@@ -12,7 +18,9 @@
   "browser": {
     "openTerminalLinksInCmuxBrowser": false,
     "interceptTerminalOpenCommandInCmuxBrowser": false,
-    "urlsToAlwaysOpenExternally": ["github.com"]
+    "urlsToAlwaysOpenExternally": [
+      "github.com"
+    ]
   },
   "sidebar": {
     "hideAllDetails": false,
@@ -20,7 +28,7 @@
     "showWorkspaceDescription": true,
     "branchLayout": "vertical",
     "stackBranchDirectory": true,
-    "showNotificationMessage": false,
+    "showNotificationMessage": true,
     "showBranchDirectory": true,
     "showPullRequests": true,
     "watchGitStatus": true,
@@ -32,7 +40,7 @@
     "showCustomMetadata": true
   },
   "workspaceColors": {
-    "indicatorStyle": "leftRail",
+    "indicatorStyle": "solidFill",
     "selectionColor": "#4A4540"
   },
   "workspaceGroups": {
@@ -60,28 +68,86 @@
   },
   "shortcuts": {
     "bindings": {
-      "newSurface": ["ctrl+a", "c"],
-      "splitDown": ["ctrl+a", "shift+quote"],
-      "splitRight": ["ctrl+a", "shift+5"],
-      "prevSurface": ["ctrl+a", "a"],
-      "nextSurface": ["ctrl+a", "n"],
-      "toggleSplitZoom": ["ctrl+a", "z"],
-      "closeTab": ["ctrl+a", "x"],
-      "closeWorkspace": ["ctrl+a", "shift+x"],
-      "nextSidebarTab": ["ctrl+a", "tab"],
-      "prevSidebarTab": ["ctrl+a", "shift+tab"],
-      "goToWorkspace": ["ctrl+a", "f"],
-      "toggleSidebar": ["ctrl+a", "b"],
-      "reloadConfiguration": ["ctrl+a", "shift+r"],
-      "newTab": ["ctrl+a", "w"],
-      "commandPalette": ["ctrl+a", "p"],
+      "newSurface": [
+        "ctrl+a",
+        "c"
+      ],
+      "splitDown": [
+        "ctrl+a",
+        "shift+quote"
+      ],
+      "splitRight": [
+        "ctrl+a",
+        "shift+5"
+      ],
+      "prevSurface": [
+        "ctrl+a",
+        "a"
+      ],
+      "nextSurface": [
+        "ctrl+a",
+        "n"
+      ],
+      "toggleSplitZoom": [
+        "ctrl+a",
+        "z"
+      ],
+      "closeTab": [
+        "ctrl+a",
+        "x"
+      ],
+      "closeWorkspace": [
+        "ctrl+a",
+        "shift+x"
+      ],
+      "nextSidebarTab": [
+        "ctrl+a",
+        "tab"
+      ],
+      "prevSidebarTab": [
+        "ctrl+a",
+        "shift+tab"
+      ],
+      "goToWorkspace": [
+        "ctrl+a",
+        "f"
+      ],
+      "toggleSidebar": [
+        "ctrl+a",
+        "b"
+      ],
+      "reloadConfiguration": [
+        "ctrl+a",
+        "shift+r"
+      ],
+      "newTab": [
+        "ctrl+a",
+        "w"
+      ],
+      "commandPalette": [
+        "ctrl+a",
+        "p"
+      ],
       "focusLeft": "ctrl+h",
       "focusDown": "ctrl+j",
       "focusUp": "ctrl+k",
       "focusRight": "ctrl+l",
-      "renameTab": ["ctrl+a", "comma"],
-      "renameWorkspace": ["ctrl+a", "shift+4"],
-      "selectSurfaceByNumber": ["ctrl+a", "1"]
+      "renameTab": [
+        "ctrl+a",
+        "comma"
+      ],
+      "renameWorkspace": [
+        "ctrl+a",
+        "shift+4"
+      ],
+      "selectSurfaceByNumber": [
+        "ctrl+a",
+        "1"
+      ],
+      "toggleTerminalCopyMode": [
+        "ctrl+a",
+        "\u001b"
+      ]
     }
   }
 }
