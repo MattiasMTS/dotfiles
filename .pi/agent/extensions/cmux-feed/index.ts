@@ -28,7 +28,26 @@ import {
 const DEFAULT_NOTIFY_THRESHOLD_MS = 15_000;
 const FINAL_PROGRESS_CLEAR_MS = 10_000;
 const HOOK_TIMEOUT_MS = 5_000;
+const TAB_TITLE_COMMAND_TIMEOUT_MS = 1_500;
 const MAX_PROGRESS_LABEL_LENGTH = 120;
+// One invisible separator marks an automatic base title; two preserve a manual
+// cmux tab title when the owned state marker is eventually cleared.
+const OWNED_TITLE_SEPARATOR = "\u2063";
+const OWNED_TAB_STATES = ["working", "completed", "error", "cancelled"] as const;
+type OwnedTabState = (typeof OWNED_TAB_STATES)[number];
+
+const OWNED_TITLE_PREFIXES: Record<OwnedTabState, string> = {
+	working: `⠋${OWNED_TITLE_SEPARATOR}`,
+	completed: `✓${OWNED_TITLE_SEPARATOR}`,
+	error: `!${OWNED_TITLE_SEPARATOR}`,
+	cancelled: `×${OWNED_TITLE_SEPARATOR}`,
+};
+
+interface OwnedTabTitle {
+	state: OwnedTabState;
+	baseTitle: string;
+	preservesManualTitle: boolean;
+}
 
 const HOOK_EVENT_NAMES = {
 	"session-start": "SessionStart",
@@ -229,6 +248,107 @@ function runCmux(args: string[]): void {
 	}
 }
 
+function runCmuxSync(args: string[]): boolean {
+	if (!cmuxEnabled()) return false;
+
+	try {
+		const result = spawnSync(cmuxExecutable(), args, {
+			encoding: "utf8",
+			stdio: ["ignore", "ignore", "ignore"],
+			timeout: TAB_TITLE_COMMAND_TIMEOUT_MS,
+		});
+		return !result.error && result.status === 0;
+	} catch {
+		return false;
+	}
+}
+
+function currentSurfaceTitle(): string | undefined {
+	const workspaceId = process.env.CMUX_WORKSPACE_ID;
+	const surfaceId = process.env.CMUX_SURFACE_ID;
+	if (!cmuxEnabled() || !workspaceId || !surfaceId) return undefined;
+
+	try {
+		const result = spawnSync(
+			cmuxExecutable(),
+			["rpc", "surface.list", JSON.stringify({ workspace_id: workspaceId })],
+			{
+				encoding: "utf8",
+				stdio: ["ignore", "pipe", "ignore"],
+				timeout: TAB_TITLE_COMMAND_TIMEOUT_MS,
+			},
+		);
+		if (result.error || result.status !== 0 || !result.stdout) return undefined;
+
+		const payload = JSON.parse(result.stdout) as {
+			surfaces?: Array<{ id?: unknown; title?: unknown }>;
+		};
+		const surface = payload.surfaces?.find(
+			(candidate) =>
+				typeof candidate.id === "string" &&
+				candidate.id.toLowerCase() === surfaceId.toLowerCase(),
+		);
+		return typeof surface?.title === "string" ? surface.title : undefined;
+	} catch {
+		return undefined;
+	}
+}
+
+function parseOwnedTabTitle(title: string): OwnedTabTitle | undefined {
+	for (const state of OWNED_TAB_STATES) {
+		const prefix = OWNED_TITLE_PREFIXES[state];
+		if (!title.startsWith(prefix)) continue;
+
+		const remainder = title.slice(prefix.length);
+		const preservesManualTitle = remainder.startsWith(OWNED_TITLE_SEPARATOR);
+		return {
+			state,
+			baseTitle: preservesManualTitle
+				? remainder.slice(OWNED_TITLE_SEPARATOR.length)
+				: remainder,
+			preservesManualTitle,
+		};
+	}
+	return undefined;
+}
+
+function formatOwnedTabTitle(
+	state: OwnedTabState,
+	baseTitle: string,
+	preservesManualTitle: boolean,
+): string {
+	const manualMarker = preservesManualTitle ? OWNED_TITLE_SEPARATOR : "";
+	return `${OWNED_TITLE_PREFIXES[state]}${manualMarker}${baseTitle}`;
+}
+
+function setCurrentSurfaceTitle(title: string): boolean {
+	const surfaceId = process.env.CMUX_SURFACE_ID;
+	if (!surfaceId) return false;
+	return runCmuxSync(["rename-tab", "--surface", surfaceId, "--title", title]);
+}
+
+function clearCurrentSurfaceTitle(): boolean {
+	const surfaceId = process.env.CMUX_SURFACE_ID;
+	if (!surfaceId) return false;
+	return runCmuxSync(["tab-action", "--action", "clear-name", "--surface", surfaceId]);
+}
+
+// surface.list exposes only the resolved title. Probe clear-name before adding
+// our marker, then encode the result as a second invisible separator so later
+// cleanup can restore manual titles and release automatic titles correctly.
+function currentTitleIsManual(title: string): boolean {
+	if (!clearCurrentSurfaceTitle()) return true;
+	return currentSurfaceTitle() !== title;
+}
+
+function clearOwnedSurfaceTitle(title: string): boolean {
+	const ownedTitle = parseOwnedTabTitle(title);
+	if (!ownedTitle) return false;
+	return ownedTitle.preservesManualTitle
+		? setCurrentSurfaceTitle(ownedTitle.baseTitle)
+		: clearCurrentSurfaceTitle();
+}
+
 function setProgress(value: number, label: string): void {
 	runCmux([
 		"set-progress",
@@ -280,6 +400,8 @@ class CmuxFeedRuntime {
 	private runState = createRunState();
 	private runActive = false;
 	private activeToolCount = 0;
+	private lastRunMessages: readonly unknown[] = [];
+	private ownedTabTitle: string | undefined;
 	private finalProgressTimer: ReturnType<typeof setTimeout> | undefined;
 
 	register(pi: ExtensionAPI): void {
@@ -289,7 +411,8 @@ class CmuxFeedRuntime {
 		pi.on("tool_execution_start", (event) => this.handleToolStart(event.toolName));
 		pi.on("tool_result", (event) => this.handleToolResult(event));
 		pi.on("tool_execution_end", () => this.handleToolEnd());
-		pi.on("agent_end", (event, ctx) => this.handleAgentEnd(event.messages, ctx));
+		pi.on("agent_end", (event) => this.handleAgentEnd(event.messages));
+		pi.on("agent_settled", (_event, ctx) => this.handleAgentSettled(ctx));
 		pi.on("session_shutdown", (event, ctx) => this.handleSessionShutdown(event.reason, ctx));
 	}
 
@@ -308,10 +431,75 @@ class CmuxFeedRuntime {
 		(this.finalProgressTimer as { unref?: () => void }).unref?.();
 	}
 
+	private recoverOwnedTabTitle(): void {
+		const title = currentSurfaceTitle();
+		const ownedTitle = title ? parseOwnedTabTitle(title) : undefined;
+		if (title && ownedTitle?.state === "working") clearOwnedSurfaceTitle(title);
+		this.ownedTabTitle =
+			title && ownedTitle && ownedTitle.state !== "working" ? title : undefined;
+	}
+
+	private markWorkingTab(): void {
+		const title = currentSurfaceTitle();
+		if (!title) return;
+
+		const ownedTitle = parseOwnedTabTitle(title);
+		const preservesManualTitle =
+			ownedTitle?.preservesManualTitle ?? currentTitleIsManual(title);
+		const markedTitle = formatOwnedTabTitle(
+			"working",
+			ownedTitle?.baseTitle ?? title,
+			preservesManualTitle,
+		);
+		if (setCurrentSurfaceTitle(markedTitle)) {
+			this.ownedTabTitle = markedTitle;
+		} else if (!ownedTitle && preservesManualTitle) {
+			setCurrentSurfaceTitle(title);
+		}
+	}
+
+	private markFinishedTab(state: Exclude<OwnedTabState, "working">): void {
+		const ownedTitle = this.ownedTabTitle;
+		if (!ownedTitle) return;
+
+		const title = currentSurfaceTitle();
+		if (!title) return;
+		if (title !== ownedTitle) {
+			this.ownedTabTitle = undefined;
+			return;
+		}
+
+		const ownedTitleState = parseOwnedTabTitle(title);
+		if (!ownedTitleState) {
+			this.ownedTabTitle = undefined;
+			return;
+		}
+		const markedTitle = formatOwnedTabTitle(
+			state,
+			ownedTitleState.baseTitle,
+			ownedTitleState.preservesManualTitle,
+		);
+		if (setCurrentSurfaceTitle(markedTitle)) this.ownedTabTitle = markedTitle;
+	}
+
+	private clearOwnedTab(): void {
+		const ownedTitle = this.ownedTabTitle;
+		if (!ownedTitle) return;
+
+		const title = currentSurfaceTitle();
+		if (!title) return;
+		if (title !== ownedTitle) {
+			this.ownedTabTitle = undefined;
+			return;
+		}
+		if (clearOwnedSurfaceTitle(title)) this.ownedTabTitle = undefined;
+	}
+
 	private handleSessionStart(ctx: ExtensionContext): void {
 		this.cancelFinalProgressClear();
 		this.runActive = false;
 		this.activeToolCount = 0;
+		this.recoverOwnedTabTitle();
 		clearProgress();
 		sendHook("session-start", ctx);
 	}
@@ -321,8 +509,10 @@ class CmuxFeedRuntime {
 		this.runState = createRunState();
 		this.runActive = true;
 		this.activeToolCount = 0;
+		this.lastRunMessages = [];
 		setProgress(0.08, "Starting");
 		sendHook("prompt-submit", ctx, { prompt });
+		this.markWorkingTab();
 	}
 
 	private handleTurnStart(turnIndex: number): void {
@@ -366,16 +556,22 @@ class CmuxFeedRuntime {
 		if (this.activeToolCount === 0) setProgress(estimateProgress(this.runState), "Thinking");
 	}
 
-	private handleAgentEnd(messages: readonly unknown[], ctx: ExtensionContext): void {
+	private handleAgentEnd(messages: readonly unknown[]): void {
+		if (!this.runActive) return;
+		this.lastRunMessages = messages;
+	}
+
+	private handleAgentSettled(ctx: ExtensionContext): void {
 		if (!this.runActive) return;
 		this.runActive = false;
 		this.activeToolCount = 0;
 
 		const durationMs = Date.now() - this.runState.startedAt;
-		const failure = summarizeRunFailure(messages, this.runState.firstToolError);
+		const failure = summarizeRunFailure(this.lastRunMessages, this.runState.firstToolError);
 		const summary =
 			failure?.summary || summarizeSuccess(this.runState, durationMs, this.notifyThresholdMs);
 		this.publishCompletion(ctx, summary, failure);
+		this.markFinishedTab(failure?.kind || "completed");
 	}
 
 	private publishCompletion(ctx: ExtensionContext, summary: string, failure?: RunFailure): void {
@@ -399,6 +595,7 @@ class CmuxFeedRuntime {
 
 	private handleSessionShutdown(reason: string, ctx: ExtensionContext): void {
 		this.cancelFinalProgressClear();
+		if (reason !== "reload" || this.runActive) this.clearOwnedTab();
 		clearProgress();
 		if (!this.runActive) return;
 

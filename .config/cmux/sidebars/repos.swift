@@ -4,13 +4,13 @@
 //   1. "spaces" lists workspaces in true cmd+N order, with repository name,
 //      PR badge, agent count, aggregate state, and git branch.
 //   2. "agents" lists recognized agent surfaces/tabs. Selecting a row focuses
-//      that surface. Its second line preserves cmux's live progress
-//      label, latest agent output, failure, cancellation, or git diff summary.
+//      that surface. Its second line shows reliable per-surface activity when
+//      available; otherwise it shows idle state or the selected workspace diff.
 //
-// cmux currently exposes progress/latestMessage per workspace rather than per
-// surface. Spinner-prefixed tab titles are therefore the strongest per-agent
-// working signal; otherwise workspace state is assigned to its focused tab.
-// Selected workspace + selected surface use the purple rail.
+// cmux exposes progress/latestMessage per workspace rather than per surface.
+// The Pi cmux-feed extension therefore prefixes its surface title with an owned
+// working/completed/error/cancelled marker. Never infer agent state from focus:
+// focus is navigation, not activity. Selected rows use the purple rail.
 
 // repoKey groups Lovable worktrees together. Standalone repositories keep the
 // workspace title as their key.
@@ -30,6 +30,26 @@ func prColor(_ status: String, _ stale: Bool) -> String {
 
 func isSpinner(_ title: String) -> Bool {
     return title.hasPrefix("⠁") || title.hasPrefix("⠂") || title.hasPrefix("⠄") || title.hasPrefix("⡀") || title.hasPrefix("⢀") || title.hasPrefix("⠠") || title.hasPrefix("⠐") || title.hasPrefix("⠈") || title.hasPrefix("⠋") || title.hasPrefix("⠙") || title.hasPrefix("⠹") || title.hasPrefix("⠸") || title.hasPrefix("⠼") || title.hasPrefix("⠴") || title.hasPrefix("⠦") || title.hasPrefix("⠧")
+}
+
+// U+2063 separates cmux-feed's state marker from the original title. It is
+// invisible in cmux's native tab bar; hide the owned prefix in this list too.
+func markerState(_ title: String) -> String {
+    if title.hasPrefix("⠋⁣") { return "working" }
+    if title.hasPrefix("✓⁣") { return "completed" }
+    if title.hasPrefix("!⁣") { return "error" }
+    if title.hasPrefix("×⁣") { return "cancelled" }
+    return ""
+}
+
+func isOwnedMarker(_ title: String) -> Bool {
+    return markerState(title) != ""
+}
+
+func visibleTabTitle(_ title: String) -> String {
+    let parts = title.split(separator: "⁣")
+    if isOwnedMarker(title) && parts.count > 1 { return "\(parts[1])" }
+    return title
 }
 
 func spin(_ second: Int) -> String {
@@ -83,42 +103,38 @@ func workspaceTint(_ workspace) -> String {
     return "#5A5A5E"
 }
 
-// A spinner title identifies a background working agent. For progress-only
-// integrations, attribute the workspace signal to the focused surface.
-func tabIsWorking(_ workspace, _ tab) -> Bool {
-    return isSpinner(tab.title) || (isWorking(workspace) && tab.focused)
-}
+// Surface title markers are per-agent. Workspace progress is aggregate and
+// must never be assigned to whichever tab happens to be focused.
+func tabState(_ workspace, _ tab) -> String {
+    let state = markerState(tab.title)
+    if state != "" { return state }
+    if isSpinner(tab.title) { return "working" }
 
-func tabHasFailed(_ workspace, _ tab) -> Bool {
-    return hasFailed(workspace) && tab.focused
-}
-
-func tabHasCancelled(_ workspace, _ tab) -> Bool {
-    return hasCancelled(workspace) && tab.focused
-}
-
-func tabIsReady(_ workspace, _ tab) -> Bool {
-    return !tabIsWorking(workspace, tab) && !tabHasFailed(workspace, tab) && !tabHasCancelled(workspace, tab) && tab.focused && (hasProgress(workspace) || workspace.unread > 0)
+    // Compatibility for runs completed before per-surface markers existed.
+    // Workspace latestMessage is safe to attribute only when there is one agent.
+    if agentCount(workspace) == 1 && isAgentTab(tab) && hasLatestMessage(workspace) { return "completed" }
+    return "idle"
 }
 
 func tabGlyph(_ workspace, _ tab, _ second: Int) -> String {
-    if tabIsWorking(workspace, tab) { return spin(second) }
-    if tabHasFailed(workspace, tab) || tabHasCancelled(workspace, tab) { return "!" }
-    if tabIsReady(workspace, tab) { return "●" }
+    let state = tabState(workspace, tab)
+    if state == "working" { return spin(second) }
+    if state == "error" || state == "cancelled" { return "!" }
+    if state == "completed" { return "●" }
     return "○"
 }
 
 func tabTint(_ workspace, _ tab) -> String {
-    if tabIsWorking(workspace, tab) { return "#58A6FF" }
-    if tabHasFailed(workspace, tab) { return "#F85149" }
-    if tabHasCancelled(workspace, tab) { return "#D29922" }
-    if tabIsReady(workspace, tab) { return "#D29922" }
+    let state = tabState(workspace, tab)
+    if state == "working" { return "#58A6FF" }
+    if state == "error" { return "#F85149" }
+    if state == "cancelled" || state == "completed" { return "#D29922" }
     return "#5A5A5E"
 }
 
 func agentKind(_ title: String) -> String {
     let lower = title.lowercased()
-    if title.contains("π") || lower.contains(" pi") || lower.hasPrefix("pi") { return "pi" }
+    if isOwnedMarker(title) || title.contains("π") || lower.contains(" pi") || lower.hasPrefix("pi") { return "pi" }
     if lower.contains("codex") { return "codex" }
     if lower.contains("claude") { return "claude" }
     if lower.contains("opencode") { return "opencode" }
@@ -136,11 +152,7 @@ func agentCount(_ workspace) -> Int {
 }
 
 func tabShowsDiff(_ workspace, _ tab) -> Bool {
-    if !tab.focused || !hasDescription(workspace) { return false }
-    if tabIsWorking(workspace, tab) && hasProgress(workspace) { return false }
-    if (tabHasFailed(workspace, tab) || tabHasCancelled(workspace, tab)) && hasProgress(workspace) { return false }
-    if tabIsReady(workspace, tab) && hasLatestMessage(workspace) { return false }
-    return true
+    return tab.focused && hasDescription(workspace) && tabState(workspace, tab) == "idle"
 }
 
 func diffTokenTint(_ token: String) -> String {
@@ -151,10 +163,23 @@ func diffTokenTint(_ token: String) -> String {
     return "#8E8E93"
 }
 
+func stateLabel(_ state: String) -> String {
+    if state == "working" { return "Working" }
+    if state == "completed" { return "Completed" }
+    if state == "error" { return "Error" }
+    if state == "cancelled" { return "Cancelled" }
+    return "Idle"
+}
+
 func tabDetail(_ workspace, _ tab) -> String {
-    if tabIsWorking(workspace, tab) && hasProgress(workspace) { return workspace.progress.label }
-    if (tabHasFailed(workspace, tab) || tabHasCancelled(workspace, tab)) && hasProgress(workspace) { return workspace.progress.label }
-    if tabIsReady(workspace, tab) && hasLatestMessage(workspace) { return workspace.latestMessage }
+    let state = tabState(workspace, tab)
+    if state != "idle" {
+        if agentCount(workspace) == 1 {
+            if state == "working" && hasProgress(workspace) { return workspace.progress.label }
+            if state != "working" && hasLatestMessage(workspace) { return "\(stateLabel(state)) · \(workspace.latestMessage)" }
+        }
+        return "\(stateLabel(state)) · \(agentKind(tab.title))"
+    }
     if tab.focused && hasDescription(workspace) { return workspace.description }
     return "Idle · \(agentKind(tab.title))"
 }
@@ -219,7 +244,7 @@ VStack(alignment: .leading, spacing: 2) {
                             .font(.caption).foregroundColor("#7A4FD8")
                         Text(tabGlyph(workspace, tab, clock.second))
                             .font(.body).foregroundColor(tabTint(workspace, tab))
-                        Text(tab.title).font(.body).bold().lineLimit(1).truncationMode(.tail)
+                        Text(visibleTabTitle(tab.title)).font(.body).bold().lineLimit(1).truncationMode(.tail)
                         Spacer()
                     }
                     if tabShowsDiff(workspace, tab) {
