@@ -1,166 +1,121 @@
-// repos.swift — herdr-inspired cmux sidebar.
+// repos.swift — compact cmux workspace and agent navigator (~230 pt).
 //
-// Two levels of navigation:
-//   1. "spaces" lists workspaces in true cmd+N order, with repository name,
-//      PR badge, agent count, aggregate state, and git branch.
-//   2. "agents" lists recognized agent surfaces/tabs. Selecting a row focuses
-//      that surface. Its second line shows reliable per-surface activity when
-//      available; otherwise it shows idle state or the selected workspace diff.
-//
-// cmux exposes progress/latestMessage per workspace rather than per surface.
-// The Pi cmux-feed extension therefore prefixes its surface title with an owned
-// working/completed/error/cancelled marker. Never infer agent state from focus:
-// focus is navigation, not activity. Selected rows use the purple rail.
-
-// repoKey groups Lovable worktrees together. Standalone repositories keep the
-// workspace title as their key.
-func repoKey(_ dir: String, _ title: String) -> String {
-    if dir.contains("/lovablelabs/") { return "lovable" }
-    if title.hasPrefix("lovable") { return "lovable" }
-    return title
-}
+// cmux 0.64.22 does not expose tabs[].agent. Pi rows use the exact U+2063
+// compatibility marker owned by cmux-feed. The spinner list is the only native
+// fallback; unmarked shells and broad title guesses are intentionally omitted.
 
 func prColor(_ status: String, _ stale: Bool) -> String {
-    if stale { return "#6E7681" }
-    if status == "open" { return "#3FB950" }
-    if status == "merged" { return "#A371F7" }
-    if status == "closed" { return "#F85149" }
-    return "#8E8E93"
+    if stale { return "#7F8794" }
+    if status == "open" { return "#55D98A" }
+    if status == "merged" { return "#A78BFA" }
+    if status == "closed" { return "#FF6B6B" }
+    return "#AEB6C2"
 }
 
-func isSpinner(_ title: String) -> Bool {
+func isNativeWorkingMarker(_ title: String) -> Bool {
     return title.hasPrefix("⠁") || title.hasPrefix("⠂") || title.hasPrefix("⠄") || title.hasPrefix("⡀") || title.hasPrefix("⢀") || title.hasPrefix("⠠") || title.hasPrefix("⠐") || title.hasPrefix("⠈") || title.hasPrefix("⠋") || title.hasPrefix("⠙") || title.hasPrefix("⠹") || title.hasPrefix("⠸") || title.hasPrefix("⠼") || title.hasPrefix("⠴") || title.hasPrefix("⠦") || title.hasPrefix("⠧")
 }
 
-// U+2063 separates cmux-feed's state marker from the original title. It is
-// invisible in cmux's native tab bar; hide the owned prefix in this list too.
+// Exact owned protocol: state glyph + U+2063. New markers add an invisible
+// automatic/manual discriminator segment; legacy one/two-separator markers remain.
 func markerState(_ title: String) -> String {
     if title.hasPrefix("⠋⁣") { return "working" }
     if title.hasPrefix("✓⁣") { return "completed" }
     if title.hasPrefix("!⁣") { return "error" }
     if title.hasPrefix("×⁣") { return "cancelled" }
+    if title.hasPrefix("○⁣") { return "idle" }
     return ""
 }
 
-func isOwnedMarker(_ title: String) -> Bool {
+func isOwnedPi(_ title: String) -> Bool {
     return markerState(title) != ""
 }
 
-func visibleTabTitle(_ title: String) -> String {
-    let parts = title.split(separator: "⁣")
-    if isOwnedMarker(title) && parts.count > 1 { return "\(parts[1])" }
-    return title
+func isLegacyPiTitle(_ title: String) -> Bool {
+    let lower = title.lowercased()
+    return lower == "pi" || lower.hasPrefix("pi - ") || title == "π" || title.hasPrefix("π - ")
 }
 
-func spin(_ second: Int) -> String {
-    let frame = second % 8
-    if frame == 0 { return "⠋" }
-    if frame == 1 { return "⠙" }
-    if frame == 2 { return "⠹" }
-    if frame == 3 { return "⠸" }
-    if frame == 4 { return "⠼" }
-    if frame == 5 { return "⠴" }
-    if frame == 6 { return "⠦" }
-    return "⠧"
+// Installed cmux 0.64.22 supports split/dropFirst/joined. Keep empty segments
+// so new and legacy manual codecs, plus embedded U+2063 base text, round-trip.
+func visibleTabTitle(_ title: String) -> String {
+    if !isOwnedPi(title) { return title }
+    let parts = title.split(separator: "⁣", omittingEmptySubsequences: false)
+    if parts.count < 2 { return title }
+    let discriminator = "\(parts[1])"
+    if parts.count > 2 && (discriminator == "⁤" || discriminator == "⁢" || discriminator == "") {
+        return parts.dropFirst(2).joined(separator: "⁣")
+    }
+    return parts.dropFirst(1).joined(separator: "⁣")
+}
+
+func workspaceBasename(_ workspace) -> String {
+    let parts = workspace.directory.split(separator: "/")
+    if parts.count > 0 { return "\(parts[parts.count - 1])" }
+    return workspace.title
 }
 
 func hasProgress(_ workspace) -> Bool {
-    return workspace.progress.value >= 0.0
+    if let progress = workspace.progress { return progress.value >= 0.0 }
+    return false
 }
 
-func isWorking(_ workspace) -> Bool {
-    return (hasProgress(workspace) && workspace.progress.value < 1.0) || (workspace.tabs.contains { isSpinner($0.title) })
+func progressState(_ workspace) -> String {
+    if let progress = workspace.progress {
+        if progress.value < 0.0 { return "" }
+        if progress.label.hasPrefix("Error ·") { return "error" }
+        if progress.label.hasPrefix("Cancelled ·") { return "cancelled" }
+        if progress.value < 1.0 { return "working" }
+        if progress.label.hasPrefix("Done ·") { return "completed" }
+    }
+    return ""
 }
 
-func hasLatestMessage(_ workspace) -> Bool {
-    return workspace.latestMessage != ""
-}
-
-func hasDescription(_ workspace) -> Bool {
-    return workspace.description != ""
-}
-
-func hasFailed(_ workspace) -> Bool {
-    return hasProgress(workspace) && workspace.progress.label.lowercased().contains("error")
-}
-
-func hasCancelled(_ workspace) -> Bool {
-    return hasProgress(workspace) && workspace.progress.label.lowercased().contains("cancelled")
-}
-
-func workspaceGlyph(_ workspace, _ second: Int) -> String {
-    if isWorking(workspace) { return spin(second) }
-    if hasFailed(workspace) || hasCancelled(workspace) { return "!" }
-    if hasProgress(workspace) || workspace.unread > 0 { return "●" }
-    return "○"
-}
-
-func workspaceTint(_ workspace) -> String {
-    if isWorking(workspace) { return "#58A6FF" }
-    if hasFailed(workspace) { return "#F85149" }
-    if hasCancelled(workspace) { return "#D29922" }
-    if hasProgress(workspace) || workspace.unread > 0 { return "#D29922" }
-    return "#5A5A5E"
-}
-
-// Surface title markers are per-agent. Workspace progress is aggregate and
-// must never be assigned to whichever tab happens to be focused.
-func tabState(_ workspace, _ tab) -> String {
-    let state = markerState(tab.title)
-    if state != "" { return state }
-    if isSpinner(tab.title) { return "working" }
-
-    // Compatibility for runs completed before per-surface markers existed.
-    // Workspace latestMessage is safe to attribute only when there is one agent.
-    if agentCount(workspace) == 1 && isAgentTab(tab) && hasLatestMessage(workspace) { return "completed" }
+func tabState(_ tab) -> String {
+    let owned = markerState(tab.title)
+    if owned != "" { return owned }
+    if isNativeWorkingMarker(tab.title) { return "working" }
     return "idle"
 }
 
-func tabGlyph(_ workspace, _ tab, _ second: Int) -> String {
-    let state = tabState(workspace, tab)
-    if state == "working" { return spin(second) }
-    if state == "error" || state == "cancelled" { return "!" }
-    if state == "completed" { return "●" }
-    return "○"
-}
-
-func tabTint(_ workspace, _ tab) -> String {
-    let state = tabState(workspace, tab)
-    if state == "working" { return "#58A6FF" }
-    if state == "error" { return "#F85149" }
-    if state == "cancelled" || state == "completed" { return "#D29922" }
-    return "#5A5A5E"
-}
-
-func agentKind(_ title: String) -> String {
-    let lower = title.lowercased()
-    if isOwnedMarker(title) || title.contains("π") || lower.contains(" pi") || lower.hasPrefix("pi") { return "pi" }
-    if lower.contains("codex") { return "codex" }
-    if lower.contains("claude") { return "claude" }
-    if lower.contains("opencode") { return "opencode" }
-    if lower.contains("gemini") { return "gemini" }
-    if lower.contains("agent") { return "agent" }
-    return "shell"
-}
-
 func isAgentTab(_ tab) -> Bool {
-    return isSpinner(tab.title) || agentKind(tab.title) != "shell"
+    return isOwnedPi(tab.title) || isLegacyPiTitle(tab.title) || isNativeWorkingMarker(tab.title)
 }
 
 func agentCount(_ workspace) -> Int {
     return workspace.tabs.count { isAgentTab($0) }
 }
 
-func tabShowsDiff(_ workspace, _ tab) -> Bool {
-    return tab.focused && hasDescription(workspace) && tabState(workspace, tab) == "idle"
+func workspaceState(_ workspace) -> String {
+    // cmux 0.64.22 reliably interprets trailing-closure collection methods;
+    // parenthesized closure arguments validate but silently return no match.
+    if workspace.tabs.contains { markerState($0.title) == "error" } { return "error" }
+    if workspace.tabs.contains { markerState($0.title) == "cancelled" } { return "cancelled" }
+    let progress = progressState(workspace)
+    if progress == "error" || progress == "cancelled" { return progress }
+    if workspace.tabs.contains { tabState($0) == "working" } || progress == "working" { return "working" }
+    if workspace.tabs.contains { markerState($0.title) == "completed" } || progress == "completed" { return "completed" }
+    return "idle"
 }
 
-func diffTokenTint(_ token: String) -> String {
-    if token.hasPrefix("+") { return "#3FB950" }
-    if token.hasPrefix("-") { return "#F85149" }
-    if token.hasPrefix("↑") { return "#58A6FF" }
-    if token.hasPrefix("↓") { return "#D29922" }
-    return "#8E8E93"
+func stateGlyph(_ state: String) -> String {
+    if state == "error" { return "!" }
+    if state == "cancelled" { return "×" }
+    if state == "completed" { return "✓" }
+    return "○"
+}
+
+func stateTint(_ state: String) -> String {
+    if state == "working" { return "#70B7FF" }
+    if state == "error" { return "#FF6B6B" }
+    if state == "cancelled" { return "#F0B45A" }
+    if state == "completed" { return "#55D98A" }
+    return "#7F8794"
+}
+
+func detailTint(_ state: String) -> String {
+    if state == "working" || state == "error" || state == "cancelled" { return stateTint(state) }
+    return "#AEB6C2"
 }
 
 func stateLabel(_ state: String) -> String {
@@ -172,101 +127,116 @@ func stateLabel(_ state: String) -> String {
 }
 
 func tabDetail(_ workspace, _ tab) -> String {
-    let state = tabState(workspace, tab)
-    if state != "idle" {
-        if agentCount(workspace) == 1 {
-            if state == "working" && hasProgress(workspace) { return workspace.progress.label }
-            if state != "working" && hasLatestMessage(workspace) { return "\(stateLabel(state)) · \(workspace.latestMessage)" }
-        }
-        return "\(stateLabel(state)) · \(agentKind(tab.title))"
+    let state = tabState(tab)
+    if state == "working" && agentCount(workspace) == 1 && progressState(workspace) == "working" {
+        if let progress = workspace.progress { return progress.label }
     }
-    if tab.focused && hasDescription(workspace) { return workspace.description }
-    return "Idle · \(agentKind(tab.title))"
+    if state == "completed" || state == "idle" { return "" }
+    return stateLabel(state)
 }
 
 VStack(alignment: .leading, spacing: 2) {
-    // Compact repository/workspace navigator.
     HStack {
-        Text("spaces").font(.headline).bold()
+        Text("SPACES").font(.system(size: 11, weight: .semibold)).foregroundColor("#F2F4F8")
         Spacer()
-        if (workspaces.count { $0.unread > 0 }) > 0 {
-            Text("● \(workspaces.count { $0.unread > 0 }) ready")
-                .font(.caption).foregroundColor("#D29922")
+        let unreadCount = workspaces.count { $0.unread > 0 }
+        if unreadCount > 0 {
+            Text("\(unreadCount) unread").font(.system(size: 11)).foregroundColor("#F0B45A")
         }
     }
     .frame(height: 24)
     Divider()
 
-    // Flat list: visual order exactly matches cmd+1, cmd+2, cmd+3, …
-    for workspace in workspaces {
-        let key = repoKey(workspace.directory, workspace.title)
+    // Source order is cmux's stable Cmd+N order; drag to reorder (persisted).
+    Reorderable(workspaces, move: "workspace.reorder") { workspace in
+        let lifecycle = workspaceState(workspace)
+        let count = agentCount(workspace)
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 6) {
+            HStack(spacing: 5) {
                 Text(workspace.selected ? "▌" : " ")
-                    .font(.caption).foregroundColor("#7A4FD8")
-                Text("\(workspace.index + 1)").font(.caption).foregroundColor("#5A5A5E")
-                Text(key).font(.body).bold().lineLimit(1).truncationMode(.tail)
+                    .font(.system(size: 12)).foregroundColor("#A78BFA")
+                Text("\(workspace.index + 1)").font(.system(size: 11)).foregroundColor("#AEB6C2")
+                Text(workspaceBasename(workspace))
+                    .font(.system(size: 14, weight: .semibold)).foregroundColor("#F2F4F8")
+                    .lineLimit(1).truncationMode(.tail)
                 Spacer()
-                if workspace.pr.number > 0 {
-                    Text("#\(workspace.pr.number)")
-                        .font(.caption).foregroundColor(prColor(workspace.pr.status, workspace.pr.stale))
-                        .onTapGesture { openURL(workspace.pr.url) }
+                if let pr = workspace.pr {
+                    if pr.number > 0 {
+                        Text("#\(pr.number)")
+                            .font(.system(size: 11)).foregroundColor(prColor(pr.status, pr.stale))
+                            .onTapGesture { openURL(pr.url) }
+                    }
                 }
-                Text("×\(agentCount(workspace))").font(.caption).foregroundColor("#8E8E93")
-                Text(workspaceGlyph(workspace, clock.second))
-                    .font(.body).foregroundColor(workspaceTint(workspace))
+                if count > 0 {
+                    Text("×\(count)").font(.system(size: 11)).foregroundColor("#AEB6C2")
+                }
+                if workspace.unread > 0 {
+                    Text("●\(workspace.unread)").font(.system(size: 11)).foregroundColor("#F0B45A")
+                }
+                if lifecycle == "working" {
+                    ProgressView().scaleEffect(0.46).frame(width: 12, height: 12).tint("#70B7FF")
+                } else {
+                    Text(stateGlyph(lifecycle)).font(.system(size: 14)).foregroundColor(stateTint(lifecycle))
+                }
             }
-            Text(workspace.branch != "" ? workspace.branch : workspace.title)
-                .font(.system(size: 12)).foregroundColor("#8E8E93")
-                .lineLimit(1).truncationMode(.tail)
-                .padding(.leading, 29)
+            if let branch = workspace.branch {
+                Text("\(branch)\(workspace.dirty ? " *" : "")")
+                    .font(.system(size: 12)).foregroundColor("#AEB6C2")
+                    .lineLimit(1).truncationMode(.tail).padding(.leading, 29)
+            }
         }
-        .frame(height: 38)
-        .padding(.horizontal, 3)
-        .background(workspace.selected ? "#30283D" : "#00000000")
+        .frame(height: 44)
+        .padding(.horizontal, 2)
+        .background(workspace.selected ? "#382E4D" : "#00000000")
         .cornerRadius(4)
         .onTapGesture { cmux("workspace.select", workspace_id: workspace.id) }
     }
 
     Divider().padding(.top, 2)
-
-    // Compact agent list. Shell/editor/browser surfaces stay in cmux's tab bar;
-    // this section only shows recognized agent tabs and spinner-titled work.
-    Text("agents").font(.headline).bold().frame(height: 24)
+    Text("AGENTS").font(.system(size: 11, weight: .semibold)).foregroundColor("#F2F4F8")
+        .frame(height: 24)
     Divider()
 
+    // Spaces already identifies repository ownership. Keep this section focused
+    // on sessions, preserving workspace/tab order without repeated repo labels.
     for workspace in workspaces {
-        for tab in workspace.tabs {
-            if isAgentTab(tab) {
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 6) {
-                        Text(workspace.selected && tab.focused ? "▌" : " ")
-                            .font(.caption).foregroundColor("#7A4FD8")
-                        Text(tabGlyph(workspace, tab, clock.second))
-                            .font(.body).foregroundColor(tabTint(workspace, tab))
-                        Text(visibleTabTitle(tab.title)).font(.body).bold().lineLimit(1).truncationMode(.tail)
-                        Spacer()
-                    }
-                    if tabShowsDiff(workspace, tab) {
-                        HStack(spacing: 4) {
-                            for token in workspace.description.split(separator: " ") {
-                                Text("\(token)").font(.caption).foregroundColor(diffTokenTint(token))
+        if agentCount(workspace) > 0 {
+            for tab in workspace.tabs {
+                if isAgentTab(tab) {
+                    let lifecycle = tabState(tab)
+                    let detail = tabDetail(workspace, tab)
+                    VStack(alignment: .leading, spacing: 0) {
+                        HStack(spacing: 5) {
+                            Text(workspace.selected && tab.focused ? "▌" : " ")
+                                .font(.system(size: 12)).foregroundColor("#A78BFA")
+                            if lifecycle == "working" {
+                                ProgressView().scaleEffect(0.46).frame(width: 12, height: 12).tint("#70B7FF")
+                            } else {
+                                Text(stateGlyph(lifecycle)).font(.system(size: 14)).foregroundColor(stateTint(lifecycle))
                             }
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(visibleTabTitle(tab.title))
+                                    .font(.system(size: 14, weight: .semibold)).foregroundColor("#F2F4F8")
+                                    .lineLimit(1).truncationMode(.tail)
+                                HStack(spacing: 3) {
+                                    Text(workspaceBasename(workspace))
+                                        .font(.system(size: 11)).foregroundColor("#7F8794")
+                                    if detail != "" {
+                                        Text("· \(detail)")
+                                            .font(.system(size: 11)).foregroundColor(detailTint(lifecycle))
+                                            .lineLimit(1).truncationMode(.tail)
+                                    }
+                                }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                        .padding(.leading, 28)
-                    } else {
-                        Text(tabDetail(workspace, tab))
-                            .font(.caption)
-                            .foregroundColor(tabTint(workspace, tab))
-                            .lineLimit(1).truncationMode(.tail)
-                            .padding(.leading, 28)
                     }
+                    .frame(height: 44)
+                    .padding(.horizontal, 2)
+                    .background(workspace.selected && tab.focused ? "#382E4D" : "#00000000")
+                    .cornerRadius(4)
+                    .onTapGesture { cmux("surface.focus", surface_id: tab.id) }
                 }
-                .frame(height: 38)
-                .padding(.horizontal, 3)
-                .background(workspace.selected && tab.focused ? "#30283D" : "#00000000")
-                .cornerRadius(4)
-                .onTapGesture { cmux("surface.focus", surface_id: tab.id) }
             }
         }
     }
