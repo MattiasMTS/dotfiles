@@ -12,6 +12,38 @@
     "maxRetries": 10
   },
   "editorPaddingX": 1,
+  "subagents": {
+    "defaultModel": "openai-codex/gpt-5.6-sol",
+    "agentOverrides": {
+      "advisor": {
+        "thinking": "xhigh"
+      },
+      "context-builder": {
+        "thinking": "xhigh"
+      },
+      "delegate": {
+        "thinking": "xhigh"
+      },
+      "oracle": {
+        "thinking": "xhigh"
+      },
+      "planner": {
+        "thinking": "xhigh"
+      },
+      "researcher": {
+        "thinking": "xhigh"
+      },
+      "reviewer": {
+        "thinking": "xhigh"
+      },
+      "scout": {
+        "thinking": "xhigh"
+      },
+      "worker": {
+        "thinking": "xhigh"
+      }
+    }
+  },
   "enabledModels": [
     "claude-fable-*",
     "claude-opus-*",
@@ -21,7 +53,7 @@
   "packages": [
     "npm:pi-web-access",
     "npm:pi-mcp-adapter",
-    "npm:pi-subagents",
+    "npm:pi-subagents@0.40.0",
     "npm:pi-simplify",
     "npm:pi-x-ide",
     "npm:pi-mermaid",

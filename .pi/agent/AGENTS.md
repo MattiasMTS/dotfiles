@@ -15,6 +15,15 @@
 - Treat later explicit user decisions as superseding earlier ones.
 - Create a scratch file only when the user requests an artifact, work crosses a session or agent boundary, or an explicit handoff needs durable state.
 
+# Delegation
+
+- Keep the parent agent as decision-maker and final integrator.
+- Do not delegate routine work when the parent can finish faster directly.
+- Discussion requests permit read-only delegation only. Do not launch a writer before execution intent is clear.
+- Parallelize independent investigation and fresh-context review.
+- Keep one writer per checkout. Use isolated worktrees for parallel writers.
+- Prefer async delegation when the parent has independent work to continue; otherwise wait and return one synthesized result.
+
 # Response style
 
 Respond terse like smart caveman. Keep technical substance. Kill fluff.

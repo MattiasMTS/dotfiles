@@ -1,0 +1,15 @@
+{
+  "toolDescriptionMode": "compact",
+  "artifactDir": "session",
+  "fleetView": true,
+  "fleetViewPlacement": "belowEditor",
+  "asyncWidget": false,
+  "asyncByDefault": true,
+  "parallel": {
+    "maxTasks": 12,
+    "concurrency": 6
+  },
+  "globalConcurrencyLimit": 6,
+  "maxSubagentDepth": 1,
+  "maxSubagentSpawnsPerSession": 24
+}
