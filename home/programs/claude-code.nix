@@ -54,14 +54,6 @@ in
         type = "http";
         url = "https://mcp.confidence.dev/mcp/experiments";
       };
-      "grafana" = {
-        type = "stdio";
-        command = "uvx";
-        args = [ "mcp-grafana" ];
-        env = {
-          GRAFANA_URL = "https://lovable.grafana.net";
-        };
-      };
       "slack" = {
         type = "http";
         url = "https://mcp.slack.com/mcp";

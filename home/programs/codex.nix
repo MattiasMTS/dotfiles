@@ -60,13 +60,6 @@ in
         confidence-experiments = {
           url = "https://mcp.confidence.dev/mcp/experiments";
         };
-        grafana = {
-          command = "uvx";
-          args = [ "mcp-grafana" ];
-          env = {
-            GRAFANA_URL = "https://lovable.grafana.net";
-          };
-        };
       };
     };
   };
