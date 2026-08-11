@@ -6,6 +6,7 @@
 # pinned revs/hashes live in exactly one place.
 { pkgs }:
 let
+  gcxSetup = import ./gcx.nix { inherit pkgs; };
   clickhouse-agent-skills = pkgs.fetchFromGitHub {
     owner = "ClickHouse";
     repo = "agent-skills";
@@ -31,6 +32,10 @@ let
     hash = "sha256-YFNSCWqglkXw9EPraXu+wW6X2b28/DqWsh4tVEz9MgU=";
   };
   gcloudSkill = name: "${google-skills}/skills/cloud/${name}";
+  gcxSkill = name: {
+    inherit name;
+    value = "${gcxSetup.skills}/${name}";
+  };
 in
 {
   clickhouse-best-practices = "${clickhouse-agent-skills}/skills/clickhouse-best-practices";
@@ -57,3 +62,31 @@ in
   google-cloud-waf-performance-optimization = gcloudSkill "google-cloud-waf-performance-optimization";
   google-cloud-waf-sustainability = gcloudSkill "google-cloud-waf-sustainability";
 }
+// builtins.listToAttrs (
+  map gcxSkill [
+    "agento11y"
+    "agento11y-instrument"
+    "agento11y-prod-setup"
+    "agento11y-test-starter"
+    "create-dashboard"
+    "debug-with-grafana"
+    "diagnose-entity-graph"
+    "gcx"
+    "gcx-demo"
+    "gcx-observability"
+    "generate-resource-stubs"
+    "import-dashboards"
+    "investigate-alert"
+    "manage-dashboards"
+    "oncall-triage"
+    "scaffold-project"
+    "setup-gcx"
+    "slo-check-status"
+    "slo-investigate"
+    "slo-manage"
+    "slo-optimize"
+    "synth-check-status"
+    "synth-investigate-check"
+    "synth-manage-checks"
+  ]
+)

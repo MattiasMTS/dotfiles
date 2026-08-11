@@ -9,6 +9,8 @@
 }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
+  agentSkills = import ./programs/skills.nix { inherit pkgs; };
+  gcxSetup = import ./programs/gcx.nix { inherit pkgs; };
   blink-cmp-plugin = inputs.blink-cmp.packages.${pkgs.system}.blink-cmp;
   treesitter-grammars = pkgs.symlinkJoin {
     name = "nvim-treesitter-grammars";
@@ -68,7 +70,11 @@ in
       CC = "${nixClangWithAppleSdk}/bin/nix-clang-with-apple-sdk";
       CXX = "${nixClangxxWithAppleSdk}/bin/nix-clangxx-with-apple-sdk";
     })
-    { EDITOR = "nvim"; }
+    {
+      EDITOR = "nvim";
+      # gcx and its bundled skills are upgraded declaratively through nixpkgs.
+      GCX_NO_UPDATE_NOTIFIER = "1";
+    }
   ];
   xdg.enable = true;
 
@@ -77,6 +83,10 @@ in
   xdg.configFile.ghostty.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/ghostty";
   xdg.configFile.worktrunk.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/worktrunk";
   xdg.configFile.cmux.source = mkOutOfStoreSymlink "${dotfilesPath}/.config/cmux";
+  # Install portable Agent Skills for Pi and other .agents-compatible tools.
+  home.file.".agents/skills".source = pkgs.linkFarm "agent-skills" (
+    lib.mapAttrsToList (name: path: { inherit name path; }) agentSkills
+  );
   # Symlink blink.cmp fuzzy library built via Nix to where blink.lib v2 resolves it
   home.file.".local/share/nvim/lazy/blink.cmp/lib/libblink_cmp_fuzzy.dylib".source =
     "${blink-cmp-plugin}/lib/libblink_cmp_fuzzy.dylib";
@@ -132,6 +142,7 @@ in
     tflint
     opentofu
     clickhouse
+    gcxSetup.package
     lefthook
 
     python313
