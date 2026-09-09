@@ -6,19 +6,16 @@ fetch = "git fetch --all --prune --quiet || true"
 [post-start]
 copy = "wt step copy-ignored"
 
-[pre-remove]
-session = """
-S="{{ branch | sanitize }}"
-if [ -n "$CMUX_WORKSPACE_ID" ]; then
-  WS_REF=$(cmux list-workspaces 2>/dev/null | awk -v name="$S" '{ for(i=1;i<=NF;i++) if($i==name) { for(j=1;j<=NF;j++) if($j~/^workspace:/) {print $j; exit} } }')
-  if [ -n "$WS_REF" ]; then
-    CURRENT=$(cmux current-workspace 2>/dev/null)
-    if [ "$CURRENT" = "$WS_REF" ]; then
-      cmux previous-window 2>/dev/null || cmux next-window 2>/dev/null || true
-    fi
-    cmux close-workspace --workspace "$WS_REF" 2>/dev/null || true
-  fi
-fi
-"""
+# Bind this agent's existing cmux workspace; feature names are searchable in
+# Cmd-P and native branch/PR tracking follows the worktree. New panes also
+# inherit that directory. An actual terminal cd can override the report;
+# another `wt switch` restores it. Outside cmux the helper is a no-op.
+# post-switch runs after successful creation AND switching existing worktrees.
+# The helper forwards cmux's inherited socket capability for detached hooks.
+[post-switch]
+cmux-session = "python3 ~/.config/worktrunk/cmux-session.py bind {{ worktree_path }}"
+
+[post-remove]
+cmux-session = "python3 ~/.config/worktrunk/cmux-session.py remove {{ worktree_path }}"
 
 [projects]

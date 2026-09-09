@@ -71,16 +71,8 @@ in
 
       eval "$(wt config shell init zsh)"
 
-      # Auto-rename cmux workspace/tab to short path on cd
-      if [[ -n "$CMUX_WORKSPACE_ID" ]]; then
-        _cmux_rename() {
-          local short="''${(%):-%1~}"
-          cmux rename-workspace "$short" &>/dev/null
-        }
-        autoload -Uz add-zsh-hook
-        add-zsh-hook chpwd _cmux_rename
-        _cmux_rename  # rename on shell start too
-      fi
+      # Workspace feature titles belong to the Worktrunk session hook.
+      # Renaming on shell startup or cd would overwrite them in new panes.
     '';
     plugins = [
       {
